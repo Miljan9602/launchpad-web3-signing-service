@@ -29,25 +29,17 @@ app.post('/recover-typed-signature', (request, response) => {
 });
 
 
-app.post('/sign-order', (request, response) => {
+app.post('/sign-registration', (request, response) => {
 
-    // let user_address = request.body.user_address
-    // let roundId = request.body.roundId
-    // let address = request.body.address
-    //
-    // let hash = "0x" + ethereumjs.ABI.soliditySHA3(
-    //     ["address", "uint256", "address"],
-    //     [user_address, roundId, sale_contract_address]
-    // ).toString("hex");
-    //
-    // let result = web3.personal.sign(hash, web3.eth.defaultAccount, callback);
-    //
-    // return response.json({
-    //     "result" : result
-    // })
+    let user_address = request.body.user_address
+    let roundId = request.body.round_id
+    let contractAddress = request.body.address
+
+    let hash = web3.utils.soliditySha3({t:"address", v: user_address}, {t: "uint256", v: roundId}, {t: "address", v: contractAddress});
+    let result = web3.eth.personal.sign(hash, web3.eth.defaultAccount, callback);
 
     return response.json({
-        "result" : "test"
+        "result" : result
     })
 });
 
