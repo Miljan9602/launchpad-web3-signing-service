@@ -6,9 +6,6 @@
   "scripts": {
     "web": "forever src"
   },
-  "engines": {
-    "node": "15.x"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Miljan9602/polylastic-airdrop.git"
