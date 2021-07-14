@@ -3,6 +3,25 @@ const app = express()
 app.use(express.json());
 const ethSig = require('eth-sig-util');
 const Web3 = require("web3");
+const contractMap = require("./contracts").CONTRACTS
+
+// Import contract and add provider.
+const Contract = require('web3-eth-contract');
+Contract.setProvider(new Web3.providers.HttpProvider('https://api.avax.network/ext/bc/C/rpc'));
+
+app.get('/contract-example', (request, response) => {
+
+    // Pull out contract abi/address
+    let adminContractAddress = contractMap['ADMIN']['address']
+    let adminContractAbi = contractMap['ADMIN']['abi']
+
+    // Init contract.
+    let contract = new Contract(adminContractAbi, adminContractAddress);
+
+    // make some contract calls.
+
+    return response.json({"status" : "ok",});
+});
 
 app.post('/recover-typed-signature', (request, response) => {
 
@@ -37,7 +56,6 @@ app.post('/sign-registration', (request, response) => {
 
     const pk = "905cfc35fa3ba0b42a5293306ccc74b4bdf6a0583ed2d3117ef436e9be6715ac";
 
-
     const web3 = new Web3(new Web3.providers.HttpProvider('https://api.avax.network/ext/bc/C/rpc'));
 
     const account = web3.eth.accounts.privateKeyToAccount(pk);
@@ -58,9 +76,7 @@ app.post('/sign-participation', (request, response) => {
     let roundId = request.body.round_id;
     let contractAddress = request.body.contract_address;
 
-
     const pk = "905cfc35fa3ba0b42a5293306ccc74b4bdf6a0583ed2d3117ef436e9be6715ac";
-
 
     const web3 = new Web3(new Web3.providers.HttpProvider('https://api.avax.network/ext/bc/C/rpc'));
 
