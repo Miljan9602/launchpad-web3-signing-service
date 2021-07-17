@@ -9,18 +9,24 @@ const contractMap = require("./contracts").CONTRACTS
 const Contract = require('web3-eth-contract');
 Contract.setProvider(new Web3.providers.HttpProvider('https://api.avax.network/ext/bc/C/rpc'));
 
-app.get('/contract-example', (request, response) => {
+app.post('/is-user-staking', async (request, response) => {
+
+    // Take address from body.
+    const userAddress = request.body.address
 
     // Pull out contract abi/address
-    let adminContractAddress = contractMap['ADMIN']['address']
-    let adminContractAbi = contractMap['ADMIN']['abi']
+    let allocationStakingAbi = contractMap['AllocationStaking']['abi']
+    let allocationStakingAddress = contractMap['AllocationStaking']['address']
 
     // Init contract.
-    let contract = new Contract(adminContractAbi, adminContractAddress);
+    let contract = new Contract(allocationStakingAbi, allocationStakingAddress);
 
-    // make some contract calls.
+    const amountStaking = await contract.methods.deposited(0, userAddress);
 
-    return response.json({"status" : "ok",});
+    return response.json({
+        "is_user_staking" : amountStaking > 0,
+        "address" : userAddress
+    });
 });
 
 app.post('/recover-typed-signature', (request, response) => {
