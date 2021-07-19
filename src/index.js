@@ -21,7 +21,7 @@ app.post('/is-user-staking', async (request, response) => {
     // Init contract.
     let contract = new Contract(allocationStakingAbi, allocationStakingAddress);
 
-    const amountStaking = await contract.methods.deposited(0, userAddress);
+    const amountStaking = await contract.methods.deposited(0, userAddress).call();
 
     return response.json({
         "is_user_staking" : amountStaking > 0,
