@@ -83,7 +83,6 @@ app.post('/sign-participation', (request, response) => {
     let contractAddress = request.body.contract_address;
 
     const pk = "905cfc35fa3ba0b42a5293306ccc74b4bdf6a0583ed2d3117ef436e9be6715ac";
-
     const web3 = new Web3(new Web3.providers.HttpProvider('https://api.avax.network/ext/bc/C/rpc'));
 
     const account = web3.eth.accounts.privateKeyToAccount(pk);
