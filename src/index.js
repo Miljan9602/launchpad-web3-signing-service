@@ -22,10 +22,13 @@ app.post('/is-user-staking', async (request, response) => {
     let contract = new Contract(allocationStakingAbi, allocationStakingAddress);
 
     const amountStaking = await contract.methods.deposited(0, userAddress).call();
+    const amountPending = await contract.methods.pending(0, userAddress).call();
 
     return response.json({
         "is_user_staking" : amountStaking > 0,
-        "address" : userAddress
+        "address" : userAddress,
+        "amount_staking" : Web3.utils.fromWei(amountStaking, 'ether'),
+        "amaount_pending" : Web3.utils.fromWei(amountPending, 'ether')
     });
 });
 
