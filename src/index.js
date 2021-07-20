@@ -28,7 +28,7 @@ app.post('/is-user-staking', async (request, response) => {
         "is_user_staking" : amountStaking > 0,
         "address" : userAddress,
         "amount_staking" : Web3.utils.fromWei(amountStaking, 'ether'),
-        "amaount_pending" : Web3.utils.fromWei(amountPending, 'ether')
+        "amount_pending" : Web3.utils.fromWei(amountPending, 'ether')
     });
 });
 
