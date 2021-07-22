@@ -84,13 +84,15 @@ app.post('/sign-participation', (request, response) => {
     let amountWei = request.body.amount_wei;
     let roundId = request.body.round_id;
     let contractAddress = request.body.contract_address;
-
+    let amountXavaToBurn = request.body.amount_xava_to_burn;
+    
+    // Staviti u env variablu.
     const pk = "905cfc35fa3ba0b42a5293306ccc74b4bdf6a0583ed2d3117ef436e9be6715ac";
     const web3 = new Web3(new Web3.providers.HttpProvider('https://api.avax.network/ext/bc/C/rpc'));
 
     const account = web3.eth.accounts.privateKeyToAccount(pk);
 
-    let hash = web3.utils.soliditySha3({t:"address", v: user_address}, {t: "uint256", v: amountWei}, {t: "uint256", v: roundId}, {t: "address", v: contractAddress});
+    let hash = web3.utils.soliditySha3({t:"address", v: userAddress}, {t: "uint256", v: amountWei},{t: "uint256", v: amountXavaToBurn}, {t: "uint256", v: roundId}, {t: "address", v: contractAddress});
 
     let result = web3.eth.accounts.sign(hash, pk);
 
