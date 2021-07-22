@@ -98,6 +98,73 @@ app.post('/sign-participation', (request, response) => {
     })
 });
 
+app.post('/get-sale-information', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+
+    // Pull out contract abi/address
+    let saleAbi = contractMap['AvalaunchSale']['abi']
+
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    const sale = await contract.methods.sale().call();
+
+    return response.json(sale);
+})
+
+app.post('/is-user-registered', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const userAddress = request.body.user_address
+
+    // Pull out contract abi/address
+    let saleAbi = contractMap['AvalaunchSale']['abi']
+
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    const round = await contract.methods.addressToRoundRegisteredFor(userAddress).call();
+
+    return response.json(round > 0);
+})
+
+app.post('/get-participation', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const userAddress = request.body.user_address
+
+    // Pull out contract abi/address
+    let saleAbi = contractMap['AvalaunchSale']['abi']
+
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    const participation = await contract.methods.userToParticipation(userAddress).call();
+
+    return response.json(participation);
+})
+
+app.post('/is-participated', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const userAddress = request.body.user_address
+
+    // Pull out contract abi/address
+    let saleAbi = contractMap['AvalaunchSale']['abi']
+
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    const participated = await contract.methods.isParticipated(userAddress).call();
+
+    return response.json(participated);
+})
+
 app.listen(process.env.PORT || 3000 , () => {
     console.log(`🚀  Running on the ${3000 || process.env.PORT} port.`);
 });
