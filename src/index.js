@@ -162,7 +162,9 @@ app.post('/is-participated', async (request, response) => {
 
     const participated = await contract.methods.isParticipated(userAddress).call();
 
-    return response.json(participated);
+    return response.json({
+        "is_participated" : participated
+    });
 })
 
 app.listen(process.env.PORT || 3000 , () => {
