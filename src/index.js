@@ -167,6 +167,24 @@ app.post('/is-participated', async (request, response) => {
     });
 })
 
+app.post('/get-number-of-participants', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+
+    // Pull out contract abi/address
+    let saleAbi = contractMap['AvalaunchSale']['abi']
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    // Get number of participants
+    const numberOfParticipants = await contract.methods.numberOfParticipants().call();
+
+    return response.json({
+        "number_of_participants" : numberOfParticipants.toString()
+    });
+})
+
 app.listen(process.env.PORT || 3000 , () => {
     console.log(`🚀  Running on the ${3000 || process.env.PORT} port.`);
 });
