@@ -145,6 +145,12 @@ app.post('/get-participation', async (request, response) => {
 
     const participation = await contract.methods.userToParticipation(userAddress).call();
 
+    /**
+     * p.amount, (WEI)
+     p.timestamp, (UNIX)
+     p.roundId, (UINT)
+     p.isWithdrawn (TRUE/FALSE)
+     */
     return response.json(participation);
 })
 
