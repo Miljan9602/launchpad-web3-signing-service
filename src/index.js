@@ -112,7 +112,12 @@ app.post('/get-sale-information', async (request, response) => {
 
     const sale = await contract.methods.sale().call();
 
-    return response.json(sale);
+    return response.json({
+        tokenPriceInAVAX: Web3.utils.fromWei(sale.tokenPriceInAVAX, 'ether'),
+        amountOfTokensToSell: Web3.utils.fromWei(sale.amountOfTokensToSell, 'ether'),
+        totalTokensSold: Web3.utils.fromWei(sale.totalTokensSold, 'ether'),
+        totalAVAXRaised: Web3.utils.fromWei(sale.totalAVAXRaised, 'ether'),
+    });
 })
 
 app.post('/get-unlock-time', async (request, response) => {
