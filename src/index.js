@@ -86,6 +86,14 @@ app.post('/sign-participation', (request, response) => {
     let contractAddress = request.body.contract_address;
     let amountXavaToBurn = request.body.amount_xava_to_burn;
 
+    console.log(
+        userAddress,
+        amountWei,
+        amountXavaToBurn,
+        roundId,
+        contractAddress
+    );
+
     const pk = "9d1e21e1ef38e3222654bd9c47b2c1c59ab453075459320d756b5ecdb9b9b8fd";
     const web3 = new Web3(new Web3.providers.HttpProvider('https://api.avax.network/ext/bc/C/rpc'));
 
@@ -167,7 +175,7 @@ app.post('/get-participation', async (request, response) => {
     let contract = new Contract(saleAbi, saleContractAddress);
 
     const participation = await contract.methods.userToParticipation(userAddress).call();
-    
+
     return response.json(participation);
 })
 
