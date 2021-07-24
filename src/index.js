@@ -114,6 +114,26 @@ app.post('/get-sale-information', async (request, response) => {
     return response.json(sale);
 })
 
+app.post('/get-unlock-time', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+
+    // Pull out contract abi/address
+    let saleAbi = contractMap['AvalaunchSale']['abi']
+
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    // Get sale Object
+    const sale = await contract.methods.sale().call();
+
+    return response.json({
+        "tokens_unlock_time": sale.tokensUnlockTime
+    });
+})
+
+
 app.post('/is-user-registered', async (request, response) => {
 
     // Take address from body.
