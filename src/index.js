@@ -147,8 +147,11 @@ app.post('/is-user-registered', async (request, response) => {
     let contract = new Contract(saleAbi, saleContractAddress);
 
     const round = await contract.methods.addressToRoundRegisteredFor(userAddress).call();
+    const result = parseInt(round, 10) > 0
 
-    return response.json(parseInt(round, 10) > 0);
+    return response.json({
+        "is_user_registered" : result
+    });
 })
 
 app.post('/get-participation', async (request, response) => {
@@ -164,7 +167,7 @@ app.post('/get-participation', async (request, response) => {
     let contract = new Contract(saleAbi, saleContractAddress);
 
     const participation = await contract.methods.userToParticipation(userAddress).call();
-
+    
     return response.json(participation);
 })
 
