@@ -147,7 +147,7 @@ app.post('/get-participation', async (request, response) => {
     let contract = new Contract(saleAbi, saleContractAddress);
 
     const participation = await contract.methods.userToParticipation(userAddress).call();
-
+    
     return response.json(participation);
 })
 
