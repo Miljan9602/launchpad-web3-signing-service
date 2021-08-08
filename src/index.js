@@ -14,6 +14,15 @@ app.post('/is-user-staking', async (request, response) => {
     // Take address from body.
     const userAddress = request.body.address
 
+    if (Web3.utils.isAddress(userAddress) === false) {
+        return response.json({
+            "is_user_staking" : false,
+            "address" : userAddress,
+            "amount_staking" : 0,
+            "amount_pending" : 0
+        });
+    }
+
     // Pull out contract abi/address
     let allocationStakingAbi = contractMap['AllocationStaking']['abi']
     let allocationStakingAddress = contractMap['AllocationStaking']['address']
