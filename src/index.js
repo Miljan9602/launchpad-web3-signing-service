@@ -248,6 +248,30 @@ app.post('/get-number-of-registrants', async (request, response) => {
     });
 })
 
+app.post('/get-stake-during-registration', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const userAddress = request.body.user_address
+
+    // Pull out contract abi/address
+    let saleAbi = contractMap['AvalaunchSale']['abi']
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    // Get number of participants
+    const payload = await contract.methods.addressToStakeAtRegistration(userAddress).call();
+
+    let resp = 0;
+
+    if(payload.toString() !== '0') {
+        resp = Web3.utils.fromWei(payload, 'ether');
+    }
+    return response.json({
+        "staked_amount" : resp
+    });
+})
+
 app.listen(process.env.PORT || 3000 , () => {
     console.log(`🚀  Running on the ${3000 || process.env.PORT} port.`);
 });
