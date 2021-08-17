@@ -7,7 +7,16 @@ const contractMap = require("./contracts").CONTRACTS
 
 // Import contract and add provider.
 const Contract = require('web3-eth-contract');
-Contract.setProvider(new Web3.providers.HttpProvider('https://api.avax.network/ext/bc/C/rpc'));
+const AVALAUNCH_URL = 'https://api.avax.network/ext/bc/C/rpc'
+const bs58 = require("bs58");
+
+Contract.setProvider(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+
+const {
+    Avalanche,
+    Buffer,
+    BinTools,
+} = require("avalanche")
 
 app.post('/is-user-staking', async (request, response) => {
 
@@ -157,6 +166,78 @@ app.post('/get-unlock-time', async (request, response) => {
     });
 })
 
+app.post('/test', async (request, response) => {
+
+    // https://github.com/ava-labs/avalanchejs/blob/1a2866a6aa85de0eb27a8f212658a5a64e0263ad/src/common/secp256k1.ts#L179
+
+    let msg = request.body.message
+    let sig = request.body.signature
+
+    const myNetworkID = 1; //default is 1, we want to override that for our local network
+    const avalanche = new Avalanche(AVALAUNCH_URL, 443, "https", myNetworkID);
+
+    // Create Key Pair.
+    const keypair = avalanche.XChain().keyChain().makeKey();
+
+    // generate signed.
+    const message = Buffer.from(msg);
+    const signature = keypair.sign(Buffer.from(message)); // returns a Buffer with the signature
+
+    const signerPubk = keypair.recover(message, signature); // returns a Buffer
+
+    return response.json({
+        "signer_pubk" : signerPubk + "",
+        "hex" : signerPubk.toString("hex"),
+        "base64" :signerPubk.toString("base64"),
+        "recover_result" : signerPubk,
+        "type_res" : typeof signerPubk,
+        "public_key" : keypair.getPublicKey().toString("hex"),
+        "signature" : signature,
+        "message" : message + ""
+    })
+});
+
+// https://github.com/ava-labs/avalanchejs/blob/1a2866a6aa85de0eb27a8f212658a5a64e0263ad/src/common/secp256k1.ts#L179
+app.post('/test2', async (request, response) => {
+
+    let msg = request.body.message
+    let sig = request.body.signature
+
+    const myNetworkID = 1; //default is 1, we want to override that for our local network
+    const hrp = 'avax'
+    const avalanche = new Avalanche(AVALAUNCH_URL, 443, "https", myNetworkID);
+
+    // Create Key Pair.
+    let keypair = avalanche.XChain().keyChain().makeKey();
+
+    let message = Buffer.from(msg)
+    let signature = bs58.decode(sig)
+
+    const signerPubk = keypair.recover(message, signature); // returns a Buffer
+    const isValid = keypair.verify(message, signature); // returns a boolean
+
+    let addressBuff = keypair.addressFromPublicKey(signerPubk)
+    let address = BinTools.getInstance().addressToString(hrp, 'X', addressBuff)
+
+    return response.json({
+        "test" : BinTools.getInstance().addressToString(hrp, "X", signerPubk),
+        "signer_pubk" : signerPubk + "",
+        "hex" : signerPubk.toString("hex"),
+        "base64" :signerPubk.toString("base64"),
+        "type_res" : typeof signerPubk,
+        "is_valid" : isValid,
+        "public_address" : keypair.getPublicKey().toString("hex"),
+        "final" : address
+    })
+});
+
+function digestMessage(msgStr) {
+    let mBuf = Buffer.from(msgStr, 'utf8')
+    let msgSize = Buffer.alloc(4)
+    msgSize.writeUInt32BE(mBuf.length, 0)
+    let msgBuf = Buffer.from(`\x1AAvalanche Signed Message:\n${msgSize}${msgStr}`, 'utf8')
+    return createHash('sha256').update(msgBuf).digest()
+}
 
 app.post('/is-user-registered', async (request, response) => {
 
