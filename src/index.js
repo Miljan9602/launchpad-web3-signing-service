@@ -178,13 +178,12 @@ app.post('/recover-address', async (request, response) => {
 
     // Create Key Pair.
     let keypair = avalanche.XChain().keyChain().makeKey();
-
-    let digest = digestMessage(msg)
-    let message = Buffer.from(digest.toString('hex'), 'hex')
-    let signature = bs58.decode(sig)
     let signerPubk = null;
 
     try {
+        let digest = digestMessage(msg)
+        let message = Buffer.from(digest.toString('hex'), 'hex')
+        let signature = bs58.decode(sig)
         signerPubk = keypair.recover(message, signature);
     } catch (error) {
 
