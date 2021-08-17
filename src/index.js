@@ -183,10 +183,10 @@ app.post('/recover-address', async (request, response) => {
     let message = Buffer.from(digest.toString('hex'), 'hex')
     let signature = bs58.decode(sig)
 
-    const signerPubk = keypair.recover(message, signature); // returns a Buffer
+    const signerPubk = keypair.recover(message, signature);
 
     let addressBuff = keypair.addressFromPublicKey(signerPubk)
-    let address = BinTools.getInstance().addressToString(hrp, 'X', addressBuff)
+    let address = BinTools.getInstance().addressToString(hrp, 'P', addressBuff)
 
     return response.json({
         "address" : address
