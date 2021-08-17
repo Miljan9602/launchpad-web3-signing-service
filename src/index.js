@@ -189,7 +189,7 @@ app.post('/recover-address', async (request, response) => {
     let address = BinTools.getInstance().addressToString(hrp, 'X', addressBuff)
 
     return response.json({
-        "final" : address
+        "address" : address
     })
 });
 
