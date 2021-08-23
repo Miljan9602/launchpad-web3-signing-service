@@ -34,8 +34,8 @@ app.post('/is-user-staking', async (request, response) => {
     }
 
     // Pull out contract abi/address
-    let allocationStakingAbi = contractMap['AllocationStaking']['abi']
-    let allocationStakingAddress = contractMap['AllocationStaking']['address']
+    let allocationStakingAbi = contractMap['ALLOCATION_STAKING']['abi']
+    let allocationStakingAddress = contractMap['ALLOCATION_STAKING']['address']
 
     // Init contract.
     let contract = new Contract(allocationStakingAbi, allocationStakingAddress);
@@ -133,7 +133,7 @@ app.post('/get-sale-information', async (request, response) => {
     const saleContractAddress = request.body.contract_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AvalaunchSale']['abi']
+    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
 
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
@@ -154,7 +154,7 @@ app.post('/get-unlock-time', async (request, response) => {
     const saleContractAddress = request.body.contract_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AvalaunchSale']['abi']
+    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
 
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
@@ -217,7 +217,7 @@ app.post('/is-user-registered', async (request, response) => {
     const userAddress = request.body.user_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AvalaunchSale']['abi']
+    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
 
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
@@ -237,7 +237,7 @@ app.post('/get-participation', async (request, response) => {
     const userAddress = request.body.user_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AvalaunchSale']['abi']
+    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
 
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
@@ -270,7 +270,7 @@ app.post('/is-participated', async (request, response) => {
     const userAddress = request.body.user_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AvalaunchSale']['abi']
+    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
 
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
@@ -288,7 +288,7 @@ app.post('/get-number-of-participants', async (request, response) => {
     const saleContractAddress = request.body.contract_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AvalaunchSale']['abi']
+    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
@@ -306,7 +306,7 @@ app.post('/get-number-of-registrants', async (request, response) => {
     const saleContractAddress = request.body.contract_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AvalaunchSale']['abi']
+    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
@@ -325,7 +325,7 @@ app.post('/get-stake-during-registration', async (request, response) => {
     const userAddress = request.body.user_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AvalaunchSale']['abi']
+    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
