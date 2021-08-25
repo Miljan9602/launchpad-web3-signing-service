@@ -242,7 +242,8 @@ app.post('/get-participation', async (request, response) => {
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
-    const participation = await contract.methods.userToParticipation(userAddress).call();
+    // const participation = await contract.methods.userToParticipation(userAddress).call();
+    const participation = await contract.methods.getParticipation(userAddress).call();
 
     /**
      p.amountBought,
@@ -253,11 +254,11 @@ app.post('/get-participation', async (request, response) => {
      * @type {{}}
      */
     const result = {
-        'amountBought': Web3.utils.fromWei(participation.amountBought, 'ether'),
-        'amountAVAXPaid': Web3.utils.fromWei(participation.amountAVAXPaid, 'ether'),
-        'timeParticipated': participation.timeParticipated,
-        'roundId': participation.roundId,
-        'isWithdrawn': participation.isPortionWithdrawn
+        'amountBought': Web3.utils.fromWei(participation['0'], 'ether'),
+        'amountAVAXPaid': Web3.utils.fromWei(participation['1'], 'ether'),
+        'timeParticipated': participation['2'],
+        'roundId': participation['3'],
+        'isWithdrawn': [false,false,false,false,false,false,false]//participation['4']
     };
 
     return response.json(result);
