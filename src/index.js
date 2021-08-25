@@ -244,7 +244,7 @@ app.post('/get-participation', async (request, response) => {
 
     // const participation = await contract.methods.userToParticipation(userAddress).call();
     const participation = await contract.methods.getParticipation(userAddress).call();
-    
+
     /**
      p.amountBought,
      p.amountAVAXPaid,
