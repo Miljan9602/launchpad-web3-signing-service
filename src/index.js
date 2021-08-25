@@ -244,7 +244,7 @@ app.post('/get-participation', async (request, response) => {
 
     // const participation = await contract.methods.userToParticipation(userAddress).call();
     const participation = await contract.methods.getParticipation(userAddress).call();
-
+    
     /**
      p.amountBought,
      p.amountAVAXPaid,
@@ -258,7 +258,7 @@ app.post('/get-participation', async (request, response) => {
         'amountAVAXPaid': Web3.utils.fromWei(participation['1'], 'ether'),
         'timeParticipated': participation['2'],
         'roundId': participation['3'],
-        'isWithdrawn': [false,false,false,false,false,false,false]//participation['4']
+        'isWithdrawn': participation['4']
     };
 
     return response.json(result);
