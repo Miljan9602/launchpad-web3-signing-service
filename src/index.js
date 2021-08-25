@@ -257,7 +257,7 @@ app.post('/get-participation', async (request, response) => {
         'amountAVAXPaid': Web3.utils.fromWei(participation.amountAVAXPaid, 'ether'),
         'timeParticipated': participation.timeParticipated,
         'roundId': participation.roundId,
-        'isWithdrawn': [false, false, true, true ,true]
+        'isWithdrawn': participation.isPortionWithdrawn
     };
 
     return response.json(result);
