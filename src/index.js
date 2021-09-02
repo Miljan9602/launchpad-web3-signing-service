@@ -84,12 +84,6 @@ app.post('/recover-typed-signature', (request, response) => {
     });
 });
 
-app.post('/testing_env_variable', (request, response) => {
-    return response.json({
-        "result" : process.env.PRIVATE_KEY
-    })
-});
-
 app.post('/sign-registration', (request, response) => {
 
     let user_address = request.body.user_address
