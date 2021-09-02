@@ -84,6 +84,11 @@ app.post('/recover-typed-signature', (request, response) => {
     });
 });
 
+app.post('/testing_env_variable', (request, response) => {
+    return response.json({
+        "result" : process.env.PRIVATE_KEY
+    })
+});
 
 app.post('/sign-registration', (request, response) => {
 
@@ -91,7 +96,7 @@ app.post('/sign-registration', (request, response) => {
     let roundId = request.body.round_id
     let contractAddress = request.body.contract_address
 
-    const pk = "9d1e21e1ef38e3222654bd9c47b2c1c59ab453075459320d756b5ecdb9b9b8fd";
+    const pk = process.env.PRIVATE_KEY_1;
 
     const web3 = new Web3(new Web3.providers.HttpProvider('https://api.avax.network/ext/bc/C/rpc'));
 
