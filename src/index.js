@@ -114,7 +114,7 @@ app.post('/sign-participation', (request, response) => {
     let amountXavaToBurn = request.body.amount_xava_to_burn;
 
 
-    const pk = "9d1e21e1ef38e3222654bd9c47b2c1c59ab453075459320d756b5ecdb9b9b8fd";
+    const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider('https://api.avax.network/ext/bc/C/rpc'));
 
     let hash = web3.utils.soliditySha3({t:"address", v: userAddress}, {t: "uint256", v: amountWei},{t: "uint256", v: amountXavaToBurn}, {t: "uint256", v: roundId}, {t: "address", v: contractAddress});
