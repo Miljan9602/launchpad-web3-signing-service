@@ -66,13 +66,13 @@ app.post('/recover-typed-signature', (request, response) => {
     const data = request.body.data
     const signature = request.body.signature
     let verificationStatus = false
-
+    
     const recovered = ethSig.recoverTypedSignature_v4({
-        data: JSON.parse(data),
+        data: data,
         sig: signature,
     });
 
-    if (ethUtil.toChecksumAddress(recovered) === ethUtil.toChecksumAddress(address)) {
+    if (recovered.toLowerCase() === address.toString().toLowerCase()) {
         verificationStatus = true;
     } else {
         return false;
@@ -84,30 +84,6 @@ app.post('/recover-typed-signature', (request, response) => {
         "verification_status": verificationStatus
     });
 });
-
-// app.post('/recover-typed-signature', (request, response) => {
-//
-//     const address = request.body.address
-//     const data = request.body.data
-//     const signature = request.body.signature
-//
-//     const recovered = ethSig.recoverTypedSignature({
-//         data: [data],
-//         sig: signature.toString(),
-//     });
-//
-//     let verificationStatus = false;
-//
-//     if (recovered.toLowerCase() === address.toLowerCase()) {
-//         verificationStatus = true;
-//     }
-//
-//     return response.json({
-//         "message_signer" : recovered.toLowerCase(),
-//         "expected_signer" : address.toLowerCase(),
-//         "verification_status": verificationStatus
-//     });
-// });
 
 app.post('/sign-registration', (request, response) => {
 
