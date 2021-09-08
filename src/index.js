@@ -60,6 +60,31 @@ app.post('/is-user-staking', async (request, response) => {
     });
 });
 
+app.post('/recover-typed-signature2', (request, response) => {
+
+    const address = request.body.address
+    const data = request.body.data
+    const signature = request.body.signature
+    let verificationStatus = false
+
+    const recovered = ethSig.recoverTypedSignature_v4({
+        data: JSON.parse(data),
+        sig: signature,
+    });
+
+    if (ethUtil.toChecksumAddress(recovered) === ethUtil.toChecksumAddress(address)) {
+        verificationStatus = true;
+    } else {
+        return false;
+    }
+
+    return response.json({
+        "message_signer" : recovered.toLowerCase(),
+        "expected_signer" : address.toLowerCase(),
+        "verification_status": verificationStatus
+    });
+});
+
 app.post('/recover-typed-signature', (request, response) => {
 
     const address = request.body.address
