@@ -60,7 +60,7 @@ app.post('/is-user-staking', async (request, response) => {
     });
 });
 
-app.post('/recover-typed-signature2', (request, response) => {
+app.post('/recover-typed-signature', (request, response) => {
 
     const address = request.body.address
     const data = request.body.data
@@ -85,29 +85,29 @@ app.post('/recover-typed-signature2', (request, response) => {
     });
 });
 
-app.post('/recover-typed-signature', (request, response) => {
-
-    const address = request.body.address
-    const data = request.body.data
-    const signature = request.body.signature
-
-    const recovered = ethSig.recoverTypedSignature({
-        data: [data],
-        sig: signature.toString(),
-    });
-
-    let verificationStatus = false;
-
-    if (recovered.toLowerCase() === address.toLowerCase()) {
-        verificationStatus = true;
-    }
-
-    return response.json({
-        "message_signer" : recovered.toLowerCase(),
-        "expected_signer" : address.toLowerCase(),
-        "verification_status": verificationStatus
-    });
-});
+// app.post('/recover-typed-signature', (request, response) => {
+//
+//     const address = request.body.address
+//     const data = request.body.data
+//     const signature = request.body.signature
+//
+//     const recovered = ethSig.recoverTypedSignature({
+//         data: [data],
+//         sig: signature.toString(),
+//     });
+//
+//     let verificationStatus = false;
+//
+//     if (recovered.toLowerCase() === address.toLowerCase()) {
+//         verificationStatus = true;
+//     }
+//
+//     return response.json({
+//         "message_signer" : recovered.toLowerCase(),
+//         "expected_signer" : address.toLowerCase(),
+//         "verification_status": verificationStatus
+//     });
+// });
 
 app.post('/sign-registration', (request, response) => {
 
