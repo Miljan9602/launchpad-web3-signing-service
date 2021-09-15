@@ -10,7 +10,6 @@ const Contract = require('web3-eth-contract');
 const AVALAUNCH_URL = 'https://api.avax.network/ext/bc/C/rpc'
 const bs58 = require("bs58");
 
-
 Contract.setProvider(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
 const {
@@ -66,7 +65,7 @@ app.post('/recover-typed-signature', (request, response) => {
     const data = request.body.data
     const signature = request.body.signature
     let verificationStatus = false
-    
+
     const recovered = ethSig.recoverTypedSignature_v4({
         data: data,
         sig: signature,
@@ -342,6 +341,28 @@ app.post('/get-stake-during-registration', async (request, response) => {
         "staked_amount" : resp
     });
 })
+
+app.post('/testt', async (request, response) => {
+
+    console.log({
+        "test" : getContracts()
+    })
+
+    return response.json({
+        "staked_amount" : ''
+    });
+})
+
+function getContracts() {
+
+    console.log(process.env.STAGE)
+
+    if (process.env.STAGE === 'staging') {
+        return require("./contracts_staging").CONTRACTS
+    }
+
+    return require("./contracts").CONTRACTS
+}
 
 app.listen(process.env.PORT || 3000 , () => {
     console.log(`🚀  Running on the ${3000 || process.env.PORT} port.`);
