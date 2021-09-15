@@ -344,12 +344,11 @@ app.post('/get-stake-during-registration', async (request, response) => {
 
 app.post('/testt', async (request, response) => {
 
-    console.log({
-        "test" : getContracts()
-    })
 
     return response.json({
-        "staked_amount" : ''
+        "staked_amount" : '',
+        "env" : process.env.STAGE,
+        "contracts" : getContracts()
     });
 })
 
