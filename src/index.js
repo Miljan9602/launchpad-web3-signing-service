@@ -3,7 +3,7 @@ const app = express()
 app.use(express.json());
 const ethSig = require('eth-sig-util');
 const Web3 = require("web3");
-const contractMap = require("./contracts").CONTRACTS
+const contractMap = getContracts()
 
 // Import contract and add provider.
 const Contract = require('web3-eth-contract');
@@ -339,16 +339,6 @@ app.post('/get-stake-during-registration', async (request, response) => {
     }
     return response.json({
         "staked_amount" : resp
-    });
-})
-
-app.post('/testt', async (request, response) => {
-
-
-    return response.json({
-        "staked_amount" : '',
-        "env" : process.env.STAGE,
-        "contracts" : getContracts()
     });
 })
 
