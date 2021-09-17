@@ -343,7 +343,7 @@ app.post('/get-stake-during-registration', async (request, response) => {
 })
 
 function getContracts() {
-    
+
     if (process.env.STAGE === 'staging') {
         return require("./contracts_staging").CONTRACTS
     }
