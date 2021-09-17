@@ -342,6 +342,25 @@ app.post('/get-stake-during-registration', async (request, response) => {
     });
 })
 
+app.post('/address-to-round-registered-for', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const userAddress = request.body.user_address
+
+    // Pull out contract abi/address
+    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    // Get number of participants
+    const payload = await contract.methods.addressToRoundRegisteredFor(userAddress).call();
+
+    return response.json({
+        "round_registered_for" : payload
+    });
+})
+
 function getContracts() {
 
     if (process.env.STAGE === 'staging') {
