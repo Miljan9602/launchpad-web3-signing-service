@@ -23,7 +23,7 @@ app.post('/is-user-staking', async (request, response) => {
     // Take address from body.
     const userAddress = request.body.address
 
-    if (Web3.utils.isAddress(userAddress) === false) {
+    if (Web3.utils.isAddress(userAddress.toUpperCase()) === false) {
         return response.json({
             "is_user_staking" : false,
             "address" : userAddress,
@@ -347,6 +347,12 @@ app.post('/address-to-round-registered-for', async (request, response) => {
     // Take address from body.
     const saleContractAddress = request.body.contract_address
     const userAddress = request.body.user_address
+
+    if (Web3.utils.isAddress(userAddress.toUpperCase()) === false) {
+        return response.json({
+            "round_registered_for" : "0"
+        });
+    }
 
     // Pull out contract abi/address
     let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
