@@ -300,6 +300,24 @@ app.post('/get-number-of-participants', async (request, response) => {
     });
 })
 
+app.post('/get-number-of-registered', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+
+    // Pull out contract abi/address
+    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    // Get number of registered
+    const numberOfRegistered = await contract.methods.getNumberOfRegisteredUsers().call();
+
+    return response.json({
+        "number_of_registered" : numberOfRegistered.toString()
+    });
+})
+
 app.post('/get-number-of-registrants', async (request, response) => {
 
     // Take address from body.
