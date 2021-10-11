@@ -385,6 +385,24 @@ app.post('/address-to-round-registered-for', async (request, response) => {
     });
 })
 
+app.post('/airdrop/get-signature', async (request, response) => {
+
+    let private_key = process.env.PRIVATE_KEY_1;
+    let address = request.body.user_address
+    let amount = request.body.aamount
+
+    let web3 = new Web3(new Web3.providers.HttpProvider(rpc));
+    const messageHash = web3.utils.sha3(address);
+
+    // Signs the messageHash with a given account
+    const res = web3.eth.accounts.sign(messageHash, private_key);
+
+    return response.json({
+        "address": address,
+        "signature" : res.signature
+    });
+})
+
 function getContracts() {
 
     if (process.env.STAGE === 'staging') {
