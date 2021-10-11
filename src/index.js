@@ -392,10 +392,10 @@ app.post('/airdrop/get-signature', async (request, response) => {
     let amount = request.body.amount
 
     let web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
-    const messageHash = web3.utils.sha3(address);
+    let messageHash = web3.utils.sha3(address + amount);
 
     // Signs the messageHash with a given account
-    const res = web3.eth.accounts.sign(messageHash, private_key);
+    let res = web3.eth.accounts.sign(messageHash, private_key);
 
     return response.json({
         "address": address,
