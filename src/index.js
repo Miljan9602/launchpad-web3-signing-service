@@ -411,6 +411,26 @@ app.post('/airdrop/get-signature', async (request, response) => {
     });
 })
 
+app.post('/airdrop/is-claimed', async (request, response) => {
+
+    // Take address from body.
+    const airdropContractAddress = request.body.contract_address
+    const userAddress = request.body.user_address
+
+
+    // Pull out contract abi/address
+    let saleAbi = contractMap['AIRDROP']['abi']
+    // Init contract.
+    let contract = new Contract(saleAbi, airdropContractAddress);
+
+    // Get number of participants
+    const payload = await contract.methods.wasClaimed(userAddress).call();
+
+    return response.json({
+        "was_claimed" : payload
+    });
+})
+
 function getContracts() {
 
     if (process.env.STAGE === 'staging') {
