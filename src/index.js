@@ -7,7 +7,7 @@ const contractMap = getContracts()
 
 // Import contract and add provider.
 const Contract = require('web3-eth-contract');
-const AVALAUNCH_URL = 'https://api.avax.network/ext/bc/C/rpc'
+const AVALAUNCH_URL = getRpc()
 const bs58 = require("bs58");
 
 Contract.setProvider(new Web3.providers.HttpProvider(AVALAUNCH_URL));
@@ -171,7 +171,7 @@ app.post('/recover-address', async (request, response) => {
     let msg = request.body.message
     let sig = request.body.signature
 
-    const myNetworkID = 1; //default is 1, we want to override that for our local network
+    const myNetworkID = 1;
     const hrp = 'avax'
     const avalanche = new Avalanche(AVALAUNCH_URL, 443, "https", myNetworkID);
 
@@ -449,6 +449,14 @@ function getContracts() {
     }
 
     return require("./contracts").CONTRACTS
+}
+
+function getRpc() {
+    if (process.env.STAGE === 'staging') {
+        return 'https://api.avax-test.network/ext/bc/C/rpc'
+    }
+
+    return 'https://api.avax.network/ext/bc/C/rpc'
 }
 
 app.listen(process.env.PORT || 3000 , () => {
