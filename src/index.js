@@ -417,10 +417,8 @@ app.post('/airdrop/is-claimed', async (request, response) => {
     const airdropContractAddress = request.body.contract_address
     const userAddress = request.body.user_address
 
-
-    // Pull out contract abi/address
-    let saleAbi = contractMap['AIRDROP']['abi']
     // Init contract.
+    let saleAbi = contractMap['AIRDROP']['abi']
     let contract = new Contract(saleAbi, airdropContractAddress);
 
     // Get number of participants
