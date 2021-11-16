@@ -427,7 +427,7 @@ app.post('/airdrop/is-claimed', async (request, response) => {
     const payload = await contract.methods.wasClaimed(userAddress).call();
 
     return response.json({
-        "was_claimed" : payload
+        "claimed" : payload
     });
 })
 
