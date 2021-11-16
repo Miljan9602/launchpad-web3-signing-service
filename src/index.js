@@ -92,7 +92,7 @@ app.post('/sign-registration', (request, response) => {
 
     const pk = process.env.PRIVATE_KEY_1;
 
-    const web3 = new Web3(new Web3.providers.HttpProvider('https://api.avax.network/ext/bc/C/rpc'));
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
     const account = web3.eth.accounts.privateKeyToAccount(pk);
 
@@ -115,7 +115,7 @@ app.post('/sign-participation', (request, response) => {
 
 
     const pk = process.env.PRIVATE_KEY_1;
-    const web3 = new Web3(new Web3.providers.HttpProvider('https://api.avax.network/ext/bc/C/rpc'));
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
     let hash = web3.utils.soliditySha3({t:"address", v: userAddress}, {t: "uint256", v: amountWei},{t: "uint256", v: amountXavaToBurn}, {t: "uint256", v: roundId}, {t: "address", v: contractAddress});
 
@@ -428,6 +428,19 @@ app.post('/airdrop/is-claimed', async (request, response) => {
 
     return response.json({
         "was_claimed" : payload
+    });
+})
+
+app.post('/balance-of', async (request, response) => {
+
+    const userAddress = request.body.user_address
+
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+
+    let result = await web3.eth.getBalance(userAddress)
+
+    return response.json({
+        "result" : result
     });
 })
 
