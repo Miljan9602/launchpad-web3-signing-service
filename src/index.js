@@ -443,7 +443,7 @@ app.post('/balance-of', async (request, response) => {
 })
 
 function getContracts() {
-    
+
     if (process.env.STAGE === 'staging') {
         return require("./contracts_staging").CONTRACTS
     }
@@ -452,6 +452,8 @@ function getContracts() {
 }
 
 function getRpc() {
+
+    return 'https://api.avax.network/ext/bc/C/rpc'
 
     if (process.env.STAGE === 'staging') {
         return 'https://api.avax-test.network/ext/bc/C/rpc'
