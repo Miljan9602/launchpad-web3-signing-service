@@ -15,7 +15,7 @@ function getSaleAbi(version = null) {
         return contracts['AVALAUNCH_SALE']['abi']
     }
 
-    return contracts['AVALAUNCH_SALE']['versions'][version]
+    return contracts['AVALAUNCH_SALE']['versions'][version]["abi"]
 }
 
 function getRpc() {

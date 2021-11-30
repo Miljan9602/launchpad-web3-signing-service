@@ -132,10 +132,11 @@ app.post('/get-sale-information', async (request, response) => {
 
     // Take address from body.
     const saleContractAddress = request.body.contract_address
+    const abiVersion = request.header('X-ABI-VERSION')
 
     // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi()
-    
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
@@ -153,9 +154,10 @@ app.post('/get-unlock-time', async (request, response) => {
 
     // Take address from body.
     const saleContractAddress = request.body.contract_address
+    const abiVersion = request.header('X-ABI-VERSION')
 
     // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi()
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
 
 
     // TODO: fix this.
@@ -223,9 +225,10 @@ app.post('/is-user-registered', async (request, response) => {
     // Take address from body.
     const saleContractAddress = request.body.contract_address
     const userAddress = request.body.user_address
+    const abiVersion = request.header('X-ABI-VERSION')
 
     // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi()
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
 
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
@@ -243,9 +246,10 @@ app.post('/get-participation', async (request, response) => {
     // Take address from body.
     const saleContractAddress = request.body.contract_address
     const userAddress = request.body.user_address
+    const abiVersion = request.header('X-ABI-VERSION')
 
     // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi()
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
 
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
@@ -277,9 +281,10 @@ app.post('/is-participated', async (request, response) => {
     // Take address from body.
     const saleContractAddress = request.body.contract_address
     const userAddress = request.body.user_address
+    const abiVersion = request.header('X-ABI-VERSION')
 
     // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi()
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
 
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
@@ -295,9 +300,10 @@ app.post('/get-number-of-participants', async (request, response) => {
 
     // Take address from body.
     const saleContractAddress = request.body.contract_address
+    const abiVersion = request.header('X-ABI-VERSION')
 
     // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi()
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
@@ -313,9 +319,10 @@ app.post('/get-number-of-registered', async (request, response) => {
 
     // Take address from body.
     const saleContractAddress = request.body.contract_address
+    const abiVersion = request.header('X-ABI-VERSION')
 
     // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi()
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
@@ -331,9 +338,11 @@ app.post('/get-number-of-registrants', async (request, response) => {
 
     // Take address from body.
     const saleContractAddress = request.body.contract_address
+    const abiVersion = request.header('X-ABI-VERSION')
 
     // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi()
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
@@ -350,9 +359,11 @@ app.post('/get-stake-during-registration', async (request, response) => {
     // Take address from body.
     const saleContractAddress = request.body.contract_address
     const userAddress = request.body.user_address
+    const abiVersion = request.header('X-ABI-VERSION')
 
     // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi()
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
@@ -374,6 +385,7 @@ app.post('/address-to-round-registered-for', async (request, response) => {
     // Take address from body.
     const saleContractAddress = request.body.contract_address
     const userAddress = request.body.user_address
+    const abiVersion = request.header('X-ABI-VERSION')
 
     if (Web3.utils.isAddress(userAddress.toUpperCase()) === false) {
         return response.json({
@@ -382,7 +394,8 @@ app.post('/address-to-round-registered-for', async (request, response) => {
     }
 
     // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi()
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
