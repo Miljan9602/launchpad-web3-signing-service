@@ -135,11 +135,7 @@ app.post('/get-sale-information', async (request, response) => {
 
     // Pull out contract abi/address
     let saleAbi = contractGetters.getSaleAbi()
-
-    console.log({
-        "sale_abi" : saleAbi
-    })
-
+    
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
