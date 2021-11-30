@@ -3,11 +3,11 @@ const app = express()
 app.use(express.json());
 const ethSig = require('eth-sig-util');
 const Web3 = require("web3");
-const contractMap = getContracts()
+const contractGetters = require("./getters")
 
 // Import contract and add provider.
 const Contract = require('web3-eth-contract');
-const AVALAUNCH_URL = getRpc()
+const AVALAUNCH_URL = contractGetters.getRpc()
 const bs58 = require("bs58");
 
 Contract.setProvider(new Web3.providers.HttpProvider(AVALAUNCH_URL));
@@ -32,9 +32,11 @@ app.post('/is-user-staking', async (request, response) => {
         });
     }
 
+    let allocationStakingContract = contractGetters.getAllocationStakingContract()
+
     // Pull out contract abi/address
-    let allocationStakingAbi = contractMap['ALLOCATION_STAKING']['abi']
-    let allocationStakingAddress = contractMap['ALLOCATION_STAKING']['address']
+    let allocationStakingAbi = allocationStakingContract['abi']
+    let allocationStakingAddress = allocationStakingContract['address']
 
     // Init contract.
     let contract = new Contract(allocationStakingAbi, allocationStakingAddress);
@@ -132,7 +134,11 @@ app.post('/get-sale-information', async (request, response) => {
     const saleContractAddress = request.body.contract_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
+    let saleAbi = contractGetters.getSaleAbi()
+
+    console.log({
+        "sale_abi" : saleAbi
+    })
 
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
@@ -153,7 +159,7 @@ app.post('/get-unlock-time', async (request, response) => {
     const saleContractAddress = request.body.contract_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
+    let saleAbi = contractGetters.getSaleAbi()
 
 
     // TODO: fix this.
@@ -223,7 +229,7 @@ app.post('/is-user-registered', async (request, response) => {
     const userAddress = request.body.user_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
+    let saleAbi = contractGetters.getSaleAbi()
 
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
@@ -243,7 +249,7 @@ app.post('/get-participation', async (request, response) => {
     const userAddress = request.body.user_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
+    let saleAbi = contractGetters.getSaleAbi()
 
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
@@ -277,7 +283,7 @@ app.post('/is-participated', async (request, response) => {
     const userAddress = request.body.user_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
+    let saleAbi = contractGetters.getSaleAbi()
 
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
@@ -295,7 +301,7 @@ app.post('/get-number-of-participants', async (request, response) => {
     const saleContractAddress = request.body.contract_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
+    let saleAbi = contractGetters.getSaleAbi()
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
@@ -313,7 +319,7 @@ app.post('/get-number-of-registered', async (request, response) => {
     const saleContractAddress = request.body.contract_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
+    let saleAbi = contractGetters.getSaleAbi()
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
@@ -331,7 +337,7 @@ app.post('/get-number-of-registrants', async (request, response) => {
     const saleContractAddress = request.body.contract_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
+    let saleAbi = contractGetters.getSaleAbi()
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
@@ -350,7 +356,7 @@ app.post('/get-stake-during-registration', async (request, response) => {
     const userAddress = request.body.user_address
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
+    let saleAbi = contractGetters.getSaleAbi()
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
@@ -380,7 +386,7 @@ app.post('/address-to-round-registered-for', async (request, response) => {
     }
 
     // Pull out contract abi/address
-    let saleAbi = contractMap['AVALAUNCH_SALE']['abi']
+    let saleAbi = contractGetters.getSaleAbi()
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
@@ -425,7 +431,7 @@ app.post('/airdrop/is-claimed', async (request, response) => {
     const userAddress = request.body.user_address
 
     // Init contract.
-    let saleAbi = contractMap['AIRDROP']['abi']
+    let saleAbi = contractGetters.getAirdropAbi()
     let contract = new Contract(saleAbi, airdropContractAddress);
 
     // Get number of participants
@@ -449,23 +455,20 @@ app.post('/balance-of', async (request, response) => {
     });
 })
 
-function getContracts() {
+app.post('/checksum', async (request, response) => {
 
-    if (process.env.STAGE === 'staging') {
-        return require("./contracts_staging").CONTRACTS
+    const addresses = request.body.addresses
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+    var result = []
+
+    for (var i = 0; i < addresses.length; i++) {
+        result.push(web3.utils.toChecksumAddress(addresses[i]))
     }
 
-    return require("./contracts").CONTRACTS
-}
-
-function getRpc() {
-
-    if (process.env.STAGE === 'staging') {
-        return 'https://api.avax-test.network/ext/bc/C/rpc'
-    }
-
-    return 'https://api.avax.network/ext/bc/C/rpc'
-}
+    return response.json({
+        "result" : result
+    });
+})
 
 app.listen(process.env.PORT || 3000 , () => {
     console.log(`🚀  Running on the ${3000 || process.env.PORT} port.`);
