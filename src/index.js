@@ -10,6 +10,32 @@ const Contract = require('web3-eth-contract');
 const AVALAUNCH_URL = contractGetters.getRpc()
 const bs58 = require("bs58");
 
+// Middleware to cinfirm auth key.
+app.use(function (req, res, next) {
+
+    const bearerHeader = req.header('Authorization')
+    const authKey = process.env.AUTH_KEY
+
+    if (typeof bearerHeader === 'string' && bearerHeader.startsWith("Bearer ")) {
+
+        // Extract bearer token.
+        const bearerToken = bearerHeader.substring(7, bearerHeader.length);
+
+        if (bearerToken === authKey)
+            return next()
+    }
+
+    return res.status(401).json({
+        "status" : "fail",
+        "error" : {
+            "message" : "User not authorized to perform request.",
+            "code" : 401,
+            "type" : "unauthorized"
+        }
+    });
+})
+
+
 Contract.setProvider(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
 const {
