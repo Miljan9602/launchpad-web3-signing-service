@@ -10,7 +10,7 @@ const Contract = require('web3-eth-contract');
 const AVALAUNCH_URL = contractGetters.getRpc()
 const bs58 = require("bs58");
 
-// Middleware to cinfirm auth key.
+// Middleware to confirm auth key.
 app.use(function (req, res, next) {
 
     const bearerHeader = req.header('Authorization')
@@ -482,6 +482,26 @@ app.post('/balance-of', async (request, response) => {
         "result" : result
     });
 })
+
+app.post('/staking-pool-info', async (request, response) => {
+
+    let pid = request.body.pid
+    let allocationStakingContract = contractGetters.getAllocationStakingContract()
+
+    // Pull out contract abi/address
+    let allocationStakingAbi = allocationStakingContract['abi']
+    let allocationStakingAddress = allocationStakingContract['address']
+
+    // Init contract.
+    let contract = new Contract(allocationStakingAbi, allocationStakingAddress);
+
+    const poolInfo = await contract.methods.poolInfo(pid).call();
+
+    return response.json({
+        "pid" : pid,
+        "pool_info" : poolInfo
+    });
+});
 
 app.post('/checksum', async (request, response) => {
 
