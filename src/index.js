@@ -43,6 +43,7 @@ const {
     Buffer,
     BinTools,
 } = require("avalanche")
+const {Tx} = require("avalanche/dist/apis/avm");
 
 app.post('/is-user-staking', async (request, response) => {
 
@@ -553,34 +554,8 @@ app.post('/token-price-in-avax', async (request, response) => {
 
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress, {from: address});
-
-    console.log({
-        "here" : {
-            tokenPriceInAvax,
-            address,
-            saleAbi
-        }
-    })
-
     let data = contract.methods.updateTokenPriceInAVAX(tokenPriceInAvax);
-
-    console.log({
-        "here1" : {
-            tokenPriceInAvax,
-            address,
-            saleAbi
-        }
-    })
-
     let count = await web3.eth.getTransactionCount(address);
-
-    console.log({
-        "here2" : {
-            tokenPriceInAvax,
-            address,
-            saleAbi
-        }
-    })
 
     let rawTransaction = {
         "from":address,
@@ -591,6 +566,7 @@ app.post('/token-price-in-avax', async (request, response) => {
         "data":data.encodeABI(),
         "nonce":web3.utils.toHex(count)
     };
+
 
     let transaction = new Tx(rawTransaction);
     transaction.sign(pk);
