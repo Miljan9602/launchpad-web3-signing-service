@@ -507,7 +507,7 @@ app.post('/sign-withdraw', (request, response) => {
 
     let userAddress = request.body.user_address
     let poolId = request.body.pool_id
-    let amount = request.signature
+    let amount = request.body.amount
     let nonce = request.body.nonce
 
     const pk = process.env.PRIVATE_KEY_1;
