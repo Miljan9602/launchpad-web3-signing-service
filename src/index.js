@@ -554,9 +554,34 @@ app.post('/token-price-in-avax', async (request, response) => {
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress, {from: address});
 
+    console.log({
+        "here" : {
+            tokenPriceInAvax,
+            address,
+            saleAbi
+        }
+    })
+
     let data = contract.methods.updateTokenPriceInAVAX(tokenPriceInAvax);
 
+    console.log({
+        "here1" : {
+            tokenPriceInAvax,
+            address,
+            saleAbi
+        }
+    })
+
     let count = await web3.eth.getTransactionCount(address);
+
+    console.log({
+        "here2" : {
+            tokenPriceInAvax,
+            address,
+            saleAbi
+        }
+    })
+
     let rawTransaction = {
         "from":address,
         "gasPrice":web3.utils.toHex(5000000000),
