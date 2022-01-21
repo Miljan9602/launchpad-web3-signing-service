@@ -503,6 +503,25 @@ app.post('/staking-pool-info', async (request, response) => {
     });
 });
 
+app.post('/sign-withdraw', (request, response) => {
+
+    let userAddress = request.body.user_address
+    let poolId = request.body.pool_id
+    let amount = request.signature
+    let nonce = request.body.nonce
+
+    const pk = process.env.PRIVATE_KEY_1;
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+
+    let hash = web3.utils.soliditySha3({t:"address", v: userAddress}, {t: "uint256", v: poolId},{t: "uint256", v: amount},{t: "uint256", v: nonce});
+
+    let result = web3.eth.accounts.sign(hash, pk);
+
+    return response.json({
+        "result" : result.signature
+    })
+});
+
 app.post('/checksum', async (request, response) => {
 
     const addresses = request.body.addresses
@@ -517,6 +536,48 @@ app.post('/checksum', async (request, response) => {
         "result" : result
     });
 })
+
+app.post('/token-price-in-avax', async (request, response) => {
+
+    const tokenPriceInAvax = request.body.token_price_in_avax
+    const pk = process.env.PRIVATE_KEY_1;
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+    const address = web3.eth.accounts.privateKeyToAccount(pk).address
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const abiVersion = request.header('X-ABI-VERSION')
+
+    // Pull out contract abi/address
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress, {from: address});
+
+    let data = contract.methods.updateTokenPriceInAVAX(tokenPriceInAvax);
+
+    let count = await web3.eth.getTransactionCount(address);
+    let rawTransaction = {
+        "from":address,
+        "gasPrice":web3.utils.toHex(5000000000),
+        "gasLimit":web3.utils.toHex(290000),
+        "to":saleContractAddress,
+        "value":web3.utils.toHex(tokenPriceInAvax),
+        "data":data.encodeABI(),
+        "nonce":web3.utils.toHex(count)
+    };
+
+    let transaction = new Tx(rawTransaction);
+    transaction.sign(pk);
+
+    let result = await web3.eth.sendSignedTransaction('0x' + transaction.serialize().toString('hex'));
+
+    return response.json({
+        "result" : result
+    });
+})
+
+
 
 app.listen(process.env.PORT || 3000 , () => {
     console.log(`🚀  Running on the ${3000 || process.env.PORT} port.`);
