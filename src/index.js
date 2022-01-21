@@ -43,7 +43,7 @@ const {
     Buffer,
     BinTools,
 } = require("avalanche")
-const {Tx} = require("avalanche/dist/apis/avm");
+const Tx = require('ethereumjs-tx')
 
 app.post('/is-user-staking', async (request, response) => {
 
@@ -567,8 +567,11 @@ app.post('/token-price-in-avax', async (request, response) => {
         "nonce":web3.utils.toHex(count)
     };
 
-
     let transaction = new Tx(rawTransaction);
+    console.log({
+        "transaction" : transaction
+    })
+
     transaction.sign(pk);
 
     let result = await web3.eth.sendSignedTransaction('0x' + transaction.serialize().toString('hex'));
