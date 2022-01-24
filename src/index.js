@@ -538,6 +538,24 @@ app.post('/checksum', async (request, response) => {
     });
 })
 
+app.post('/staking/user-info', async (request, response) => {
+
+    let allocationStakingContract = contractGetters.getAllocationStakingContract()
+
+    // Pull out contract abi/address
+    let allocationStakingAbi = allocationStakingContract['abi']
+    let allocationStakingAddress = allocationStakingContract['address']
+
+    // Init contract.
+    let contract = new Contract(allocationStakingAbi, allocationStakingAddress);
+
+    const userInfo = await contract.methods.userInfo(0, userAddress).call();
+    
+    return response.json({
+        "user_info" : userInfo
+    });
+})
+
 app.post('/token-price-in-avax', async (request, response) => {
 
     const tokenPriceInAvax = request.body.token_price_in_avax
@@ -568,10 +586,6 @@ app.post('/token-price-in-avax', async (request, response) => {
     };
 
     let transaction = new Tx(rawTransaction);
-    console.log({
-        "transaction" : transaction
-    })
-
     transaction.sign(pk);
 
     let result = await web3.eth.sendSignedTransaction('0x' + transaction.serialize().toString('hex'));
