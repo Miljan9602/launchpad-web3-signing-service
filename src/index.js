@@ -45,7 +45,7 @@ const {
 } = require("avalanche")
 
 const Tx = require('ethereumjs-tx').Transaction
-import Common, { Chain, Hardfork } from '@ethereumjs/common'
+const {Chain} = require('ethereumjs-common')
 
 
 app.post('/is-user-staking', async (request, response) => {
@@ -581,8 +581,6 @@ app.post('/token-price-in-avax', async (request, response) => {
     let data = contract.methods.updateTokenPriceInAVAX(tokenPriceInAvax);
     let count = await web3.eth.getTransactionCount(address);
 
-    const common = new Common({ chain: Chain.Fuji })
-
     let rawTransaction = {
         "from":address,
         "gasPrice":web3.utils.toHex(5000000000),
@@ -593,7 +591,7 @@ app.post('/token-price-in-avax', async (request, response) => {
         "nonce":web3.utils.toHex(count)
     };
 
-    let transaction = new Tx(rawTransaction, {common});
+    let transaction = new Tx(rawTransaction, { chain: Chain.Fuji });
 
     transaction.sign(Buffer.from(pk, 'hex'));
 
