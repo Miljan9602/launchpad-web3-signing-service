@@ -43,7 +43,8 @@ const {
     Buffer,
     BinTools,
 } = require("avalanche")
-const Tx = require('ethereumjs-tx')
+
+const Tx = require('ethereumjs-tx').Transaction
 
 app.post('/is-user-staking', async (request, response) => {
 
