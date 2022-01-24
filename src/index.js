@@ -590,7 +590,8 @@ app.post('/token-price-in-avax', async (request, response) => {
     };
 
     let transaction = new Tx(rawTransaction);
-    transaction.sign(pk);
+
+    transaction.sign(Buffer.from(pk, 'hex'));
 
     let result = await web3.eth.sendSignedTransaction('0x' + transaction.serialize().toString('hex'));
 
