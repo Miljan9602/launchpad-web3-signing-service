@@ -45,8 +45,6 @@ const {
 } = require("avalanche")
 
 const Tx = require('ethereumjs-tx').Transaction
-const {Chain} = require('ethereumjs-common')
-
 
 app.post('/is-user-staking', async (request, response) => {
 
@@ -591,7 +589,7 @@ app.post('/token-price-in-avax', async (request, response) => {
         "nonce":web3.utils.toHex(count)
     };
 
-    let transaction = new Tx(rawTransaction, { chain: Chain.Fuji });
+    let transaction = new Tx(rawTransaction, { chain: 5 });
 
     transaction.sign(Buffer.from(pk, 'hex'));
 
