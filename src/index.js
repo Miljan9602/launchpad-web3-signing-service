@@ -540,7 +540,7 @@ app.post('/checksum', async (request, response) => {
 
 app.post('/staking/user-info', async (request, response) => {
 
-    let userAddress = request.body.address
+    let userAddress = request.body.user_address
     let allocationStakingContract = contractGetters.getAllocationStakingContract()
 
     // Pull out contract abi/address
@@ -553,7 +553,9 @@ app.post('/staking/user-info', async (request, response) => {
     const userInfo = await contract.methods.userInfo(0, userAddress).call();
 
     return response.json({
-        "user_info" : userInfo
+        "user_info" : {
+            "tokens_unlock_time" : userInfo.tokensUnlockTime
+        }
     });
 })
 
