@@ -593,7 +593,7 @@ app.post('/token-price-in-avax', async (request, response) => {
         "nonce":web3.utils.toHex(count)
     };
 
-    let transaction = new Tx(rawTransaction);
+    let transaction = new Tx(rawTransaction, {common});
 
     transaction.sign(Buffer.from(pk, 'hex'));
 
