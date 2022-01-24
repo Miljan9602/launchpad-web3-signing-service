@@ -589,7 +589,7 @@ app.post('/token-price-in-avax', async (request, response) => {
         "nonce":web3.utils.toHex(count)
     };
 
-    let transaction = new Tx(rawTransaction, { chain: Cha});
+    let transaction = new Tx(rawTransaction);
 
     transaction.sign(Buffer.from(pk, 'hex'));
 
@@ -599,8 +599,6 @@ app.post('/token-price-in-avax', async (request, response) => {
         "result" : result
     });
 })
-
-
 
 app.listen(process.env.PORT || 3000 , () => {
     console.log(`🚀  Running on the ${3000 || process.env.PORT} port.`);
