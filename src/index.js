@@ -583,8 +583,6 @@ app.post('/token-price-in-avax', async (request, response) => {
         "data": data.encodeABI()
     };
 
-    console.log(rawTransaction)
-
     let result = await account.signTransaction(rawTransaction).then(signed => {
         return web3.eth.sendSignedTransaction(signed.rawTransaction);
     });
