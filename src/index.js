@@ -44,8 +44,6 @@ const {
     BinTools,
 } = require("avalanche")
 
-const Tx = require('ethereumjs-tx').Transaction
-
 app.post('/is-user-staking', async (request, response) => {
 
     // Take address from body.
@@ -565,7 +563,7 @@ app.post('/token-price-in-avax', async (request, response) => {
     const tokenPriceInAvax = request.body.token_price_in_avax
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
-    const address = web3.eth.accounts.privateKeyToAccount(pk).address
+    const account = web3.eth.accounts.privateKeyToAccount(pk)
 
     // Take address from body.
     const saleContractAddress = request.body.contract_address
@@ -575,28 +573,22 @@ app.post('/token-price-in-avax', async (request, response) => {
     let saleAbi = contractGetters.getSaleAbi(abiVersion)
 
     // Init contract.
-    let contract = new Contract(saleAbi, saleContractAddress, {from: address});
+    let contract = new Contract(saleAbi, saleContractAddress);
     let data = contract.methods.updateTokenPriceInAVAX(tokenPriceInAvax);
-    let count = await web3.eth.getTransactionCount(address);
-
     let rawTransaction = {
-        "from":address,
-        "gasPrice":web3.utils.toHex(5000000000),
-        "gasLimit":web3.utils.toHex(290000),
+        "from":account.address,
         "to":saleContractAddress,
-        "value":web3.utils.toHex(tokenPriceInAvax),
-        "data":data.encodeABI(),
-        "nonce":web3.utils.toHex(count)
+        "gasPrice":web3.utils.toHex(25000000000),
+        "gasLimit":web3.utils.toHex(290000),
+        "data": data.encodeABI()
     };
-
-    let transaction = new Tx(rawTransaction);
-
-    transaction.sign(Buffer.from(pk, 'hex'));
-
-    let result = await web3.eth.sendSignedTransaction('0x' + transaction.serialize().toString('hex'));
-
+    let result = await account.signTransaction(rawTransaction).then(signed => {
+        return web3.eth.sendSignedTransaction(signed.rawTransaction);
+    });
     return response.json({
-        "result" : result
+        "tx_hash" : result.transactionHash,
+        "to" : result.to,
+        "status" : result.status
     });
 })
 
