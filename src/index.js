@@ -582,9 +582,13 @@ app.post('/token-price-in-avax', async (request, response) => {
         "gasLimit":web3.utils.toHex(290000),
         "data": data.encodeABI()
     };
+
+    console.log(rawTransaction)
+
     let result = await account.signTransaction(rawTransaction).then(signed => {
         return web3.eth.sendSignedTransaction(signed.rawTransaction);
     });
+
     return response.json({
         "tx_hash" : result.transactionHash,
         "to" : result.to,
