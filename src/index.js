@@ -44,7 +44,7 @@ const {
     BinTools,
 } = require("avalanche")
 
-app.post('/is-user-staking', async (request, response) => {
+app.post('/staking/is-user-staking', async (request, response) => {
 
     // Take address from body.
     const userAddress = request.body.address
@@ -87,7 +87,7 @@ app.post('/is-user-staking', async (request, response) => {
     });
 });
 
-app.post('/recover-typed-signature', (request, response) => {
+app.post('/utils/recover-typed-signature', (request, response) => {
 
     const address = request.body.address
     const data = request.body.data
@@ -112,7 +112,7 @@ app.post('/recover-typed-signature', (request, response) => {
     });
 });
 
-app.post('/sign-registration', (request, response) => {
+app.post('/sale/sign-registration', (request, response) => {
 
     let user_address = request.body.user_address
     let roundId = request.body.round_id
@@ -133,7 +133,7 @@ app.post('/sign-registration', (request, response) => {
     })
 });
 
-app.post('/sign-participation', (request, response) => {
+app.post('/sale/sign-participation', (request, response) => {
 
     let userAddress = request.body.user_address;
     let amountWei = request.body.amount_wei;
@@ -154,7 +154,7 @@ app.post('/sign-participation', (request, response) => {
     })
 });
 
-app.post('/get-sale-information', async (request, response) => {
+app.post('/sale/get-sale-information', async (request, response) => {
 
     // Take address from body.
     const saleContractAddress = request.body.contract_address
@@ -176,7 +176,7 @@ app.post('/get-sale-information', async (request, response) => {
     });
 })
 
-app.post('/get-unlock-time', async (request, response) => {
+app.post('/sale/get-unlock-time', async (request, response) => {
 
     // Take address from body.
     const saleContractAddress = request.body.contract_address
@@ -196,7 +196,7 @@ app.post('/get-unlock-time', async (request, response) => {
     });
 })
 
-app.post('/recover-address', async (request, response) => {
+app.post('/utils/recover-address', async (request, response) => {
 
     let msg = request.body.message
     let sig = request.body.signature
@@ -239,7 +239,7 @@ function digestMessage(msgStr) {
     return require("crypto").createHash('sha256').update(msgBuf).digest()
 }
 
-app.post('/is-user-registered', async (request, response) => {
+app.post('/sale/is-user-registered', async (request, response) => {
 
     // Take address from body.
     const saleContractAddress = request.body.contract_address
@@ -260,7 +260,7 @@ app.post('/is-user-registered', async (request, response) => {
     });
 })
 
-app.post('/get-participation', async (request, response) => {
+app.post('/sale/get-participation', async (request, response) => {
 
     // Take address from body.
     const saleContractAddress = request.body.contract_address
@@ -295,27 +295,7 @@ app.post('/get-participation', async (request, response) => {
     return response.json(result);
 })
 
-app.post('/is-participated', async (request, response) => {
-
-    // Take address from body.
-    const saleContractAddress = request.body.contract_address
-    const userAddress = request.body.user_address
-    const abiVersion = request.header('X-ABI-VERSION')
-
-    // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi(abiVersion)
-
-    // Init contract.
-    let contract = new Contract(saleAbi, saleContractAddress);
-
-    const participated = await contract.methods.isParticipated(userAddress).call();
-
-    return response.json({
-        "is_participated" : participated
-    });
-})
-
-app.post('/get-number-of-participants', async (request, response) => {
+app.post('/sale/get-number-of-participants', async (request, response) => {
 
     // Take address from body.
     const saleContractAddress = request.body.contract_address
@@ -334,7 +314,7 @@ app.post('/get-number-of-participants', async (request, response) => {
     });
 })
 
-app.post('/get-number-of-registered', async (request, response) => {
+app.post('/sale/get-number-of-registered', async (request, response) => {
 
     // Take address from body.
     const saleContractAddress = request.body.contract_address
@@ -353,53 +333,7 @@ app.post('/get-number-of-registered', async (request, response) => {
     });
 })
 
-app.post('/get-number-of-registrants', async (request, response) => {
-
-    // Take address from body.
-    const saleContractAddress = request.body.contract_address
-    const abiVersion = request.header('X-ABI-VERSION')
-
-    // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi(abiVersion)
-
-    // Init contract.
-    let contract = new Contract(saleAbi, saleContractAddress);
-
-    // Get number of participants
-    const payload = await contract.methods.registration().call();
-
-    return response.json({
-        "number_of_registrants" : payload.numberOfRegistrants.toString()
-    });
-})
-
-app.post('/get-stake-during-registration', async (request, response) => {
-
-    // Take address from body.
-    const saleContractAddress = request.body.contract_address
-    const userAddress = request.body.user_address
-    const abiVersion = request.header('X-ABI-VERSION')
-
-    // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi(abiVersion)
-
-    // Init contract.
-    let contract = new Contract(saleAbi, saleContractAddress);
-
-    // Get number of participants
-    const payload = await contract.methods.addressToStakeAtRegistration(userAddress).call();
-
-    let resp = 0;
-
-    if(payload.toString() !== '0') {
-        resp = Web3.utils.fromWei(payload, 'ether');
-    }
-    return response.json({
-        "staked_amount" : resp
-    });
-})
-
-app.post('/address-to-round-registered-for', async (request, response) => {
+app.post('/sale/address-to-round-registered-for', async (request, response) => {
 
     // Take address from body.
     const saleContractAddress = request.body.contract_address
@@ -483,7 +417,7 @@ app.post('/balance-of', async (request, response) => {
     });
 })
 
-app.post('/staking-pool-info', async (request, response) => {
+app.post('/staking/pool-info', async (request, response) => {
 
     let pid = request.body.pid
     let allocationStakingContract = contractGetters.getAllocationStakingContract()
@@ -503,7 +437,7 @@ app.post('/staking-pool-info', async (request, response) => {
     });
 });
 
-app.post('/sign-withdraw', (request, response) => {
+app.post('/utils/sign-withdraw', (request, response) => {
 
     let userAddress = request.body.user_address
     let poolId = request.body.pool_id
@@ -522,7 +456,7 @@ app.post('/sign-withdraw', (request, response) => {
     })
 });
 
-app.post('/checksum', async (request, response) => {
+app.post('/utils/checksum', async (request, response) => {
 
     const addresses = request.body.addresses
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
