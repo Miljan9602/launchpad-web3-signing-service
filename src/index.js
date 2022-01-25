@@ -558,7 +558,7 @@ app.post('/staking/user-info', async (request, response) => {
     });
 })
 
-app.post('/token-price-in-avax', async (request, response) => {
+app.post('/sale/token-price-in-avax', async (request, response) => {
 
     const tokenPriceInAvax = request.body.token_price_in_avax
     const pk = process.env.PRIVATE_KEY_1;
