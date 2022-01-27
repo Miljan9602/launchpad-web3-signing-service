@@ -492,6 +492,26 @@ app.post('/staking/user-info', async (request, response) => {
     });
 })
 
+app.post('/staking/is-nonce-used', async (request, response) => {
+
+    let nonce = request.body.nonce
+    let allocationStakingContract = contractGetters.getAllocationStakingContract()
+
+    // Pull out contract abi/address
+    let allocationStakingAbi = allocationStakingContract['abi']
+    let allocationStakingAddress = allocationStakingContract['address']
+
+    // Init contract.
+    let contract = new Contract(allocationStakingAbi, allocationStakingAddress);
+
+    const result = await contract.methods.isNonceUsed(nonce).call();
+
+    return response.json({
+        "nonce" : nonce,
+        "is_nonce_used" : result
+    });
+})
+
 app.post('/sale/token-price-in-avax', async (request, response) => {
 
     const tokenPriceInAvax = request.body.token_price_in_avax
