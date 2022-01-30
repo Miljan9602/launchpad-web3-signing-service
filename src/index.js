@@ -523,20 +523,12 @@ app.post('/sale/token-price-in-avax', async (request, response) => {
     const saleContractAddress = request.body.contract_address
     const abiVersion = request.header('X-ABI-VERSION')
 
-    console.log({"here" : "1"})
-
     // Pull out contract abi/address
     let saleAbi = contractGetters.getSaleAbi(abiVersion)
 
-    console.log({"here" : "2"})
-
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
-
-    console.log({"here" : "3"})
     let data = contract.methods.updateTokenPriceInAVAX(tokenPriceInAvax);
-
-    console.log({"here" : "4"})
     let rawTransaction = {
         "from":account.address,
         "to":saleContractAddress,
@@ -545,14 +537,14 @@ app.post('/sale/token-price-in-avax', async (request, response) => {
         "data": data.encodeABI()
     };
 
-    console.log({"here" : "5", "raw" : rawTransaction})
-
     let result = await account.signTransaction(rawTransaction).then(signed => {
-        console.log({"here" : "6"})
+
+        console.log({
+            "tx_hash" : signed.transactionHash
+        })
+
         return web3.eth.sendSignedTransaction(signed.rawTransaction);
     });
-
-    console.log({"here" : "7"})
 
     return response.json({
         "tx_hash" : result.transactionHash,
