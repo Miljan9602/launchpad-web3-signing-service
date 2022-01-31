@@ -106,7 +106,7 @@ app.post('/utils/recover-typed-signature', (request, response) => {
 
     console.log({
         "recovered" : recovered,
-        "recoverTypedSignature" : recoverTypedSignatureLegacy
+        "recoverTypedSignature" : recoverTypedSignature
     });
 
     if (recovered.toLowerCase() === address.toString().toLowerCase()) {
