@@ -94,10 +94,20 @@ app.post('/utils/recover-typed-signature', (request, response) => {
     const signature = request.body.signature
     let verificationStatus = false
 
+    console.log({
+        "address" : address,
+        "data" : data,
+        "signature" : signature
+    })
+
     const recovered = ethSig.recoverTypedSignature_v4({
         data: data,
         sig: signature,
     });
+
+    console.log({
+        "result" : recovered
+    })
 
     if (recovered.toLowerCase() === address.toString().toLowerCase()) {
         verificationStatus = true;
@@ -538,11 +548,6 @@ app.post('/sale/token-price-in-avax', async (request, response) => {
     };
 
     let result = await account.signTransaction(rawTransaction).then(signed => {
-
-        console.log({
-            "tx_hash" : signed.transactionHash
-        })
-
         return web3.eth.sendSignedTransaction(signed.rawTransaction);
     });
 
