@@ -94,7 +94,7 @@ app.post('/utils/recover-typed-signature', (request, response) => {
     const signature = request.body.signature
     let verificationStatus = false
 
-    const recovered = ethSig.recoverTypedSignature_v4({
+    const recovered = ethSig.recoverTypedSignature({
         data: data,
         sig: signature,
     });
