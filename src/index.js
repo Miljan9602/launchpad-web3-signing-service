@@ -93,44 +93,16 @@ app.post('/utils/recover-typed-signature', (request, response) => {
     const data = request.body.data
     const signature = request.body.signature
     let verificationStatus = false
-
-    console.log({
-        "address" : address,
-        "data" : data,
-        "signature" : signature
-    })
-
+    
     const recovered = ethSig.recoverTypedSignature_v4({
         data: data,
         sig: signature,
     });
 
-    console.log({
-        "recovered" : recovered,
-    })
-
-    console.log({
-        "recovered.toLowerCase()" : recovered.toLowerCase(),
-    })
-
-    console.log({
-        "address.toString()" : address.toString(),
-    })
-
-    console.log({
-        "address.toString().toLowerCase()" : address.toString().toLowerCase(),
-    })
-
-    console.log({
-        "recovered.toLowerCase() === address.toString().toLowerCase()" : recovered.toLowerCase() === address.toString().toLowerCase(),
-    })
-
-
-
     if (recovered.toLowerCase() === address.toString().toLowerCase()) {
         verificationStatus = true;
     } else {
-        return false;
+        verificationStatus = false;
     }
 
     return response.json({
