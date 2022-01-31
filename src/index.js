@@ -99,26 +99,14 @@ app.post('/utils/recover-typed-signature', (request, response) => {
         sig: signature,
     });
 
-    const recoverTypedSignatureLegacy = ethSig.recoverTypedSignatureLegacy({
-        data: data,
-        sig: signature,
-    });
-
     const recoverTypedSignature = ethSig.recoverTypedSignature({
-        data: data,
-        sig: signature,
-    });
-
-    const recoverTypedMessage = ethSig.recoverTypedMessage({
         data: data,
         sig: signature,
     });
 
     console.log({
         "recovered" : recovered,
-        "recoverTypedSignatureLegacy" : recoverTypedSignatureLegacy,
-        "recoverTypedSignature" : recoverTypedSignature,
-        "recoverTypedMessage" : recoverTypedMessage
+        "recoverTypedSignature" : recoverTypedSignatureLegacy
     });
 
     if (recovered.toLowerCase() === address.toString().toLowerCase()) {
