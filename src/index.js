@@ -94,9 +94,31 @@ app.post('/utils/recover-typed-signature', (request, response) => {
     const signature = request.body.signature
     let verificationStatus = false
 
-    const recovered = ethSig.recoverTypedSignature({
+    const recovered = ethSig.recoverTypedSignature_v4({
         data: data,
         sig: signature,
+    });
+
+    const recoverTypedSignatureLegacy = ethSig.recoverTypedSignatureLegacy({
+        data: data,
+        sig: signature,
+    });
+
+    const recoverTypedSignature = ethSig.recoverTypedSignature({
+        data: data,
+        sig: signature,
+    });
+
+    const recoverTypedMessage = ethSig.recoverTypedMessage({
+        data: data,
+        sig: signature,
+    });
+
+    console.log({
+        "recovered" : recovered,
+        "recoverTypedSignatureLegacy" : recoverTypedSignatureLegacy,
+        "recoverTypedSignature" : recoverTypedSignature,
+        "recoverTypedMessage" : recoverTypedMessage
     });
 
     if (recovered.toLowerCase() === address.toString().toLowerCase()) {
@@ -104,11 +126,6 @@ app.post('/utils/recover-typed-signature', (request, response) => {
     } else {
         verificationStatus = false;
     }
-
-    console.log({
-        "recovered_address" : recovered.toLowerCase(),
-        "address" : address.toString().toLowerCase()
-    })
 
     return response.json({
         "message_signer" : recovered.toLowerCase(),
