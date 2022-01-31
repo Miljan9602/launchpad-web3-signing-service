@@ -105,6 +105,11 @@ app.post('/utils/recover-typed-signature', (request, response) => {
         verificationStatus = false;
     }
 
+    console.log({
+        "recovered_address" : recovered.toLowerCase(),
+        "address" : address.toString().toLowerCase()
+    })
+
     return response.json({
         "message_signer" : recovered.toLowerCase(),
         "expected_signer" : address.toLowerCase(),
