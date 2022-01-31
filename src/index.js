@@ -106,8 +106,26 @@ app.post('/utils/recover-typed-signature', (request, response) => {
     });
 
     console.log({
-        "result" : recovered
+        "recovered" : recovered,
     })
+
+    console.log({
+        "recovered.toLowerCase()" : recovered.toLowerCase(),
+    })
+
+    console.log({
+        "address.toString()" : address.toString(),
+    })
+
+    console.log({
+        "address.toString().toLowerCase()" : address.toString().toLowerCase(),
+    })
+
+    console.log({
+        "recovered.toLowerCase() === address.toString().toLowerCase()" : recovered.toLowerCase() === address.toString().toLowerCase(),
+    })
+
+
 
     if (recovered.toLowerCase() === address.toString().toLowerCase()) {
         verificationStatus = true;
