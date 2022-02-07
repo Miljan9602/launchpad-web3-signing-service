@@ -314,6 +314,25 @@ app.post('/sale/get-number-of-participants', async (request, response) => {
     });
 })
 
+app.post('/sale/staking-round-id', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const abiVersion = request.header('X-ABI-VERSION')
+
+    // Pull out contract abi/address
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    // Get number of registered
+    const stakingRoundId = await contract.methods.stakingRoundId().call();
+
+    return response.json({
+        "staking_round_id" : stakingRoundId
+    })
+});
+
 app.post('/sale/get-number-of-registered', async (request, response) => {
 
     // Take address from body.
@@ -404,7 +423,7 @@ app.post('/airdrop/is-claimed', async (request, response) => {
     });
 })
 
-app.post('/balance-of', async (request, response) => {
+app.post('/utils/balance-of', async (request, response) => {
 
     const userAddress = request.body.user_address
 
