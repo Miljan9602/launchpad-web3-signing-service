@@ -31,6 +31,10 @@ function getAllocationStakingContract() {
     return getContracts()['ALLOCATION_STAKING']
 }
 
+function getErc20Abi() {
+    return getContracts()['ERC_20']['abi']
+}
+
 function getAirdropAbi() {
     return getContracts()['AIRDROP']['abi']
 }
@@ -39,5 +43,6 @@ module.exports = {
     getRpc,
     getSaleAbi,
     getAllocationStakingContract,
-    getAirdropAbi
+    getAirdropAbi,
+    getErc20Abi
 };

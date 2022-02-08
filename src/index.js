@@ -43,6 +43,7 @@ const {
     Buffer,
     BinTools,
 } = require("avalanche")
+const {getAllocationStakingContract, getErc20Abi} = require("./getters");
 
 app.post('/staking/is-user-staking', async (request, response) => {
 
@@ -117,6 +118,7 @@ app.post('/sale/sign-registration', (request, response) => {
     let user_address = request.body.user_address
     let roundId = request.body.round_id
     let contractAddress = request.body.contract_address
+    let timestamp = request.body.timestamp
 
     const pk = process.env.PRIVATE_KEY_1;
 
@@ -124,7 +126,7 @@ app.post('/sale/sign-registration', (request, response) => {
 
     const account = web3.eth.accounts.privateKeyToAccount(pk);
 
-    let hash = web3.utils.soliditySha3({t:"address", v: user_address}, {t: "uint256", v: roundId}, {t: "address", v: contractAddress});
+    let hash = web3.utils.soliditySha3({t:"address", v: user_address}, {t: "uint256", v: roundId}, {t: "address", v: contractAddress}, {t: "uint256", v: timestamp});
 
     let result = web3.eth.accounts.sign(hash, pk);
 
@@ -425,11 +427,12 @@ app.post('/airdrop/is-claimed', async (request, response) => {
 
 app.post('/utils/balance-of', async (request, response) => {
 
-    const userAddress = request.body.user_address
+    const walletAddress = request.body.wallet_address
+    const tokenAddress = request.body.token_address
 
-    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+    const contract = new Web3Client.eth.Contract(getErc20Abi(), tokenAddress);
 
-    let result = await web3.eth.getBalance(userAddress)
+    let result = await contract.methods.balanceOf(walletAddress).call();
 
     return response.json({
         "result" : result
