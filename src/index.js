@@ -425,7 +425,7 @@ app.post('/airdrop/is-claimed', async (request, response) => {
     });
 })
 
-app.post('/airdrop/total-tokens-withdrawn', async (request, response) => {
+app.post('/airdrop/info', async (request, response) => {
 
     // Take address from body.
     const airdropContractAddress = request.body.contract_address
@@ -435,10 +435,12 @@ app.post('/airdrop/total-tokens-withdrawn', async (request, response) => {
     let contract = new Contract(saleAbi, airdropContractAddress);
 
     // Get number of participants
-    const tokens = await contract.methods.totalTokensWithdrawn().call();
+    const totalTokensWithdrawn = await contract.methods.totalTokensWithdrawn().call();
+    const airdropToken = await contract.methods.airdropToken().call();
 
     return response.json({
-        "tokens" : tokens
+        "total_tokens_withdrawn" : totalTokensWithdrawn,
+        "airdrop_token" : airdropToken
     });
 })
 
