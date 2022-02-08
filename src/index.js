@@ -430,7 +430,7 @@ app.post('/utils/balance-of', async (request, response) => {
     const walletAddress = request.body.wallet_address
     const tokenAddress = request.body.token_address
 
-    const contract = new Web3Client.eth.Contract(getErc20Abi(), tokenAddress);
+    let contract = new Contract(getErc20Abi(), tokenAddress);
 
     let result = await contract.methods.balanceOf(walletAddress).call();
 
