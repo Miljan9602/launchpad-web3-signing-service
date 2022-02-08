@@ -458,6 +458,19 @@ app.post('/utils/balance-of', async (request, response) => {
     });
 })
 
+app.post('/utils/balance', async (request, response) => {
+
+    const userAddress = request.body.user_address
+
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+
+    let result = await web3.eth.getBalance(userAddress)
+
+    return response.json({
+        "result" : result
+    });
+})
+
 app.post('/staking/pool-info', async (request, response) => {
 
     let pid = request.body.pid
