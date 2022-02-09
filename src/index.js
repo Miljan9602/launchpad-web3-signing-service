@@ -126,7 +126,7 @@ app.post('/sale/sign-registration', (request, response) => {
 
     const account = web3.eth.accounts.privateKeyToAccount(pk);
 
-    let hash = web3.utils.soliditySha3({t:"address", v: user_address}, {t: "uint256", v: roundId}, {t: "address", v: contractAddress}, {t: "uint256", v: timestamp});
+    let hash = web3.utils.soliditySha3({t:"address", v: user_address}, {t: "uint256", v: roundId}, {t: "address", v: contractAddress});
 
     let result = web3.eth.accounts.sign(hash, pk);
 
