@@ -355,7 +355,7 @@ app.post('/sale/get-vesting-info', async (request, response) => {
     })
 });
 
-app.post('/sale/round_id_to_round', async (request, response) => {
+app.post('/sale/round-id-to-round', async (request, response) => {
 
     // Take address from body.
     const saleContractAddress = request.body.contract_address
@@ -371,8 +371,8 @@ app.post('/sale/round_id_to_round', async (request, response) => {
     const startTimeAndMaxParticipation = await contract.methods.roundIdToRound(roundId).call();
 
     return response.json({
-        "startTime" : startTimeAndMaxParticipation[0],
-        "maxParticipation": startTimeAndMaxParticipation[1]
+        "start_time" : startTimeAndMaxParticipation[0],
+        "max_participation": startTimeAndMaxParticipation[1]
     })
 });
 
