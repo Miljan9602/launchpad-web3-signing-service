@@ -335,6 +335,47 @@ app.post('/sale/staking-round-id', async (request, response) => {
     })
 });
 
+app.post('/sale/get-vesting-info', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const abiVersion = request.header('X-ABI-VERSION')
+
+    // Pull out contract abi/address
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    // Get vesting info
+    const vestingInfo = await contract.methods.getVestingInfo().call();
+
+    return response.json({
+        "portions_unlock_time" : vestingInfo[0],
+        "portions": vestingInfo[1]
+    })
+});
+
+app.post('/sale/round-id-to-round', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const roundId = request.body.round_id_to_round
+    const abiVersion = request.header('X-ABI-VERSION')
+
+    // Pull out contract abi/address
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    // Get start time and max participation
+    const startTimeAndMaxParticipation = await contract.methods.roundIdToRound(roundId).call();
+
+    return response.json({
+        "start_time" : startTimeAndMaxParticipation[0],
+        "max_participation": startTimeAndMaxParticipation[1]
+    })
+});
+
 app.post('/sale/get-number-of-registered', async (request, response) => {
 
     // Take address from body.
