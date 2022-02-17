@@ -209,13 +209,13 @@ app.post('/utils/recover-address', async (request, response) => {
 
     // Create Key Pair.
     let keypair = avalanche.XChain().keyChain().makeKey();
-    let signerPubk = null;
+    let signerPublicKey = null;
 
     try {
         let digest = digestMessage(msg)
         let message = Buffer.from(digest.toString('hex'), 'hex')
         let signature = bs58.decode(sig)
-        signerPubk = keypair.recover(message, signature);
+        signerPublicKey = keypair.recover(message, signature);
     } catch (error) {
 
         // TODO: Better handle this case.
@@ -224,7 +224,7 @@ app.post('/utils/recover-address', async (request, response) => {
         })
     }
 
-    let addressBuff = keypair.addressFromPublicKey(signerPubk)
+    let addressBuff = keypair.addressFromPublicKey(signerPublicKey)
     let address = BinTools.getInstance().addressToString(hrp, 'P', addressBuff)
 
     return response.json({
