@@ -291,7 +291,8 @@ app.post('/sale/get-participation', async (request, response) => {
         'amountAVAXPaid': Web3.utils.fromWei(participation['1'], 'ether'),
         'timeParticipated': participation['2'],
         'roundId': participation['3'],
-        'isWithdrawn': participation['4']
+        'isWithdrawn': participation['4'],
+        'isWithdrawnToDexalot': participation['5'] || null
     };
 
     return response.json(result);
