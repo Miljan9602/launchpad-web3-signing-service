@@ -278,10 +278,6 @@ app.post('/sale/get-participation', async (request, response) => {
     // const participation = await contract.methods.userToParticipation(userAddress).call();
     const participation = await contract.methods.getParticipation(userAddress).call();
 
-    console.log({
-        "participation" : participation
-    })
-
     /**
      p.amountBought,
      p.amountAVAXPaid,
@@ -296,7 +292,7 @@ app.post('/sale/get-participation', async (request, response) => {
         'timeParticipated': participation['2'],
         'roundId': participation['3'],
         'isWithdrawn': participation['4'],
-        'isWithdrawnToDexalot': participation['5'] || null,
+        'isWithdrawnToDexalot': participation['5'] || [],
     };
 
     return response.json(result);
