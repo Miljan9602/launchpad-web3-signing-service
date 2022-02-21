@@ -556,9 +556,9 @@ app.post('/utils/checksum', async (request, response) => {
 
     const addresses = request.body.addresses
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
-    var result = []
+    const result = [];
 
-    for (var i = 0; i < addresses.length; i++) {
+    for (let i = 0; i < addresses.length; i++) {
         result.push(web3.utils.toChecksumAddress(addresses[i]))
     }
 
@@ -632,10 +632,6 @@ app.post('/sale/token-price-in-avax', async (request, response) => {
         "gasLimit":web3.utils.toHex(290000),
         "data": data.encodeABI()
     };
-
-    console.log({
-        "From" : account.address
-    })
 
     let result = await account.signTransaction(rawTransaction).then(signed => {
         return web3.eth.sendSignedTransaction(signed.rawTransaction);
