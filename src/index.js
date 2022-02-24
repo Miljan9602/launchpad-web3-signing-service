@@ -13,26 +13,30 @@ const bs58 = require("bs58");
 // Middleware to confirm auth key.
 app.use(function (req, res, next) {
 
-    const bearerHeader = req.header('Authorization')
-    const authKey = process.env.AUTH_KEY
+    // const bearerHeader = req.header('Authorization')
+    // const authKey = process.env.AUTH_KEY
 
-    if (typeof bearerHeader === 'string' && bearerHeader.startsWith("Bearer ")) {
+    const bearerHeader = ' '
+    const authKey = ' '
 
-        // Extract bearer token.
-        const bearerToken = bearerHeader.substring(7, bearerHeader.length);
-
-        if (bearerToken === authKey)
-            return next()
-    }
-
-    return res.status(401).json({
-        "status" : "fail",
-        "error" : {
-            "message" : "User not authorized to perform request.",
-            "code" : 401,
-            "type" : "unauthorized"
-        }
-    });
+    // if (typeof bearerHeader === 'string' && bearerHeader.startsWith("Bearer ")) {
+    //
+    //     // Extract bearer token.
+    //     const bearerToken = bearerHeader.substring(7, bearerHeader.length);
+    //
+    //     if (bearerToken === authKey)
+    //         return next()
+    // }
+    //
+    // return res.status(401).json({
+    //     "status" : "fail",
+    //     "error" : {
+    //         "message" : "User not authorized to perform request.",
+    //         "code" : 401,
+    //         "type" : "unauthorized"
+    //     }
+    // });
+    return next()
 })
 
 
@@ -373,6 +377,70 @@ app.post('/sale/round-id-to-round', async (request, response) => {
     return response.json({
         "start_time" : startTimeAndMaxParticipation[0],
         "max_participation": startTimeAndMaxParticipation[1]
+    })
+});
+
+app.post('/sale/supports-dexalot-withdraw', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const abiVersion = request.header('X-ABI-VERSION')
+
+    // Pull out contract abi/address
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    const supportsDexalotWithdraw = await contract.methods.supportsDexalotWithdraw().call();
+
+    return response.json({
+        "supports_dexalot_withdraw" : supportsDexalotWithdraw
+    })
+});
+
+app.post('/sale/dexalot-unlock-time', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const abiVersion = request.header('X-ABI-VERSION')
+
+    // Pull out contract abi/address
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    const dexalotUnlockTime = await contract.methods.dexalotUnlockTime().call();
+
+    return response.json({
+        "dexalot_unlock_time" : dexalotUnlockTime
+    })
+});
+
+app.post('/sale/timeline', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const abiVersion = request.header('X-ABI-VERSION')
+
+    // Pull out contract abi/address
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    const stakingRoundId = await contract.methods.stakingRoundId().call();
+    const validatorRoundId = stakingRoundId-1;
+
+    const registrationTimeline = await contract.methods.registration().call();
+    const validatorRoundStart = await contract.methods.roundIdToRound(validatorRoundId).call();
+    const stakingRoundStart = await contract.methods.roundIdToRound(stakingRoundId).call();
+    const saleEndTime = await contract.methods.sale().call();
+
+    return response.json({
+        "registration_opens" : registrationTimeline['registrationTimeStarts'],
+        "registration_closes" : registrationTimeline['registrationTimeEnds'],
+        "validator_round" : validatorRoundStart['startTime'],
+        "seed_round" : stakingRoundStart['startTime'],
+        "sale_ends" : saleEndTime['saleEnd'],
     })
 });
 
