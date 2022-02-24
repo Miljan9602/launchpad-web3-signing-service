@@ -13,30 +13,26 @@ const bs58 = require("bs58");
 // Middleware to confirm auth key.
 app.use(function (req, res, next) {
 
-    // const bearerHeader = req.header('Authorization')
-    // const authKey = process.env.AUTH_KEY
+    const bearerHeader = req.header('Authorization')
+    const authKey = process.env.AUTH_KEY
 
-    const bearerHeader = ' '
-    const authKey = ' '
+    if (typeof bearerHeader === 'string' && bearerHeader.startsWith("Bearer ")) {
 
-    // if (typeof bearerHeader === 'string' && bearerHeader.startsWith("Bearer ")) {
-    //
-    //     // Extract bearer token.
-    //     const bearerToken = bearerHeader.substring(7, bearerHeader.length);
-    //
-    //     if (bearerToken === authKey)
-    //         return next()
-    // }
-    //
-    // return res.status(401).json({
-    //     "status" : "fail",
-    //     "error" : {
-    //         "message" : "User not authorized to perform request.",
-    //         "code" : 401,
-    //         "type" : "unauthorized"
-    //     }
-    // });
-    return next()
+        // Extract bearer token.
+        const bearerToken = bearerHeader.substring(7, bearerHeader.length);
+
+        if (bearerToken === authKey)
+            return next()
+    }
+
+    return res.status(401).json({
+        "status" : "fail",
+        "error" : {
+            "message" : "User not authorized to perform request.",
+            "code" : 401,
+            "type" : "unauthorized"
+        }
+    });
 })
 
 
