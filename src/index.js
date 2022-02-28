@@ -395,6 +395,25 @@ app.post('/sale/supports-dexalot-withdraw', async (request, response) => {
     })
 });
 
+app.post('/sale/is-participated', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const userAddress = request.body.user_address
+    const abiVersion = request.header('X-ABI-VERSION')
+
+    // Pull out contract abi/address
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    const result = await contract.methods.isParticipated(userAddress).call();
+
+    return response.json({
+        "is_participated" : result
+    })
+});
+
 app.post('/sale/dexalot-unlock-time', async (request, response) => {
 
     // Take address from body.
