@@ -583,6 +583,19 @@ app.post('/utils/balance-of', async (request, response) => {
     });
 })
 
+app.post('/utils/total-supply', async (request, response) => {
+
+    const tokenAddress = request.body.token_address
+
+    let contract = new Contract(getErc20Abi(), tokenAddress);
+
+    let result = await contract.methods.totalSupply().call();
+
+    return response.json({
+        "result" : result
+    });
+})
+
 app.post('/utils/balance', async (request, response) => {
 
     const userAddress = request.body.user_address
