@@ -1,6 +1,6 @@
 function getContracts() {
 
-    if (process.env.STAGE === 'staging') {
+    if (process.env.STAGE === 'staging' || process.env.STAGE === 'develop') {
         return require("./contracts_staging").CONTRACTS
     }
 
@@ -20,7 +20,7 @@ function getSaleAbi(version = null) {
 
 function getRpc() {
 
-    if (process.env.STAGE === 'staging') {
+    if (process.env.STAGE === 'staging' || process.env.STAGE === 'develop') {
         return 'https://api.avax-test.network/ext/bc/C/rpc'
     }
 
