@@ -198,6 +198,28 @@ app.post('/sale/get-unlock-time', async (request, response) => {
     });
 })
 
+app.post('/collateral/verify-user-permit-signature', async (request, response) => {
+
+    const contract_address = request.body.address
+    const address = request.body.address
+    const signature = request.body.signature
+
+    let collateralContract = contractGetters.getCollateralContract()
+
+    // Pull out contract abi/address
+    let collateralAbi = collateralContract['abi']
+    let collateralAddress = collateralContract['address']
+
+    // Init contract.
+    let contract = new Contract(collateralAbi, collateralAddress);
+
+    const result = await contract.methods.verifyUserPermitSignature(address, contract_address, signature).call();
+
+    return response.json({
+        "result": result
+    });
+})
+
 app.post('/collateral/auto-participate', async (request, response) => {
 
     // Take values from body.
