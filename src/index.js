@@ -200,7 +200,7 @@ app.post('/sale/get-unlock-time', async (request, response) => {
 
 app.post('/collateral/verify-user-permit-signature', async (request, response) => {
 
-    const contract_address = request.body.address
+    const contract_address = request.body.contract_address
     const address = request.body.address
     const signature = request.body.signature
 
