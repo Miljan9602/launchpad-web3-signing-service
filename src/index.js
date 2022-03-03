@@ -198,6 +198,49 @@ app.post('/sale/get-unlock-time', async (request, response) => {
     });
 })
 
+app.post('/collateral/auto-participate', async (request, response) => {
+
+    // Take values from body.
+    const saleContractAddress = request.body.contract_address
+    const signature = request.body.signature
+    const amountAVAX = request.body.amountAVAX
+    const amount = request.body.amount
+    const amountXavaToBurn = request.body.amountXavaToBurn
+    const roundId = request.body.roundId
+    const user = request.body.user
+    const participationFeeAVAX = request.body.participationFeeAVAX
+    const pk = process.env.PRIVATE_KEY_1;
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+    const account = web3.eth.accounts.privateKeyToAccount(pk)
+
+    let collateralContract = contractGetters.getCollateralContract()
+
+    // Pull out contract abi/address
+    let collateralAbi = collateralContract['abi']
+    let collateralAddress = collateralContract['address']
+
+    // Init contract.
+    let contract = new Contract(collateralAbi, collateralAddress);
+    let data = contract.methods.autoParticipate(saleContractAddress, signature, amountAVAX, amount, amountXavaToBurn, roundId, user, participationFeeAVAX);
+    let rawTransaction = {
+        "from":account.address,
+        "to":collateralAddress,
+        "gasPrice":web3.utils.toHex(25000000000),
+        "gasLimit":web3.utils.toHex(290000),
+        "data": data.encodeABI()
+    };
+
+    let result = await account.signTransaction(rawTransaction).then(signed => {
+        return web3.eth.sendSignedTransaction(signed.rawTransaction);
+    });
+
+    return response.json({
+        "tx_hash" : result.transactionHash,
+        "to" : result.to,
+        "status" : result.status
+    });
+})
+
 app.post('/utils/recover-address', async (request, response) => {
 
     let msg = request.body.message
