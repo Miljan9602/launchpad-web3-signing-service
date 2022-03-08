@@ -244,7 +244,7 @@ app.post('/collateral/auto-participate', async (request, response) => {
 
     // Init contract.
     let contract = new Contract(collateralAbi, collateralAddress);
-    let data = contract.methods.autoParticipate(saleContractAddress, signature, amountAVAX, amount, amountXavaToBurn, roundId, user, participationFeeAVAX);
+    let data = contract.methods.autoParticipate(saleContractAddress, amountAVAX, amount, amountXavaToBurn, roundId, user, participationFeeAVAX, signature);
     let rawTransaction = {
         "from":account.address,
         "to":collateralAddress,
