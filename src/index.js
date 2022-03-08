@@ -204,6 +204,7 @@ app.post('/collateral/verify-user-permit-signature', async (request, response) =
     const address = request.body.address
     const signature = request.body.signature
 
+
     let collateralContract = contractGetters.getCollateralContract()
 
     // Pull out contract abi/address
