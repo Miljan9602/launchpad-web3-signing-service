@@ -225,13 +225,14 @@ app.post('/collateral/auto-participate', async (request, response) => {
 
     // Take values from body.
     const saleContractAddress = request.body.contract_address
-    const signature = request.body.signature
-    const amountAVAX = request.body.amountAVAX
+    const amountAVAX = request.body.amount_avax
     const amount = request.body.amount
-    const amountXavaToBurn = request.body.amountXavaToBurn
-    const roundId = request.body.roundId
-    const user = request.body.user
-    const participationFeeAVAX = request.body.participationFeeAVAX
+    const amountXavaToBurn = request.body.amount_xava_to_burn
+    const roundId = request.body.round_id
+    const user = request.body.user_address
+    const participationFeeAVAX = request.body.participation_fee_avax
+    const signature = request.body.signature
+
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
     const account = web3.eth.accounts.privateKeyToAccount(pk)
@@ -241,6 +242,16 @@ app.post('/collateral/auto-participate', async (request, response) => {
     // Pull out contract abi/address
     let collateralAbi = collateralContract['abi']
     let collateralAddress = collateralContract['address']
+
+    console.log({
+        "abi" : collateralAbi,
+        "collateral_address" : collateralAddress
+    })
+
+    console.log({
+        "contract_call" : [saleContractAddress, amountAVAX, amount, amountXavaToBurn, roundId, user, participationFeeAVAX, signature]
+    })
+
 
     // Init contract.
     let contract = new Contract(collateralAbi, collateralAddress);
