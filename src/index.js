@@ -243,16 +243,6 @@ app.post('/collateral/auto-participate', async (request, response) => {
     let collateralAbi = collateralContract['abi']
     let collateralAddress = collateralContract['address']
 
-    console.log({
-        "abi" : collateralAbi,
-        "collateral_address" : collateralAddress
-    })
-
-    console.log({
-        "contract_call" : [saleContractAddress, amountAVAX, amount, amountXavaToBurn, roundId, user, participationFeeAVAX, signature]
-    })
-
-
     // Init contract.
     let contract = new Contract(collateralAbi, collateralAddress);
     let data = contract.methods.autoParticipate(saleContractAddress, amountAVAX, amount, amountXavaToBurn, roundId, user, participationFeeAVAX, signature);
