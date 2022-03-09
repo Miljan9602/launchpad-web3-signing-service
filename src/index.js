@@ -250,7 +250,7 @@ app.post('/collateral/auto-participate', async (request, response) => {
         "from":account.address,
         "to":collateralAddress,
         "gasPrice":web3.utils.toHex(29000000000),
-        "gasLimit":web3.utils.toHex(340000),
+        "gasLimit":web3.utils.toHex(650000),
         "data": data.encodeABI()
     };
 
