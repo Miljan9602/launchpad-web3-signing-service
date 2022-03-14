@@ -79,7 +79,6 @@ app.post('/staking/is-user-staking', async (request, response) => {
         })
     }
 
-
     return response.json({
         "is_user_staking" : amountStaking > 0,
         "address" : userAddress,
@@ -705,6 +704,13 @@ app.post('/utils/sign-withdraw', (request, response) => {
 
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+
+    console.log({
+        "userAddress" : userAddress,
+        "poolId" : poolId,
+        "amount" : amount,
+        "nonce" : nonce
+    })
 
     let hash = web3.utils.soliditySha3({t:"address", v: userAddress}, {t: "uint256", v: poolId},{t: "uint256", v: amount},{t: "uint256", v: nonce});
 
