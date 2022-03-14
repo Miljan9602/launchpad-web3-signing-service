@@ -705,13 +705,6 @@ app.post('/utils/sign-withdraw', (request, response) => {
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
-    console.log({
-        "userAddress" : userAddress,
-        "poolId" : poolId,
-        "amount" : amount,
-        "nonce" : nonce
-    })
-
     let hash = web3.utils.soliditySha3({t:"address", v: userAddress}, {t: "uint256", v: poolId},{t: "uint256", v: amount},{t: "uint256", v: nonce});
 
     let result = web3.eth.accounts.sign(hash, pk);
@@ -797,7 +790,7 @@ app.post('/sale/token-price-in-avax', async (request, response) => {
     let rawTransaction = {
         "from":account.address,
         "to":saleContractAddress,
-        "gasPrice":web3.utils.toHex(110000000000),
+        "gasPrice":web3.utils.toHex(140000000000),
         "gasLimit":web3.utils.toHex(290000),
         "data": data.encodeABI()
     };
