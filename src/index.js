@@ -43,7 +43,7 @@ const {
     Buffer,
     BinTools,
 } = require("avalanche")
-const {getAllocationStakingContract, getErc20Abi} = require("./getters");
+const {getErc20Abi} = require("./getters");
 
 app.post('/staking/is-user-staking', async (request, response) => {
 
@@ -92,24 +92,20 @@ app.post('/utils/recover-typed-signature', (request, response) => {
     const address = request.body.address
     const data = request.body.data
     const signature = request.body.signature
-    let verificationStatus = false
 
     const recovered = ethSig.recoverTypedSignature_v4({
         data: data,
         sig: signature,
     });
 
-    if (recovered.toLowerCase() === address.toString().toLowerCase()) {
-        verificationStatus = true;
-    } else {
-        verificationStatus = false;
-    }
+    let verificationStatus = recovered.toLowerCase() === address.toString().toLowerCase()
 
     return response.json({
         "message_signer" : recovered.toLowerCase(),
         "expected_signer" : address.toLowerCase(),
         "verification_status": verificationStatus
     });
+
 });
 
 app.post('/sale/sign-registration', (request, response) => {
@@ -194,29 +190,6 @@ app.post('/sale/get-unlock-time', async (request, response) => {
 
     return response.json({
         "tokens_unlock_time": sale.tokensUnlockTime
-    });
-})
-
-app.post('/collateral/verify-user-permit-signature', async (request, response) => {
-
-    const contract_address = request.body.contract_address
-    const address = request.body.address
-    const signature = request.body.signature
-
-
-    let collateralContract = contractGetters.getCollateralContract()
-
-    // Pull out contract abi/address
-    let collateralAbi = collateralContract['abi']
-    let collateralAddress = collateralContract['address']
-
-    // Init contract.
-    let contract = new Contract(collateralAbi, collateralAddress);
-
-    const result = await contract.methods.verifyUserPermitSignature(address, contract_address, signature).call();
-
-    return response.json({
-        "result": result
     });
 })
 
