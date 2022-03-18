@@ -779,6 +779,50 @@ app.post('/sale/token-price-in-avax', async (request, response) => {
     });
 })
 
+app.post('/sale/token-price-in-avax2', async (request, response) => {
+
+    const tokenPriceInAvax = request.body.token_price_in_avax
+    const pk = process.env.PRIVATE_KEY_1;
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+    const account = web3.eth.accounts.privateKeyToAccount(pk)
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const abiVersion = request.header('X-ABI-VERSION')
+
+    // Pull out contract abi/address
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+    let data = contract.methods.updateTokenPriceInAVAX(tokenPriceInAvax);
+    let rawTransaction = {
+        "from":account.address,
+        "to":saleContractAddress,
+        "gasPrice":web3.utils.toHex(140000000000),
+        "gasLimit":web3.utils.toHex(290000),
+        "data": data.encodeABI()
+    };
+    
+    const result = await waitForHash(rawTransaction)
+
+    return response.json({
+        "tx_hash" : result,
+        "status" : "ok"
+    });
+})
+
+function transactionHash(signedTransaction) {
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+
+    return new Promise((resolve, reject) => {
+        web3.eth.sendSignedTransaction(signedTx)
+            .once('transactionHash', (hash) => {
+                resolve(hash)
+            })
+    })
+}
+
 app.listen(process.env.PORT || 3000 , () => {
     console.log(`🚀  Running on the ${3000 || process.env.PORT} port.`);
 });
