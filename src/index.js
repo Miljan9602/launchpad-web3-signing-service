@@ -761,6 +761,25 @@ app.post('/sale/token-price-in-avax', async (request, response) => {
     });
 })
 
+app.post('/collateral/user-balance', async (request, response) => {
+
+    const user = request.body.user_address
+
+    let collateralContract = contractGetters.getCollateralContract()
+
+    // Pull out contract abi/address
+    let collateralAbi = collateralContract['abi']
+    let collateralAddress = collateralContract['address']
+
+    let contract = new Contract(collateralAbi, collateralAddress);
+
+    const result = await contract.methods.userBalance(user).call();
+
+    return response.json({
+        "result" : result,
+    });
+})
+
 app.post('/collateral/auto-participate', async (request, response) => {
 
     // Take values from body.
@@ -802,7 +821,6 @@ app.post('/collateral/auto-participate', async (request, response) => {
         "status" : "ok"
     });
 })
-
 
 function sendTransactionAndGetHash(signedTransaction) {
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
