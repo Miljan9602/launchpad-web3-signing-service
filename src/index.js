@@ -707,7 +707,9 @@ app.post('/transaction/status', async (request, response) => {
 
     const result = await web3.eth.getTransaction(tx_hash)
 
-    return response.json(result);
+    return response.json({
+        "tx" : result
+    });
 })
 
 app.post('/transaction/receipt', async (request, response) => {
@@ -718,7 +720,9 @@ app.post('/transaction/receipt', async (request, response) => {
 
     const result = await web3.eth.getTransactionReceipt(tx_hash)
 
-    return response.json(result);
+    return response.json({
+        "receipt" : result
+    });
 })
 
 app.post('/sale/token-price-in-avax', async (request, response) => {
