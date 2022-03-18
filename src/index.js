@@ -803,8 +803,8 @@ app.post('/sale/token-price-in-avax2', async (request, response) => {
         "gasLimit":web3.utils.toHex(290000),
         "data": data.encodeABI()
     };
-    
-    const result = await waitForHash(rawTransaction)
+
+    const result = await getTransactionHash(rawTransaction)
 
     return response.json({
         "tx_hash" : result,
@@ -812,11 +812,11 @@ app.post('/sale/token-price-in-avax2', async (request, response) => {
     });
 })
 
-function transactionHash(signedTransaction) {
+function getTransactionHash(signedTransaction) {
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
     return new Promise((resolve, reject) => {
-        web3.eth.sendSignedTransaction(signedTx)
+        web3.eth.sendSignedTransaction(signedTransaction)
             .once('transactionHash', (hash) => {
                 resolve(hash)
             })
