@@ -707,6 +707,10 @@ app.post('/transaction/status', async (request, response) => {
 
     const result = await web3.eth.getTransaction(tx_hash)
 
+    console.log({
+        "result" : result
+    })
+
     return response.json({
         "result" : result
     });
