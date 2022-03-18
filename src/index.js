@@ -804,7 +804,8 @@ app.post('/sale/token-price-in-avax2', async (request, response) => {
         "data": data.encodeABI()
     };
 
-    const result = await getTransactionHash(rawTransaction)
+    const signedTransaction = (await account.signTransaction(rawTransaction))
+    const result = await getTransactionHash(signedTransaction.rawTransaction)
 
     return response.json({
         "tx_hash" : result,
@@ -814,6 +815,10 @@ app.post('/sale/token-price-in-avax2', async (request, response) => {
 
 function getTransactionHash(signedTransaction) {
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+    
+    console.log({
+        "signed_tx" : signedTransaction
+    })
 
     return new Promise((resolve, reject) => {
         web3.eth.sendSignedTransaction(signedTransaction)
