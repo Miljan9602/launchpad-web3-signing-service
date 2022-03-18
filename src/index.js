@@ -193,50 +193,6 @@ app.post('/sale/get-unlock-time', async (request, response) => {
     });
 })
 
-app.post('/collateral/auto-participate', async (request, response) => {
-
-    // Take values from body.
-    const saleContractAddress = request.body.contract_address
-    const amountAVAX = request.body.amount_avax
-    const amount = request.body.amount
-    const amountXavaToBurn = request.body.amount_xava_to_burn
-    const roundId = request.body.round_id
-    const user = request.body.user_address
-    const participationFeeAVAX = request.body.participation_fee_avax
-    const signature = request.body.signature
-
-    const pk = process.env.PRIVATE_KEY_1;
-    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
-    const account = web3.eth.accounts.privateKeyToAccount(pk)
-
-    let collateralContract = contractGetters.getCollateralContract()
-
-    // Pull out contract abi/address
-    let collateralAbi = collateralContract['abi']
-    let collateralAddress = collateralContract['address']
-
-    // Init contract.
-    let contract = new Contract(collateralAbi, collateralAddress);
-    let data = contract.methods.autoParticipate(saleContractAddress, amountAVAX, amount, amountXavaToBurn, roundId, user, participationFeeAVAX, signature);
-    let rawTransaction = {
-        "from":account.address,
-        "to":collateralAddress,
-        "gasPrice":web3.utils.toHex(29000000000),
-        "gasLimit":web3.utils.toHex(650000),
-        "data": data.encodeABI()
-    };
-
-    let result = await account.signTransaction(rawTransaction).then(signed => {
-        return web3.eth.sendSignedTransaction(signed.rawTransaction);
-    });
-
-    return response.json({
-        "tx_hash" : result.transactionHash,
-        "to" : result.to,
-        "status" : result.status
-    });
-})
-
 app.post('/utils/recover-address', async (request, response) => {
 
     let msg = request.body.message
@@ -743,6 +699,32 @@ app.post('/staking/is-nonce-used', async (request, response) => {
     });
 })
 
+app.post('/transaction/status', async (request, response) => {
+
+    let tx_hash = request.body.tx_hash
+
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+
+    const result = await web3.eth.getTransaction(tx_hash)
+
+    return response.json({
+        "result" : result
+    });
+})
+
+app.post('/transaction/receipt', async (request, response) => {
+
+    let tx_hash = request.body.tx_hash
+
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+
+    const result = await web3.eth.getTransactionReceipt(tx_hash)
+
+    return response.json({
+        "result" : result
+    });
+})
+
 app.post('/sale/token-price-in-avax', async (request, response) => {
 
     const tokenPriceInAvax = request.body.token_price_in_avax
@@ -779,33 +761,41 @@ app.post('/sale/token-price-in-avax', async (request, response) => {
     });
 })
 
-app.post('/sale/token-price-in-avax2', async (request, response) => {
+app.post('/collateral/auto-participate', async (request, response) => {
 
-    const tokenPriceInAvax = request.body.token_price_in_avax
+    // Take values from body.
+    const saleContractAddress = request.body.contract_address
+    const amountAVAX = request.body.amount_avax
+    const amount = request.body.amount
+    const amountXavaToBurn = request.body.amount_xava_to_burn
+    const roundId = request.body.round_id
+    const user = request.body.user_address
+    const participationFeeAVAX = request.body.participation_fee_avax
+    const signature = request.body.signature
+
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
     const account = web3.eth.accounts.privateKeyToAccount(pk)
 
-    // Take address from body.
-    const saleContractAddress = request.body.contract_address
-    const abiVersion = request.header('X-ABI-VERSION')
+    let collateralContract = contractGetters.getCollateralContract()
 
     // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+    let collateralAbi = collateralContract['abi']
+    let collateralAddress = collateralContract['address']
 
     // Init contract.
-    let contract = new Contract(saleAbi, saleContractAddress);
-    let data = contract.methods.updateTokenPriceInAVAX(tokenPriceInAvax);
+    let contract = new Contract(collateralAbi, collateralAddress);
+    let data = contract.methods.autoParticipate(saleContractAddress, amountAVAX, amount, amountXavaToBurn, roundId, user, participationFeeAVAX, signature);
     let rawTransaction = {
         "from":account.address,
-        "to":saleContractAddress,
-        "gasPrice":web3.utils.toHex(140000000000),
-        "gasLimit":web3.utils.toHex(290000),
+        "to":collateralAddress,
+        "gasPrice":web3.utils.toHex(29000000000),
+        "gasLimit":web3.utils.toHex(650000),
         "data": data.encodeABI()
     };
 
     const signedTransaction = (await account.signTransaction(rawTransaction))
-    const result = await getTransactionHash(signedTransaction.rawTransaction)
+    const result = await sendTransactionAndGetHash(signedTransaction.rawTransaction)
 
     return response.json({
         "tx_hash" : result,
@@ -813,12 +803,9 @@ app.post('/sale/token-price-in-avax2', async (request, response) => {
     });
 })
 
-function getTransactionHash(signedTransaction) {
+
+function sendTransactionAndGetHash(signedTransaction) {
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
-    
-    console.log({
-        "signed_tx" : signedTransaction
-    })
 
     return new Promise((resolve, reject) => {
         web3.eth.sendSignedTransaction(signedTransaction)
