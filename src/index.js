@@ -745,7 +745,7 @@ app.post('/sale/token-price-in-avax', async (request, response) => {
     let rawTransaction = {
         "from":account.address,
         "to":saleContractAddress,
-        "gasPrice":web3.utils.toHex(190000000000),
+        "gasPrice":web3.utils.toHex(290000000000),
         "gasLimit":web3.utils.toHex(290000),
         "data": data.encodeABI()
     };
