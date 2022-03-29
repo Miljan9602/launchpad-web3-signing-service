@@ -440,10 +440,12 @@ app.post('/sale/timeline', async (request, response) => {
 
     const stakingRoundId = await contract.methods.stakingRoundId().call();
     const validatorRoundId = stakingRoundId-1;
+    const boosterRoundId = stakingRoundId+1;
 
     const registrationTimeline = await contract.methods.registration().call();
     const validatorRoundStart = await contract.methods.roundIdToRound(validatorRoundId).call();
     const stakingRoundStart = await contract.methods.roundIdToRound(stakingRoundId).call();
+    const boosterRoundStart = await contract.methods.roundIdToRound(boosterRoundId).call();
     const saleEndTime = await contract.methods.sale().call();
 
     return response.json({
@@ -451,6 +453,7 @@ app.post('/sale/timeline', async (request, response) => {
         "registration_closes" : registrationTimeline['registrationTimeEnds'],
         "validator_round" : validatorRoundStart['startTime'],
         "seed_round" : stakingRoundStart['startTime'],
+        "booster_round" : boosterRoundStart['startTime'],
         "sale_ends" : saleEndTime['saleEnd'],
     })
 });
