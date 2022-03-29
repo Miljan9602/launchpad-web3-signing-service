@@ -44,6 +44,7 @@ const {
     BinTools,
 } = require("avalanche")
 const {getErc20Abi} = require("./getters");
+const {parse} = require("dotenv");
 
 app.post('/staking/is-user-staking', async (request, response) => {
 
@@ -443,9 +444,9 @@ app.post('/sale/round-ids', async (request, response) => {
     const boosterRoundId = stakingRoundId+1;
 
     return response.json({
-        "staking" : stakingRoundId,
-        "validator" : validatorRoundId,
-        "booster" : boosterRoundId
+        "staking" : parseInt(stakingRoundId),
+        "validator" : parseInt(validatorRoundId),
+        "booster" : parseInt(boosterRoundId)
     })
 });
 
