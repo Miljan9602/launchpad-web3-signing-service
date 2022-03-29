@@ -165,17 +165,13 @@ app.post('/sale/get-sale-information', async (request, response) => {
     let contract = new Contract(saleAbi, saleContractAddress);
 
     const sale = await contract.methods.sale().call();
-
-    console.log({
-        "sale" : sale
-    })
-
+    
     return response.json({
         tokenPriceInAVAX: Web3.utils.fromWei(sale.tokenPriceInAVAX, 'ether'),
         amountOfTokensToSell: Web3.utils.fromWei(sale.amountOfTokensToSell, 'ether'),
         totalTokensSold: Web3.utils.fromWei(sale.totalTokensSold, 'ether'),
         totalAVAXRaised: Web3.utils.fromWei(sale.totalAVAXRaised, 'ether'),
-        tokenPriceInUSD: sale.tokenPriceInUSD
+        tokenPriceInUSD: Web3.utils.fromWei(sale.tokenPriceInUSD, 'ether')
     });
 })
 
