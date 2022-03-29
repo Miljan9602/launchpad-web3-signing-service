@@ -745,7 +745,7 @@ app.post('/sale/token-price-in-avax', async (request, response) => {
     let rawTransaction = {
         "from":account.address,
         "to":saleContractAddress,
-        "gasPrice":web3.utils.toHex(140000000000),
+        "gasPrice":web3.utils.toHex(290000000000),
         "gasLimit":web3.utils.toHex(290000),
         "data": data.encodeABI()
     };
@@ -805,6 +805,48 @@ app.post('/collateral/auto-participate', async (request, response) => {
     // Init contract.
     let contract = new Contract(collateralAbi, collateralAddress);
     let data = contract.methods.autoParticipate(saleContractAddress, amountAVAX, amount, amountXavaToBurn, roundId, user, participationFeeAVAX, signature);
+    let rawTransaction = {
+        "from":account.address,
+        "to":collateralAddress,
+        "gasPrice":web3.utils.toHex(29000000000),
+        "gasLimit":web3.utils.toHex(650000),
+        "data": data.encodeABI()
+    };
+
+    const signedTransaction = (await account.signTransaction(rawTransaction))
+    const result = await sendTransactionAndGetHash(signedTransaction.rawTransaction)
+
+    return response.json({
+        "tx_hash" : result,
+        "status" : "ok"
+    });
+})
+
+app.post('/collateral/boost-participation', async (request, response) => {
+
+    // Take values from body.
+    const saleContractAddress = request.body.contract_address
+    const amountAVAX = request.body.amount_avax
+    const amount = request.body.amount
+    const amountXavaToBurn = request.body.amount_xava_to_burn
+    const roundId = request.body.round_id
+    const user = request.body.user_address
+    const participationFeeAVAX = request.body.participation_fee_avax
+    const signature = request.body.signature
+
+    const pk = process.env.PRIVATE_KEY_1;
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+    const account = web3.eth.accounts.privateKeyToAccount(pk)
+
+    let collateralContract = contractGetters.getCollateralContract()
+
+    // Pull out contract abi/address
+    let collateralAbi = collateralContract['abi']
+    let collateralAddress = collateralContract['address']
+
+    // Init contract.
+    let contract = new Contract(collateralAbi, collateralAddress);
+    let data = contract.methods.boostParticipation(saleContractAddress, amountAVAX, amount, amountXavaToBurn, roundId, user, participationFeeAVAX, signature);
     let rawTransaction = {
         "from":account.address,
         "to":collateralAddress,
