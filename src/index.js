@@ -175,7 +175,7 @@ app.post('/sale/get-sale-information', async (request, response) => {
         amountOfTokensToSell: Web3.utils.fromWei(sale.amountOfTokensToSell, 'ether'),
         totalTokensSold: Web3.utils.fromWei(sale.totalTokensSold, 'ether'),
         totalAVAXRaised: Web3.utils.fromWei(sale.totalAVAXRaised, 'ether'),
-        tokenPriceInUSD: Web3.utils.fromWei(sale.tokenPriceInUSD, 6),
+        tokenPriceInUSD: sale.tokenPriceInUSD
     });
 })
 
