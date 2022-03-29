@@ -165,7 +165,7 @@ app.post('/sale/get-sale-information', async (request, response) => {
     let contract = new Contract(saleAbi, saleContractAddress);
 
     const sale = await contract.methods.sale().call();
-    
+
     return response.json({
         tokenPriceInAVAX: Web3.utils.fromWei(sale.tokenPriceInAVAX, 'ether'),
         amountOfTokensToSell: Web3.utils.fromWei(sale.amountOfTokensToSell, 'ether'),
@@ -462,7 +462,7 @@ app.post('/sale/timeline', async (request, response) => {
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
-    const stakingRoundId = await contract.methods.stakingRoundId().call();
+    const stakingRoundId = parseInt(await contract.methods.stakingRoundId().call());
     const validatorRoundId = stakingRoundId-1;
     const boosterRoundId = stakingRoundId+1;
 
