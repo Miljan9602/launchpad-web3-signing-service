@@ -427,6 +427,28 @@ app.post('/sale/dexalot-unlock-time', async (request, response) => {
     })
 });
 
+app.post('/sale/round-ids', async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const abiVersion = request.header('X-ABI-VERSION')
+
+    // Pull out contract abi/address
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    const stakingRoundId = await contract.methods.stakingRoundId().call();
+    const validatorRoundId = stakingRoundId-1;
+    const boosterRoundId = stakingRoundId+1;
+
+    return response.json({
+        "staking" : stakingRoundId,
+        "validator" : validatorRoundId,
+        "booster" : boosterRoundId
+    })
+});
+
 app.post('/sale/timeline', async (request, response) => {
 
     // Take address from body.
