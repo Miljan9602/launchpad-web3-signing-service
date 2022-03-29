@@ -439,14 +439,14 @@ app.post('/sale/round-ids', async (request, response) => {
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
-    const stakingRoundId = await contract.methods.stakingRoundId().call();
-    const validatorRoundId = stakingRoundId-1;
-    const boosterRoundId = stakingRoundId+1;
+    const stakingRoundId = parseInt(await contract.methods.stakingRoundId().call());
+    const validatorRoundId = stakingRoundId - 1;
+    const boosterRoundId = stakingRoundId + 1;
 
     return response.json({
-        "staking" : parseInt(stakingRoundId),
-        "validator" : parseInt(validatorRoundId),
-        "booster" : parseInt(boosterRoundId)
+        "staking" : stakingRoundId,
+        "validator" : validatorRoundId,
+        "booster" : boosterRoundId
     })
 });
 
