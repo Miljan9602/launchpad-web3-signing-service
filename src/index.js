@@ -831,7 +831,7 @@ app.post('/collateral/boost-participation', async (request, response) => {
     const amountXavaToBurn = request.body.amount_xava_to_burn
     const roundId = request.body.round_id
     const user = request.body.user_address
-    const participationFeeAVAX = request.body.participation_fee_avax
+    const boostFeeAVAX = request.body.boost_fee_avax
     const signature = request.body.signature
 
     const pk = process.env.PRIVATE_KEY_1;
@@ -846,7 +846,7 @@ app.post('/collateral/boost-participation', async (request, response) => {
 
     // Init contract.
     let contract = new Contract(collateralAbi, collateralAddress);
-    let data = contract.methods.boostParticipation(saleContractAddress, amountAVAX, amount, amountXavaToBurn, roundId, user, participationFeeAVAX, signature);
+    let data = contract.methods.boostParticipation(saleContractAddress, amountAVAX, amount, amountXavaToBurn, roundId, user, boostFeeAVAX, signature);
     let rawTransaction = {
         "from":account.address,
         "to":collateralAddress,
