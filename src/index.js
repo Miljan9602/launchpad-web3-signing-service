@@ -290,8 +290,8 @@ app.post('/sale/get-participation', async (request, response) => {
         'roundId': participation['3'],
         'isWithdrawn': participation['4'],
         'isWithdrawnToDexalot': participation['5'] || [],
-        'buyRemainderAmountBought' : participation['5'] || 0,
-        'buyRemainderFee' : participation['5'] || 0
+        'buyRemainderAmountBought' : participation['6'] || 0,
+        'buyRemainderFee' : participation['7'] || 0
     };
 
     return response.json(result);
