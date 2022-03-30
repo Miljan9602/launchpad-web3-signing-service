@@ -120,7 +120,7 @@ app.post('/sale/sign-registration', (request, response) => {
 
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
-    const account = web3.eth.accounts.privateKeyToAccount(pk);
+    // const account = web3.eth.accounts.privateKeyToAccount(pk);
 
     let hash = web3.utils.soliditySha3({t:"address", v: user_address}, {t: "uint256", v: roundId}, {t: "address", v: contractAddress});
 
@@ -847,6 +847,20 @@ app.post('/collateral/auto-participate', async (request, response) => {
 
     return response.json({
         "tx_hash" : result,
+        "status" : "ok"
+    });
+})
+
+app.post('/abi/sale', async (request, response) => {
+
+    // Take address from body.
+    const abiVersion = request.body.abi_version
+
+    // Pull out contract abi/address
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+
+    return response.json({
+        "abi" : saleAbi,
         "status" : "ok"
     });
 })
