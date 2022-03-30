@@ -171,7 +171,7 @@ app.post('/sale/get-sale-information', async (request, response) => {
         amountOfTokensToSell: Web3.utils.fromWei(sale.amountOfTokensToSell, 'ether'),
         totalTokensSold: Web3.utils.fromWei(sale.totalTokensSold, 'ether'),
         totalAVAXRaised: Web3.utils.fromWei(sale.totalAVAXRaised, 'ether'),
-        tokenPriceInUSD: Web3.utils.fromWei(sale.tokenPriceInUSD, 'ether')
+        tokenPriceInUSD: sale.tokenPriceInUSD
     });
 })
 
@@ -290,6 +290,8 @@ app.post('/sale/get-participation', async (request, response) => {
         'roundId': participation['3'],
         'isWithdrawn': participation['4'],
         'isWithdrawnToDexalot': participation['5'] || [],
+        'buyRemainderAmountBought' : participation['5'] || 0,
+        'buyRemainderFee' : participation['5'] || 0
     };
 
     return response.json(result);
