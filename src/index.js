@@ -653,7 +653,7 @@ app.post('/staking/pool-info', async (request, response) => {
     });
 });
 
-app.post('/utils/sign-withdraw', (request, response) => {
+app.post('/staking/sign-withdraw', (request, response) => {
 
     let userAddress = request.body.user_address
     let poolId = request.body.pool_id
@@ -663,7 +663,7 @@ app.post('/utils/sign-withdraw', (request, response) => {
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
-    let hash = web3.utils.soliditySha3({t:"address", v: userAddress}, {t: "uint256", v: poolId},{t: "uint256", v: amount},{t: "uint256", v: nonce});
+    let hash = web3.utils.soliditySha3({t:"address", v: userAddress}, {t: "uint256", v: poolId}, {t: "uint256", v: amount},{t: "uint256", v: nonce});
 
     let result = web3.eth.accounts.sign(hash, pk);
 
