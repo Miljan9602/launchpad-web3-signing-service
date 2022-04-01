@@ -659,12 +659,12 @@ app.post('/staking/sign-withdraw', (request, response) => {
     let poolId = request.body.pool_id
     let amount = request.body.amount
     let nonce = request.body.nonce
+    let expirationSignature = request.body.expiration_timestamp
 
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
-    let hash = web3.utils.soliditySha3({t:"address", v: userAddress}, {t: "uint256", v: poolId}, {t: "uint256", v: amount},{t: "uint256", v: nonce});
-
+    let hash = web3.utils.soliditySha3({t:"address", v: userAddress}, {t: "uint256", v: poolId}, {t: "uint256", v: amount}, {t: "uint256", v: nonce}, {t: "uint256", v: expirationSignature});
     let result = web3.eth.accounts.sign(hash, pk);
 
     return response.json({
