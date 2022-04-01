@@ -711,6 +711,7 @@ app.post('/staking/user-info', async (request, response) => {
 app.post('/staking/is-nonce-used', async (request, response) => {
 
     let nonce = request.body.nonce
+    let methodName = request.body.method_name
     let allocationStakingContract = contractGetters.getAllocationStakingContract()
 
     // Pull out contract abi/address
@@ -722,7 +723,7 @@ app.post('/staking/is-nonce-used', async (request, response) => {
 
     const nonceHash = ethers.utils.keccak256(ethers.utils.solidityPack(
         ['string', 'uint256'],
-        ['withdraw', nonce]
+        [methodName, nonce]
     ));
 
     const result = await contract.methods.isNonceUsed(nonceHash).call();
