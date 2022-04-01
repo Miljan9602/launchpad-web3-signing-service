@@ -45,6 +45,7 @@ const {
 } = require("avalanche")
 const {getErc20Abi} = require("./getters");
 const {parse} = require("dotenv");
+const ethers = require("ethers");
 
 app.post('/staking/is-user-staking', async (request, response) => {
 
@@ -719,13 +720,19 @@ app.post('/staking/is-nonce-used', async (request, response) => {
     // Init contract.
     let contract = new Contract(allocationStakingAbi, allocationStakingAddress);
 
-    const result = await contract.methods.isNonceUsed(nonce).call();
+    const nonceHash = ethers.utils.keccak256(ethers.utils.solidityPack(
+        ['string', 'uint256'],
+        ['withdraw', nonce]
+    ));
+
+    const result = await contract.methods.isNonceUsed(nonceHash).call();
 
     return response.json({
         "nonce" : nonce,
         "is_nonce_used" : result
     });
 })
+
 
 app.post('/transaction/status', async (request, response) => {
 
