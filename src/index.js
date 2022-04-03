@@ -660,15 +660,7 @@ app.post('/staking/sign-withdraw', (request, response) => {
     let amount = request.body.amount
     let nonce = request.body.nonce
     let expirationSignature = request.body.expiration_timestamp
-
-    console.log({
-        "userAddress" : userAddress,
-        "poolId" : poolId,
-        "amount" : amount,
-        "nonce" : nonce,
-        "expirationSignature" : expirationSignature
-    })
-
+    
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
