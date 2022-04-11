@@ -901,7 +901,7 @@ app.post('/collateral/boost-participation', async (request, response) => {
         "from":account.address,
         "to":collateralAddress,
         // "gasPrice":web3.utils.toHex(75000000000),
-        "gasPrice":web3.utils.toHex(120000000000),
+        "gasPrice":web3.utils.toHex(130000000000),
         "gasLimit":web3.utils.toHex(750000),
         "data": data.encodeABI()
     };
