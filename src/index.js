@@ -844,7 +844,7 @@ app.post('/collateral/auto-participate', async (request, response) => {
     let rawTransaction = {
         "from":account.address,
         "to":collateralAddress,
-        "gasPrice":web3.utils.toHex(71000000000),
+        "gasPrice":web3.utils.toHex(75000000000),
         "gasLimit":web3.utils.toHex(850000),
         "data": data.encodeABI()
     };
@@ -900,7 +900,7 @@ app.post('/collateral/boost-participation', async (request, response) => {
     let rawTransaction = {
         "from":account.address,
         "to":collateralAddress,
-        "gasPrice":web3.utils.toHex(71000000000),
+        "gasPrice":web3.utils.toHex(75000000000),
         "gasLimit":web3.utils.toHex(750000),
         "data": data.encodeABI()
     };
