@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 app.use(express.json());
 
-// require('dotenv').config()
+require('dotenv').config()
 
 const middleware = require('./middleware/middleware')
 const air_drop_router = require('./routes/airdrop_routes')

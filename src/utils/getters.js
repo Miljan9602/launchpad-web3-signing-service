@@ -21,12 +21,12 @@ function getAllocationStakingContract() {
     return getContracts()['ALLOCATION_STAKING']
 }
 
-function getErc20Abi() {
-    return getContracts()['ERC_20']['abi']
-}
-
 function getCollateralContract() {
     return getContracts()['COLLATERAL']
+}
+
+function getErc20Abi() {
+    return getContracts()['ERC_20']['abi']
 }
 
 function getAirdropAbi() {
