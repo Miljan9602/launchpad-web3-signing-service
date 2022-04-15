@@ -25,6 +25,10 @@ function getErc20Abi() {
     return getContracts()['ERC_20']['abi']
 }
 
+function getCollateralContract() {
+    return getContracts()['COLLATERAL']
+}
+
 function getAirdropAbi() {
     return getContracts()['AIRDROP']['abi']
 }
@@ -34,5 +38,6 @@ module.exports = {
     getSaleAbi,
     getAllocationStakingContract,
     getAirdropAbi,
-    getErc20Abi
+    getErc20Abi,
+    getCollateralContract
 };
