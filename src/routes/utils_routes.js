@@ -1,20 +1,20 @@
 const express = require('express')
-const router = express.router()
+const router = express.Router()
 
 var utils_controller = require('../controllers/utils_controller');
 
-router.post('/utils/recover-typed-signature', utils_controller.recover_typed_signature(request, response));
+router.post('/recover-typed-signature', utils_controller.recover_typed_signature);
 
-router.post('/utils/recover-address', utils_controller.recover_address(request, response));
+router.post('/recover-address', utils_controller.recover_address);
 
-router.post('/utils/balance-of', utils_controller.balance_of(request, response))
+router.post('/balance-of', utils_controller.balance_of)
 
-router.post('/utils/total-supply', utils_controller.total_supply(request, response))
+router.post('/total-supply', utils_controller.total_supply)
 
-router.post('/utils/balance', utils_controller.balance(request, response))
+router.post('/balance', utils_controller.balance)
 
-router.post('/utils/sign-withdraw', utils_controller.sign_withdraw(request, response));
+router.post('/sign-withdraw', utils_controller.sign_withdraw);
 
-router.post('/utils/checksum', utils_controller.checksum(request, response))
+router.post('/checksum', utils_controller.checksum)
 
 module.exports = router

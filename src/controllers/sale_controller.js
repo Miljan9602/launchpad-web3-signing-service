@@ -1,6 +1,5 @@
 const Web3 = require("web3");
-const contractGetters = require("./utils/getters")
-
+const contractGetters = require("../utils/getters")
 // Import contract and add provider.
 const Contract = require('web3-eth-contract');
 const AVALAUNCH_URL = contractGetters.getRpc()
