@@ -15,6 +15,5 @@ app.use('/sale', sale_router);
 app.use('/utils', utils_router);
 
 app.listen(process.env.PORT || 3000 , () => {
-    console.log("DSAD: ", process.env.STAGE)
     console.log(`🚀  Running on the ${3000 || process.env.PORT} port.`);
 });
