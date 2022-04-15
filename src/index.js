@@ -767,6 +767,7 @@ app.post('/sale/token-price-in-avax', async (request, response) => {
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
     const account = web3.eth.accounts.privateKeyToAccount(pk)
+    const gasPrice = request.body.gas_price
 
     // Take address from body.
     const saleContractAddress = request.body.contract_address
@@ -781,7 +782,7 @@ app.post('/sale/token-price-in-avax', async (request, response) => {
     let rawTransaction = {
         "from":account.address,
         "to":saleContractAddress,
-        "gasPrice":web3.utils.toHex(290000000000),
+        "gasPrice":web3.utils.toHex(gasPrice),
         "gasLimit":web3.utils.toHex(290000),
         "data": data.encodeABI()
     };
@@ -827,6 +828,7 @@ app.post('/collateral/auto-participate', async (request, response) => {
     const user = request.body.user_address
     const participationFeeAVAX = request.body.participation_fee_avax
     const signature = request.body.signature
+    const gasPrice = request.body.gas_price
 
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
@@ -844,7 +846,7 @@ app.post('/collateral/auto-participate', async (request, response) => {
     let rawTransaction = {
         "from":account.address,
         "to":collateralAddress,
-        "gasPrice":web3.utils.toHex(65000000000),
+        "gasPrice":web3.utils.toHex(gasPrice),
         "gasLimit":web3.utils.toHex(950000),
         "data": data.encodeABI()
     };
@@ -883,6 +885,7 @@ app.post('/collateral/boost-participation', async (request, response) => {
     const user = request.body.user_address
     const boostFeeAVAX = request.body.boost_fee_avax
     const signature = request.body.signature
+    const gasPrice = request.body.gas_price
 
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
@@ -900,7 +903,7 @@ app.post('/collateral/boost-participation', async (request, response) => {
     let rawTransaction = {
         "from":account.address,
         "to":collateralAddress,
-        "gasPrice":web3.utils.toHex(75000000000),
+        "gasPrice":web3.utils.toHex(gasPrice),
         "gasLimit":web3.utils.toHex(950000),
         "data": data.encodeABI()
     };
