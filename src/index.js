@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 app.use(express.json());
 
-require('dotenv').config()
+// require('dotenv').config()
 
 const air_drop_router = require('./routes/airdrop_routes')
 const sale_router = require('./routes/sale_routes')
