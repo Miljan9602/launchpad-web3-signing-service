@@ -348,6 +348,7 @@ exports.token_price_in_avax = async (request, response) => {
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
     const account = web3.eth.accounts.privateKeyToAccount(pk)
+    const gasPrice = request.body.gas_price
 
     // Take address from body.
     const saleContractAddress = request.body.contract_address
@@ -362,7 +363,7 @@ exports.token_price_in_avax = async (request, response) => {
     let rawTransaction = {
         "from":account.address,
         "to":saleContractAddress,
-        "gasPrice":web3.utils.toHex(110000000000),
+        "gasPrice":web3.utils.toHex(gasPrice),
         "gasLimit":web3.utils.toHex(290000),
         "data": data.encodeABI()
     };
