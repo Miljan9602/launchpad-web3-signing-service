@@ -102,3 +102,22 @@ exports.boost_participation = async (request, response) => {
         "status" : "ok"
     });
 }
+
+exports.user_balance = async (request, response) => {
+
+    const user = request.body.user_address
+
+    let collateralContract = contractGetters.getCollateralContract()
+
+    // Pull out contract abi/address
+    let collateralAbi = collateralContract['abi']
+    let collateralAddress = collateralContract['address']
+
+    let contract = new Contract(collateralAbi, collateralAddress);
+
+    const result = await contract.methods.userBalance(user).call();
+
+    return response.json({
+        "result" : result,
+    });
+}
