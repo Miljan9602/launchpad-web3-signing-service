@@ -121,7 +121,6 @@ app.post('/sale/sign-registration', (request, response) => {
 
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
-
     let hash = web3.utils.soliditySha3({t: "uint256", v: timestamp}, {t:"address", v: user_address}, {t: "uint256", v: roundId}, {t: "address", v: contractAddress});
 
     let result = web3.eth.accounts.sign(hash, pk);
