@@ -176,6 +176,8 @@ exports.sign_registration = async (request, response) => {
 
     const account = web3.eth.accounts.privateKeyToAccount(pk);
 
+    console.log({t:"address", v: user_address}, {t: "uint256", v: roundId}, {t: "address", v: contractAddress})
+
     let hash = web3.utils.soliditySha3({t:"address", v: user_address}, {t: "uint256", v: roundId}, {t: "address", v: contractAddress});
 
     console.log({
