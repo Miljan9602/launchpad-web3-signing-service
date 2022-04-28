@@ -24,6 +24,7 @@ exports.get_sale_information = async (request, response) => {
         amountOfTokensToSell: Web3.utils.fromWei(sale.amountOfTokensToSell, 'ether'),
         totalTokensSold: Web3.utils.fromWei(sale.totalTokensSold, 'ether'),
         totalAVAXRaised: Web3.utils.fromWei(sale.totalAVAXRaised, 'ether'),
+        tokenPriceInUSD: sale.tokenPriceInUSD
     });
 }
 
@@ -37,12 +38,14 @@ exports.timeline = async (request, response) => {
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
-    const stakingRoundId = await contract.methods.stakingRoundId().call();
+    const stakingRoundId = parseInt(await contract.methods.stakingRoundId().call());
     const validatorRoundId = stakingRoundId-1;
+    const boosterRoundId = stakingRoundId+1;
 
     const registrationTimeline = await contract.methods.registration().call();
     const validatorRoundStart = await contract.methods.roundIdToRound(validatorRoundId).call();
     const stakingRoundStart = await contract.methods.roundIdToRound(stakingRoundId).call();
+    const boosterRoundStart = await contract.methods.roundIdToRound(boosterRoundId).call();
     const saleEndTime = await contract.methods.sale().call();
 
     return response.json({
@@ -50,6 +53,7 @@ exports.timeline = async (request, response) => {
         "registration_closes" : registrationTimeline['registrationTimeEnds'],
         "validator_round" : validatorRoundStart['startTime'],
         "seed_round" : stakingRoundStart['startTime'],
+        "booster_round" : boosterRoundStart['startTime'],
         "sale_ends" : saleEndTime['saleEnd'],
     })
 }

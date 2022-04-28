@@ -62,7 +62,7 @@ exports.auto_participate = async (request, response) => {
 
 exports.boost_participation = async (request, response) => {
 
-    / Take values from body.
+    // Take values from body.
     const saleContractAddress = request.body.contract_address
     const amountAVAX = request.body.amount_avax
     const amount = request.body.amount
