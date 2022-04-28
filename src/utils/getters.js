@@ -1,10 +1,24 @@
 function getContracts() {
-    return require("../config/config_"+ process.env.STAGE +".json")
+
+    console.log({
+        "env" : process.env.STAGE
+    })
+
+    console.log({
+        "path" : "../config/config_"+ process.env.STAGE +".json"
+    })
+
+    return require("../config/config_staging.js").CONTRACTS
 }
 
 function getSaleAbi(version = null) {
 
     let contracts = getContracts()
+
+    console.log({
+        "contracts" : contracts,
+        "version" : version
+    })
 
     if (version == null || contracts['AVALAUNCH_SALE']['versions'][version] === undefined) {
         return contracts['AVALAUNCH_SALE']['abi']
