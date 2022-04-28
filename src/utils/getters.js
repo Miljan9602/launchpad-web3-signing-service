@@ -8,7 +8,7 @@ function getContracts() {
         "path" : "../config/config_"+ process.env.STAGE +".json"
     })
 
-    return require("../config/config_"+ process.env.STAGE +".json")
+    return require("../config/config_staging.json")
 }
 
 function getSaleAbi(version = null) {
