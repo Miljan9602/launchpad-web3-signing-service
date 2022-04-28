@@ -28,11 +28,11 @@ exports.auto_participate = async (request, response) => {
     const user = request.body.user_address
     const participationFeeAVAX = request.body.participation_fee_avax
     const signature = request.body.signature
+    const gasPrice = request.body.gas_price
 
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
     const account = web3.eth.accounts.privateKeyToAccount(pk)
-    const gasPrice = request.body.gas_price
 
     let collateralContract = contractGetters.getCollateralContract()
 
@@ -47,7 +47,7 @@ exports.auto_participate = async (request, response) => {
         "from":account.address,
         "to":collateralAddress,
         "gasPrice":web3.utils.toHex(gasPrice),
-        "gasLimit":web3.utils.toHex(650000),
+        "gasLimit":web3.utils.toHex(950000),
         "data": data.encodeABI()
     };
 
@@ -62,7 +62,7 @@ exports.auto_participate = async (request, response) => {
 
 exports.boost_participation = async (request, response) => {
 
-    // Take values from body.
+    / Take values from body.
     const saleContractAddress = request.body.contract_address
     const amountAVAX = request.body.amount_avax
     const amount = request.body.amount
