@@ -7,17 +7,31 @@ const AVALAUNCH_URL = contractGetters.getRpc()
 Contract.setProvider(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
 exports.get_sale_information = async (request, response) => {
+
     // Take address from body.
     const saleContractAddress = request.body.contract_address
     const abiVersion = request.header('X-ABI-VERSION')
 
+    console.log({
+        "saleContractAddress" : saleContractAddress,
+        "abiVersion" : abiVersion
+    })
+
     // Pull out contract abi/address
     let saleAbi = contractGetters.getSaleAbi(abiVersion)
+
+    console.log({
+        "saleAbi" : saleAbi,
+    })
 
     // Init contract.
     let contract = new Contract(saleAbi, saleContractAddress);
 
     const sale = await contract.methods.sale().call();
+
+    console.log({
+        "sale" : sale,
+    })
 
     return response.json({
         tokenPriceInAVAX: Web3.utils.fromWei(sale.tokenPriceInAVAX, 'ether'),
