@@ -91,6 +91,7 @@ exports.pool_info = async (request, response) => {
 
 exports.is_nonce_used = async (request, response) => {
     let nonce = request.body.nonce
+    let methodName = request.body.method_name
     let allocationStakingContract = contractGetters.getAllocationStakingContract()
 
     // Pull out contract abi/address
@@ -100,7 +101,12 @@ exports.is_nonce_used = async (request, response) => {
     // Init contract.
     let contract = new Contract(allocationStakingAbi, allocationStakingAddress);
 
-    const result = await contract.methods.isNonceUsed(nonce).call();
+    const nonceHash = ethers.utils.keccak256(ethers.utils.solidityPack(
+        ['string', 'uint256'],
+        [methodName, nonce]
+    ));
+
+    const result = await contract.methods.isNonceUsed(nonceHash).call();
 
     return response.json({
         "nonce" : nonce,

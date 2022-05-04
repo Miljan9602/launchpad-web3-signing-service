@@ -37,4 +37,6 @@ router.post('/is-participated', sale_controller.is_participated);
 
 router.post('/token-price-in-avax', sale_controller.token_price_in_avax)
 
+router.post('/round-ids', sale_controller.round_ids)
+
 module.exports = router

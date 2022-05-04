@@ -29,18 +29,13 @@ exports.recover_typed_signature = (request, response) => {
     const address = request.body.address
     const data = request.body.data
     const signature = request.body.signature
-    let verificationStatus = false
 
     const recovered = ethSig.recoverTypedSignature_v4({
         data: data,
         sig: signature,
     });
 
-    if (recovered.toLowerCase() === address.toString().toLowerCase()) {
-        verificationStatus = true;
-    } else {
-        verificationStatus = false;
-    }
+    let verificationStatus = recovered.toLowerCase() === address.toString().toLowerCase()
 
     return response.json({
         "message_signer" : recovered.toLowerCase(),

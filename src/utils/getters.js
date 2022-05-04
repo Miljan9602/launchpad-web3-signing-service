@@ -1,14 +1,7 @@
 function getContracts() {
 
-    console.log({
-        "env" : process.env.STAGE
-    })
+    return require("../config/config_staging.json")
 
-    console.log({
-        "path" : "../config/config_"+ process.env.STAGE +".json"
-    })
-
-    return require("../config/config_staging.js").CONTRACTS
 }
 
 function getSaleAbi(version = null) {
