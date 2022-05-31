@@ -62,7 +62,6 @@ exports.is_user_staking = async (request, response) => {
         })
     }
 
-
     return response.json({
         "is_user_staking" : amountStaking > 0,
         "address" : userAddress,
@@ -92,6 +91,7 @@ exports.pool_info = async (request, response) => {
 
 exports.is_nonce_used = async (request, response) => {
     let nonce = request.body.nonce
+    let methodName = request.body.method_name
     let allocationStakingContract = contractGetters.getAllocationStakingContract()
 
     // Pull out contract abi/address
@@ -101,10 +101,33 @@ exports.is_nonce_used = async (request, response) => {
     // Init contract.
     let contract = new Contract(allocationStakingAbi, allocationStakingAddress);
 
-    const result = await contract.methods.isNonceUsed(nonce).call();
+    const nonceHash = ethers.utils.keccak256(ethers.utils.solidityPack(
+        ['string', 'uint256'],
+        [methodName, nonce]
+    ));
+
+    const result = await contract.methods.isNonceUsed(nonceHash).call();
 
     return response.json({
         "nonce" : nonce,
         "is_nonce_used" : result
     });
+}
+
+exports.sign_withdraw = async (request, response) => {
+    let userAddress = request.body.user_address
+    let poolId = request.body.pool_id
+    let amount = request.body.amount
+    let nonce = request.body.nonce
+    let expirationSignature = request.body.expiration_timestamp
+
+    const pk = process.env.PRIVATE_KEY_1;
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+
+    let hash = web3.utils.soliditySha3({t:"address", v: userAddress}, {t: "uint256", v: poolId}, {t: "uint256", v: amount}, {t: "uint256", v: nonce}, {t: "uint256", v: expirationSignature});
+    let result = web3.eth.accounts.sign(hash, pk);
+
+    return response.json({
+        "result" : result.signature
+    })
 }
