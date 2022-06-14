@@ -21,11 +21,11 @@ exports.get_sale_information = async (request, response) => {
     const sale = await contract.methods.sale().call();
 
     return response.json({
-        tokenPriceInAVAX: Web3.utils.fromWei(sale.tokenPriceInAVAX, 'ether'),
-        amountOfTokensToSell: Web3.utils.fromWei(sale.amountOfTokensToSell, 'ether'),
-        totalTokensSold: Web3.utils.fromWei(sale.totalTokensSold, 'ether'),
-        totalAVAXRaised: Web3.utils.fromWei(sale.totalAVAXRaised, 'ether'),
-        tokenPriceInUSD: sale.tokenPriceInUSD
+        token_price_in_avax: Web3.utils.fromWei(sale.tokenPriceInAVAX, 'ether'),
+        amount_of_tokens_to_sell: Web3.utils.fromWei(sale.amountOfTokensToSell, 'ether'),
+        total_tokens_sold: Web3.utils.fromWei(sale.totalTokensSold, 'ether'),
+        total_avax_raised: Web3.utils.fromWei(sale.totalAVAXRaised, 'ether'),
+        token_price_in_usd: sale.tokenPriceInUSD
     });
 }
 
@@ -288,23 +288,23 @@ exports.get_participation = async (request, response) => {
     const participation = await contract.methods.getParticipation(userAddress).call();
 
     /**
-     p.amountBought,
-     p.amountAVAXPaid,
-     p.timeParticipated,
-     p.roundId,
-     p.isWithdrawn
+     p.amount_bought,
+     p.amount_avax_paid,
+     p.time_participated,
+     p.round_id,
+     p.is_withdrawn
      * @type {{}}
      */
     const result = {
-        'amountBought': Web3.utils.fromWei(participation['0'], 'ether'),
-        'amountAVAXPaid': Web3.utils.fromWei(participation['1'], 'ether'),
-        'timeParticipated': participation['2'],
-        'roundId': participation['3'],
-        'isWithdrawn': participation['4'],
-        'isWithdrawnToDexalot': participation['5'] || [],
-        'isBuyRemainderBought' : participation['6'] || false,
-        'buyRemainderAmountBought' : participation['7'] || 0,
-        'buyRemainderAmountBoughtInAvax' : participation['8'] || 0
+        'amount_bought': Web3.utils.fromWei(participation['0'], 'ether'),
+        'amount_avax_paid': Web3.utils.fromWei(participation['1'], 'ether'),
+        'time_participated': participation['2'],
+        'round_id': participation['3'],
+        'is_withdrawn': participation['4'],
+        'is_withdrawn_to_dexalot': participation['5'] || [],
+        'is_buy_remainder_bought' : participation['6'] || false,
+        'buy_remainder_amount_bought' : participation['7'] || 0,
+        'buy_remainder_amount_bought_in_avax' : participation['8'] || 0
     };
 
     return response.json(result);
