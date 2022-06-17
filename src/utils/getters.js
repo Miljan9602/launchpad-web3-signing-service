@@ -1,13 +1,11 @@
 function getContracts() {
-
-    return require("../config/config_staging.json")
-
+    return require("../config/config_production.json")
 }
 
 function getSaleAbi(version = null) {
 
     let contracts = getContracts()
-    
+
     if (version == null || contracts['AVALAUNCH_SALE']['versions'][version] === undefined) {
         return contracts['AVALAUNCH_SALE']['abi']
     }
