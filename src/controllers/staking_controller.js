@@ -6,6 +6,7 @@ const Contract = require('web3-eth-contract');
 const AVALAUNCH_URL = contractGetters.getRpc()
 
 Contract.setProvider(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+const ethers = require("ethers");
 
 exports.user_info = async (request, response) => {
 
