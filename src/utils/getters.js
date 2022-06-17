@@ -1,15 +1,17 @@
 function getContracts() {
 
-    if (process.env.STAGE === 'staging' || process.env.STAGE === 'develop') {
-        return require("./contracts_staging").CONTRACTS
-    }
+    return require("../config/config_staging.json")
 
-    return require("./contracts").CONTRACTS
 }
 
 function getSaleAbi(version = null) {
 
     let contracts = getContracts()
+
+    console.log({
+        "contracts" : contracts,
+        "version" : version
+    })
 
     if (version == null || contracts['AVALAUNCH_SALE']['versions'][version] === undefined) {
         return contracts['AVALAUNCH_SALE']['abi']
@@ -19,12 +21,7 @@ function getSaleAbi(version = null) {
 }
 
 function getRpc() {
-
-    if (process.env.STAGE === 'staging' || process.env.STAGE === 'develop') {
-        return 'https://api.avax-test.network/ext/bc/C/rpc'
-    }
-
-    return 'https://api.avax.network/ext/bc/C/rpc'
+    return getContracts()['RPC']
 }
 
 function getAllocationStakingContract() {
