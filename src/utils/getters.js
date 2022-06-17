@@ -7,12 +7,7 @@ function getContracts() {
 function getSaleAbi(version = null) {
 
     let contracts = getContracts()
-
-    console.log({
-        "contracts" : contracts,
-        "version" : version
-    })
-
+    
     if (version == null || contracts['AVALAUNCH_SALE']['versions'][version] === undefined) {
         return contracts['AVALAUNCH_SALE']['abi']
     }
