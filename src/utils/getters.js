@@ -1,4 +1,11 @@
 function getContracts() {
+
+    let stage = process.env.STAGE
+
+    if (stage === 'staging' || stage === 'develop') {
+        return require('../config/config_'+stage+'.json')
+    }
+
     return require("../config/config_production.json")
 }
 
