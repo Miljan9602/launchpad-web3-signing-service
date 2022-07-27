@@ -85,7 +85,7 @@ exports.boost_participation = async (request, response) => {
 
     // Init contract.
     let contract = new Contract(collateralAbi, collateralAddress);
-    let data = contract.methods.boostParticipation(saleContractAddress, amountAVAX, amountXavaToBurn, user, boostFeeAVAX, signature);
+    let data = contract.methods.boostParticipation(saleContractAddress, amountAVAX, amount, amountXavaToBurn, roundId, user, boostFeeAVAX, signature);
     let rawTransaction = {
         "from":account.address,
         "to":collateralAddress,
