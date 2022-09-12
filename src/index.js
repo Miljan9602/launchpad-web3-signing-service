@@ -12,6 +12,7 @@ const utils_router = require('./routes/utils_routes')
 const staking_router = require('./routes/staking_routes')
 const collateral_router = require('./routes/collateral_routes')
 const transaction_router = require('./routes/transaction_routes')
+const vesting_marketplace_router = require('./routes/vesting_marketplace_controller')
 
 app.use(middleware);
 app.use('/abi', abi_router)
@@ -21,6 +22,7 @@ app.use('/utils', utils_router);
 app.use('/staking', staking_router)
 app.use('/collateral', collateral_router);
 app.use('/transaction', transaction_router);
+app.use('/marketplace/vesting', vesting_marketplace_router)
 
 app.listen(process.env.PORT || 3000 , () => {
     console.log(`🚀  Running on the ${3000 || process.env.PORT} port.`);
