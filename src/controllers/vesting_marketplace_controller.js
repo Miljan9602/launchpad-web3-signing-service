@@ -12,7 +12,7 @@ logsDecoder.addABI(contractGetters.getMarketplaceContractAbi())
 
 exports.decode_portion_listed = async (request, response) => {
 
-    let logs = parseTransactionLogs(request.body.tx_hash)
+    let logs = await parseTransactionLogs(request.body.tx_hash)
 
     if (logs === null) {
         return response.status(400).json({
