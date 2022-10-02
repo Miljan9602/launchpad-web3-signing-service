@@ -243,6 +243,83 @@ exports.sign_participation = async (request, response) => {
     })
 }
 
+exports.get_participation_v2 = async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const userAddress = request.body.user_address
+    const abiVersion = request.header('X-ABI-VERSION')
+
+    // Pull out contract abi/address
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    const getParticipationAmountsAndStates = await contract.methods.getParticipationAmountsAndStates(userAddress).call();
+    const userToParticipation = await contract.methods.userToParticipation(userAddress).call();
+
+
+    /**
+     p.amount_bought,
+     p.amount_avax_paid,
+     p.time_participated,
+     p.round_id,
+     p.is_withdrawn
+     * @type {{}}
+     */
+    const result = {
+        'amount_bought': Web3.utils.fromWei(userToParticipation['0'], 'ether'),
+        'amount_avax_paid': Web3.utils.fromWei(userToParticipation['1'], 'ether'),
+        'time_participated': userToParticipation['2'],
+        'phase_id': userToParticipation['3'],
+        'buy_remainder_amount_bought_in_avax' : userToParticipation['4'] || 0,
+        'buy_remainder_amount_bought' : userToParticipation['5'] || 0,
+        
+        'portion_amounts': getParticipationAmountsAndStates['0'] || [],
+        'portion_states': getParticipationAmountsAndStates['1'] || [],
+    };
+
+    return response.json(result);
+}
+
+exports.get_participation = async (request, response) => {
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const userAddress = request.body.user_address
+    const abiVersion = request.header('X-ABI-VERSION')
+
+    // Pull out contract abi/address
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    const participation = await contract.methods.getParticipation(userAddress).call();
+
+    /**
+     p.amount_bought,
+     p.amount_avax_paid,
+     p.time_participated,
+     p.round_id,
+     p.is_withdrawn
+     * @type {{}}
+     */
+    const result = {
+        'amount_bought': Web3.utils.fromWei(participation['0'], 'ether'),
+        'amount_avax_paid': Web3.utils.fromWei(participation['1'], 'ether'),
+        'time_participated': participation['2'],
+        'round_id': participation['3'],
+        'is_withdrawn': participation['4'],
+        'is_withdrawn_to_dexalot': participation['5'] || [],
+        'is_buy_remainder_bought' : participation['6'] || false,
+        'buy_remainder_amount_bought' : participation['7'] || 0,
+        'buy_remainder_amount_bought_in_avax' : participation['8'] || 0
+    };
+
+    return response.json(result);
+}
+
 exports.get_participation = async (request, response) => {
     // Take address from body.
     const saleContractAddress = request.body.contract_address
