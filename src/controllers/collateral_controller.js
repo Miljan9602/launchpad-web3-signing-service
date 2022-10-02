@@ -65,9 +65,7 @@ exports.boost_participation = async (request, response) => {
     // Take values from body.
     const saleContractAddress = request.body.contract_address
     const amountAVAX = request.body.amount_avax
-    const amount = request.body.amount
     const amountXavaToBurn = request.body.amount_xava_to_burn
-    const roundId = request.body.round_id
     const user = request.body.user_address
     const boostFeeAVAX = request.body.boost_fee_avax
     const signature = request.body.signature
