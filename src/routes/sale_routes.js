@@ -23,7 +23,7 @@ router.post('/sign-registration', sale_controller.sign_registration);
 
 router.post('/is-user-registered', sale_controller.is_user_registered)
 
-router.post('/get-number-of-registered', sale_controller.get_number_of_registered)
+router.post('/number-of-registrants', sale_controller.number_of_registrants)
 
 router.post('/address-to-round-registered-for', sale_controller.address_to_round_registered_for)
 

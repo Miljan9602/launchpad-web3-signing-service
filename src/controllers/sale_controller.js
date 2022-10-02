@@ -209,7 +209,7 @@ exports.is_user_registered = async (request, response) => {
     });
 }
 
-exports.get_number_of_registered = async (request, response) => {
+exports.number_of_registrants = async (request, response) => {
     // Take address from body.
     const saleContractAddress = request.body.contract_address
     const abiVersion = request.header('X-ABI-VERSION')
@@ -220,7 +220,7 @@ exports.get_number_of_registered = async (request, response) => {
     let contract = new Contract(saleAbi, saleContractAddress);
 
     // Get number of registered
-    const numberOfRegistered = await contract.methods.getNumberOfRegisteredUsers().call();
+    const numberOfRegistered = await contract.methods.numberOfRegistrants().call();
 
     return response.json({
         "number_of_registered" : numberOfRegistered.toString()
