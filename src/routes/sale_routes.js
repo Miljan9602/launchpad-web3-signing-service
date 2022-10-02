@@ -9,10 +9,6 @@ router.post('/get-vesting-info', sale_controller.get_vesting_info);
 
 router.post('/get-unlock-time', sale_controller.get_unlock_time)
 
-router.post('/staking-round-id', sale_controller.staking_round_id);
-
-router.post('/round-id-to-round', sale_controller.round_id_to_round);
-
 router.post('/supports-dexalot-withdraw', sale_controller.supports_dexalot_withdraw);
 
 router.post('/dexalot-unlock-time', sale_controller.dexalot_unlock_time);
@@ -34,7 +30,5 @@ router.post('/get-number-of-participants', sale_controller.get_number_of_partici
 router.post('/is-participated', sale_controller.is_participated);
 
 router.post('/token-price-in-avax', sale_controller.token_price_in_avax)
-
-router.post('/round-ids', sale_controller.round_ids)
 
 module.exports = router

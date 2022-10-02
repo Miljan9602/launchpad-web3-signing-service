@@ -67,44 +67,6 @@ exports.get_unlock_time = async (request, response) => {
     });
 }
 
-exports.staking_round_id = async (request, response) => {
-    // Take address from body.
-    const saleContractAddress = request.body.contract_address
-    const abiVersion = request.header('X-ABI-VERSION')
-
-    // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi(abiVersion)
-    // Init contract.
-    let contract = new Contract(saleAbi, saleContractAddress);
-
-    // Get number of registered
-    const stakingRoundId = await contract.methods.stakingRoundId().call();
-
-    return response.json({
-        "staking_round_id" : stakingRoundId
-    })
-}
-
-exports.round_id_to_round = async (request, response) => {
-    // Take address from body.
-    const saleContractAddress = request.body.contract_address
-    const roundId = request.body.round_id_to_round
-    const abiVersion = request.header('X-ABI-VERSION')
-
-    // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi(abiVersion)
-    // Init contract.
-    let contract = new Contract(saleAbi, saleContractAddress);
-
-    // Get start time and max participation
-    const startTimeAndMaxParticipation = await contract.methods.roundIdToRound(roundId).call();
-
-    return response.json({
-        "start_time" : startTimeAndMaxParticipation[0],
-        "max_participation": startTimeAndMaxParticipation[1]
-    })
-}
-
 exports.supports_dexalot_withdraw = async (request, response) => {
     // Take address from body.
     const saleContractAddress = request.body.contract_address
@@ -275,7 +237,7 @@ exports.get_participation_v2 = async (request, response) => {
         'phase_id': userToParticipation['3'],
         'buy_remainder_amount_bought_in_avax' : userToParticipation['4'] || 0,
         'buy_remainder_amount_bought' : userToParticipation['5'] || 0,
-        
+
         'portion_amounts': getParticipationAmountsAndStates['0'] || [],
         'portion_states': getParticipationAmountsAndStates['1'] || [],
     };
@@ -429,25 +391,4 @@ exports.token_price_in_avax = async (request, response) => {
         "to" : result.to,
         "status" : result.status
     });
-}
-
-exports.round_ids = async (request, response) => {
-    // Take address from body.
-    const saleContractAddress = request.body.contract_address
-    const abiVersion = request.header('X-ABI-VERSION')
-
-    // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi(abiVersion)
-    // Init contract.
-    let contract = new Contract(saleAbi, saleContractAddress);
-
-    const stakingRoundId = parseInt(await contract.methods.stakingRoundId().call());
-    const validatorRoundId = stakingRoundId - 1;
-    const boosterRoundId = stakingRoundId + 1;
-
-    return response.json({
-        "staking" : stakingRoundId,
-        "validator" : validatorRoundId,
-        "booster" : boosterRoundId
-    })
 }
