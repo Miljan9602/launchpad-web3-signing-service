@@ -29,36 +29,6 @@ exports.get_sale_information = async (request, response) => {
     });
 }
 
-exports.timeline = async (request, response) => {
-    // Take address from body.
-    const saleContractAddress = request.body.contract_address
-    const abiVersion = request.header('X-ABI-VERSION')
-
-    // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi(abiVersion)
-    // Init contract.
-    let contract = new Contract(saleAbi, saleContractAddress);
-
-    const stakingRoundId = parseInt(await contract.methods.stakingRoundId().call());
-    const validatorRoundId = stakingRoundId-1;
-    const boosterRoundId = stakingRoundId+1;
-
-    const registrationTimeline = await contract.methods.registration().call();
-    const validatorRoundStart = await contract.methods.roundIdToRound(validatorRoundId).call();
-    const stakingRoundStart = await contract.methods.roundIdToRound(stakingRoundId).call();
-    const boosterRoundStart = await contract.methods.roundIdToRound(boosterRoundId).call();
-    const saleEndTime = await contract.methods.sale().call();
-
-    return response.json({
-        "registration_opens" : registrationTimeline['registrationTimeStarts'],
-        "registration_closes" : registrationTimeline['registrationTimeEnds'],
-        "validator_round" : validatorRoundStart['startTime'],
-        "seed_round" : stakingRoundStart['startTime'],
-        "booster_round" : boosterRoundStart['startTime'],
-        "sale_ends" : saleEndTime['saleEnd'],
-    })
-}
-
 exports.get_vesting_info = async (request, response) => {
     // Take address from body.
     const saleContractAddress = request.body.contract_address

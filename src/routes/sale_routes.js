@@ -5,8 +5,6 @@ var sale_controller = require('../controllers/sale_controller');
 
 router.post('/get-sale-information', sale_controller.get_sale_information)
 
-router.post('/timeline', sale_controller.timeline);
-
 router.post('/get-vesting-info', sale_controller.get_vesting_info);
 
 router.post('/get-unlock-time', sale_controller.get_unlock_time)
