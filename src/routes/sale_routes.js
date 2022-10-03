@@ -29,4 +29,6 @@ router.post('/is-participated', sale_controller.is_participated);
 
 router.post('/token-price-in-avax', sale_controller.token_price_in_avax)
 
+router.post('/change-phase', sale_controller.change_phase)
+
 module.exports = router
