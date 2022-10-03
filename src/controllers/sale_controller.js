@@ -103,6 +103,28 @@ exports.sign_registration = async (request, response) => {
         "result" : result.signature
     })
 }
+// addressToPhaseRegisteredFor
+exports.address_to_phase_registered_for = async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const userAddress = request.body.user_address
+    const abiVersion = request.header('X-ABI-VERSION')
+
+    // Pull out contract abi/address
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    const round = await contract.methods.addressToPhaseRegisteredFor(userAddress).call();
+    const result = parseInt(round, 10) > 0
+
+    return response.json({
+        "is_user_registered" : result,
+        "address_to_phase_registered_for" : round
+    });
+}
 
 exports.is_user_registered = async (request, response) => {
 
