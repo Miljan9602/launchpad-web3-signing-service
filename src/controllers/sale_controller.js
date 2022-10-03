@@ -95,7 +95,7 @@ exports.sign_registration = async (request, response) => {
 
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
-    let hash = web3.utils.soliditySha3({t: "uint256", v: timestamp}, {t:"address", v: user_address}, {t: "uint256", v: roundId}, {t: "address", v: contractAddress});
+    let hash = web3.utils.soliditySha3({t: "uint256", v: timestamp}, {t:"address", v: user_address}, {t: "uint256", v: roundId}, {t: "address", v: contractAddress}, {t: "string", v: "registerForSale"});
 
     let result = web3.eth.accounts.sign(hash, pk);
 
@@ -243,7 +243,6 @@ exports.get_participation_v2 = async (request, response) => {
         'phase_id': userToParticipation['3'],
         'buy_remainder_amount_bought_in_avax' : userToParticipation['4'] || 0,
         'buy_remainder_amount_bought' : userToParticipation['5'] || 0,
-
         'portion_amounts': getParticipationAmountsAndStates['0'] || [],
         'portion_states': getParticipationAmountsAndStates['1'] || [],
     };
