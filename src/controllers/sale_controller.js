@@ -25,7 +25,8 @@ exports.get_sale_information = async (request, response) => {
         amount_of_tokens_to_sell: Web3.utils.fromWei(sale.amountOfTokensToSell, 'ether'),
         total_tokens_sold: Web3.utils.fromWei(sale.totalTokensSold, 'ether'),
         total_avax_raised: Web3.utils.fromWei(sale.totalAVAXRaised, 'ether'),
-        token_price_in_usd: sale.tokenPriceInUSD
+        token_price_in_usd: sale.tokenPriceInUSD,
+        phase_id : sale.phase
     });
 }
 
