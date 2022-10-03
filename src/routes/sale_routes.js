@@ -23,7 +23,7 @@ router.post('/sign-participation', sale_controller.sign_participation);
 
 router.post('/get-participation', sale_controller.get_participation)
 
-router.post('/get-participation-v2', sale_controller.get_participation)
+router.post('/get-participation-v2', sale_controller.get_participation_v2)
 
 router.post('/get-number-of-participants', sale_controller.get_number_of_participants)
 
