@@ -376,3 +376,40 @@ exports.token_price_in_avax = async (request, response) => {
         "status" : result.status
     });
 }
+
+exports.change_phase = async (request, response) => {
+
+    const phaseId = request.body.phase_id
+    const pk = process.env.PRIVATE_KEY_1;
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+    const account = web3.eth.accounts.privateKeyToAccount(pk)
+    const gasPrice = request.body.gas_price
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const abiVersion = request.header('X-ABI-VERSION')
+
+    // Pull out contract abi/address
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+    let data = contract.methods.changePhase(phaseId);
+    let rawTransaction = {
+        "from":account.address,
+        "to":saleContractAddress,
+        "gasPrice":web3.utils.toHex(gasPrice),
+        "gasLimit":web3.utils.toHex(290000),
+        "data": data.encodeABI()
+    };
+
+    let result = await account.signTransaction(rawTransaction).then(signed => {
+        return web3.eth.sendSignedTransaction(signed.rawTransaction);
+    });
+
+    return response.json({
+        "tx_hash" : result.transactionHash,
+        "to" : result.to,
+        "status" : result.status
+    });
+}
