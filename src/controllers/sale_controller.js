@@ -68,23 +68,6 @@ exports.get_unlock_time = async (request, response) => {
     });
 }
 
-exports.supports_dexalot_withdraw = async (request, response) => {
-    // Take address from body.
-    const saleContractAddress = request.body.contract_address
-    const abiVersion = request.header('X-ABI-VERSION')
-
-    // Pull out contract abi/address
-    let saleAbi = contractGetters.getSaleAbi(abiVersion)
-    // Init contract.
-    let contract = new Contract(saleAbi, saleContractAddress);
-
-    const supportsDexalotWithdraw = await contract.methods.supportsDexalotWithdraw().call();
-
-    return response.json({
-        "supports_dexalot_withdraw" : supportsDexalotWithdraw
-    })
-}
-
 exports.dexalot_unlock_time = async (request, response) => {
     // Take address from body.
     const saleContractAddress = request.body.contract_address

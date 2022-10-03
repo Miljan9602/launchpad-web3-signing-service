@@ -9,8 +9,6 @@ router.post('/get-vesting-info', sale_controller.get_vesting_info);
 
 router.post('/get-unlock-time', sale_controller.get_unlock_time)
 
-router.post('/supports-dexalot-withdraw', sale_controller.supports_dexalot_withdraw);
-
 router.post('/dexalot-unlock-time', sale_controller.dexalot_unlock_time);
 
 router.post('/sign-registration', sale_controller.sign_registration);
