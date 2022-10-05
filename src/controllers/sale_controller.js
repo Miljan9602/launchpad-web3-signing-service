@@ -240,7 +240,7 @@ exports.get_participation_v2 = async (request, response) => {
         'amount_avax_paid': Web3.utils.fromWei(userToParticipation['1'], 'ether'),
         'time_participated': userToParticipation['2'],
         'phase_id': userToParticipation['3'],
-        'is_buy_remainder_bought' : buy_remainder_amount_bought > 0  || false,
+        'is_buy_remainder_bought' : userToParticipation['5'] > 0  || false,
         'buy_remainder_amount_bought_in_avax' : userToParticipation['4'] || 0,
         'buy_remainder_amount_bought' : userToParticipation['5'] || 0,
         'portion_amounts': getParticipationAmountsAndStates['0'] || [],
