@@ -197,7 +197,7 @@ exports.sign_participation = async (request, response) => {
     let roundId = request.body.round_id;
     let contractAddress = request.body.contract_address;
     let amountXavaToBurn = request.body.amount_xava_to_burn;
-    
+
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
