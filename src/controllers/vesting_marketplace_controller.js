@@ -10,6 +10,26 @@ const AVALAUNCH_URL = contractGetters.getRpc()
 const logsDecoder = LogDecoder.create()
 logsDecoder.addABI(contractGetters.getMarketplaceContractAbi())
 
+
+exports.sign_add_portions_to_marketplace = async (request, response) => {
+
+    let userAddress = request.body.user_address;
+    let saleAddress = request.body.sale_address;
+    let portions = request.body.portions
+    let sigExpTime = request.body.signature_expiration_time
+
+    const pk = process.env.PRIVATE_KEY_1;
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+
+    let hash = web3.utils.soliditySha3({t:"address", v: userAddress}, {t: "address", v: saleAddress}, {t:"array", v:portions},{t:"uint256", v:sigExpTime}, {t: "string", v: "participate"});
+
+    let result = web3.eth.accounts.sign(hash, pk);
+
+    return response.json({
+        "result" : result.signature
+    })
+}
+
 exports.decode_portion_listed = async (request, response) => {
 
     let logs = await parseTransactionLogs(request.body.tx_hash)
