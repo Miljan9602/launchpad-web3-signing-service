@@ -21,9 +21,9 @@ exports.sign_add_portions_to_marketplace = async (request, response) => {
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
-    console.log({t:"address", v: userAddress}, {t: "address", v: saleAddress}, {t:"uint256[]", v:portions},{t:"uint256", v:sigExpTime}, {t: "string", v: "participate"});
+    console.log({t:"address", v: userAddress}, {t: "address", v: saleAddress}, {t:"uint256[]", v:portions},{t:"uint256", v:sigExpTime}, {t: "string", v: "addPortionsToMarket"});
 
-    let hash = web3.utils.soliditySha3({t:"address", v: userAddress}, {t: "address", v: saleAddress}, {t:"uint256[]", v:portions},{t:"uint256", v:sigExpTime}, {t: "string", v: "participate"});
+    let hash = web3.utils.soliditySha3({t:"address", v: userAddress}, {t: "address", v: saleAddress}, {t:"uint256[]", v:portions},{t:"uint256", v:sigExpTime}, {t: "string", v: "addPortionsToMarket"});
 
     let result = web3.eth.accounts.sign(hash, pk);
 
