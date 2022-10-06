@@ -21,9 +21,27 @@ exports.sign_add_portions_to_marketplace = async (request, response) => {
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
-    console.log({t:"address", v: userAddress}, {t: "address", v: saleAddress}, {t:"uint256[]", v:portions},{t:"uint256", v:sigExpTime}, {t: "string", v: "addPortionsToMarket"});
-
     let hash = web3.utils.soliditySha3({t:"address", v: userAddress}, {t: "address", v: saleAddress}, {t:"uint256[]", v:portions},{t:"uint256", v:sigExpTime}, {t: "string", v: "addPortionsToMarket"});
+
+    let result = web3.eth.accounts.sign(hash, pk);
+
+    return response.json({
+        "result" : result.signature
+    })
+}
+
+exports.sign_buy_portions = async (request, response) => {
+
+    let ownerAddress = request.body.owner_address;
+    let saleAddress = request.body.sale_address;
+    let portions = request.body.portions
+    let prices = request.body.prices
+    let sigExpTime = request.body.signature_expiration_time
+
+    const pk = process.env.PRIVATE_KEY_1;
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+
+    let hash = web3.utils.soliditySha3({t:"address", v: ownerAddress}, {t: "address", v: saleAddress}, {t:"uint256[]", v:prices}, {t:"uint256[]", v:portions},{t:"uint256", v:sigExpTime}, {t: "string", v: "buyPortions"});
 
     let result = web3.eth.accounts.sign(hash, pk);
 

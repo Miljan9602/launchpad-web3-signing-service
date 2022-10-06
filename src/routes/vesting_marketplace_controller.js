@@ -7,4 +7,6 @@ router.post('/portion-listed/decode', vesting_controller.decode_portion_listed);
 
 router.post('/sign-add-portions-to-marketplace', vesting_controller.sign_add_portions_to_marketplace);
 
+router.post('/sign-buy-portions', vesting_controller.sign_buy_portions);
+
 module.exports = router
