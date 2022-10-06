@@ -210,6 +210,37 @@ exports.sign_participation = async (request, response) => {
     })
 }
 
+exports.get_participation_amounts_and_states = async (request, response) => {
+
+    // Take address from body.
+    const saleContractAddress = request.body.contract_address
+    const userAddress = request.body.user_address
+    const abiVersion = request.header('X-ABI-VERSION')
+
+    // Pull out contract abi/address
+    let saleAbi = contractGetters.getSaleAbi(abiVersion)
+
+    // Init contract.
+    let contract = new Contract(saleAbi, saleContractAddress);
+
+    const getParticipationAmountsAndStates = await contract.methods.getParticipationAmountsAndStates(userAddress).call();
+
+    /**
+     p.amount_bought,
+     p.amount_avax_paid,
+     p.time_participated,
+     p.round_id,
+     p.is_withdrawn
+     * @type {{}}
+     */
+    const result = {
+        'portion_amounts': getParticipationAmountsAndStates['0'] || [],
+        'portion_states': getParticipationAmountsAndStates['1'] || [],
+    };
+
+    return response.json(result);
+}
+
 exports.get_participation_v2 = async (request, response) => {
 
     // Take address from body.

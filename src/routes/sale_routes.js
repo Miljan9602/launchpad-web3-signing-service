@@ -21,6 +21,8 @@ router.post('/number-of-registrants', sale_controller.number_of_registrants)
 
 router.post('/address-to-round-registered-for', sale_controller.address_to_round_registered_for)
 
+router.post('/get-participation-amounts-and-states', sale_controller.get_participation_amounts_and_states)
+
 router.post('/sign-participation', sale_controller.sign_participation);
 
 router.post('/get-participation', sale_controller.get_participation)
