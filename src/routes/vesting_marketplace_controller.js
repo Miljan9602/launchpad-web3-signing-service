@@ -9,4 +9,6 @@ router.post('/sign-add-portions-to-marketplace', vesting_controller.sign_add_por
 
 router.post('/sign-buy-portions', vesting_controller.sign_buy_portions);
 
+router.post('/sign-remove-portions', vesting_controller.sign_remove_portions);
+
 module.exports = router
