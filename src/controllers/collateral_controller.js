@@ -101,6 +101,28 @@ exports.boost_participation = async (request, response) => {
     });
 }
 
+exports.verify_auto_buy_signature = async (request, response) => {
+
+    const user = request.body.user_address
+    const saleAddress = request.body.sale_address
+    const signature = request.body.signature
+
+    let collateralContract = contractGetters.getCollateralContract()
+
+    // Pull out contract abi/address
+    let collateralAbi = collateralContract['abi']
+    let collateralAddress = collateralContract['address']
+
+    let contract = new Contract(collateralAbi, collateralAddress);
+
+    const result = await contract.methods.verifyAutoBuySignature(user, saleAddress, signature).call();
+
+    return response.json({
+        "result" : result,
+    });
+}
+
+
 exports.user_balance = async (request, response) => {
 
     const user = request.body.user_address

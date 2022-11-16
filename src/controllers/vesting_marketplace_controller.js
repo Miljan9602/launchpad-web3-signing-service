@@ -1,7 +1,6 @@
 const Web3 = require("web3");
 const LogDecoder = require('logs-decoder')
 const contractGetters = require("../utils/getters")
-const {Buffer} = require("avalanche");
 
 contractGetters.getCollateralContract()
 
