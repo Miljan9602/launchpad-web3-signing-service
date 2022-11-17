@@ -55,11 +55,12 @@ exports.sign_buy_portions = async (request, response) => {
     let portions = request.body.portions
     let price = request.body.price
     let sigExpTime = request.body.signature_expiration_time
+    let userAddress = request.body.user_address
 
     const pk = process.env.PRIVATE_KEY_1;
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
-    let hash = web3.utils.soliditySha3({t:"address", v: ownerAddress}, {t: "address", v: saleAddress}, {t:"uint256[]", v:portions}, {t:"uint256", v:price}, {t:"uint256", v:sigExpTime}, {t: "string", v: "buyPortions"});
+    let hash = web3.utils.soliditySha3({t:"address", v: ownerAddress}, {t:"address", v: userAddress}, {t: "address", v: saleAddress}, {t:"uint256[]", v:portions}, {t:"uint256", v:price}, {t:"uint256", v:sigExpTime}, {t: "string", v: "buyPortions"});
 
     let result = web3.eth.accounts.sign(hash, pk);
 
