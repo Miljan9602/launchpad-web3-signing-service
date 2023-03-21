@@ -1,6 +1,7 @@
 const Web3 = require("web3");
 const LogDecoder = require('logs-decoder')
 const contractGetters = require("../utils/getters")
+const Contract = require("web3-eth-contract");
 
 contractGetters.getCollateralContract()
 
@@ -9,6 +10,48 @@ const AVALAUNCH_URL = contractGetters.getRpc()
 const logsDecoder = LogDecoder.create()
 logsDecoder.addABI(contractGetters.getMarketplaceContractAbi())
 
+exports.buy_portions = async (request, response) => {
+
+    // Take values from body.
+    const payableAmount = request.body.payable_amount
+    const saleContractAddress = request.body.sale_contract_address
+    const ownerAddress = request.body.owner_address
+    const sigExpTimestamp = request.body.sig_exp_timestamp
+    const priceSum = request.body.price_sum
+    const itemId = request.body.item_id
+    const portions = request.body.portions
+    const signature = request.body.signature
+    const gasPrice = request.body.gas_price
+
+    const pk = process.env.PRIVATE_KEY_1;
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+    const account = web3.eth.accounts.privateKeyToAccount(pk)
+
+    let marketplaceContract = contractGetters.getMarketplaceContract()
+
+    // Pull out contract abi/address
+    let marketplaceAbi = marketplaceContract['abi']
+    let marketplaceAddress = marketplaceContract['address']
+
+    // Init contract.
+    let contract = new Contract(marketplaceAbi, marketplaceAddress);
+    let data = contract.methods.buyPortions(payableAmount, saleContractAddress, ownerAddress, sigExpTimestamp, priceSum, itemId, portions, signature);
+    let rawTransaction = {
+        "from":account.address,
+        "to":marketplaceAddress,
+        "gasPrice":web3.utils.toHex(gasPrice),
+        "gasLimit":web3.utils.toHex(950000),
+        "data": data.encodeABI()
+    };
+
+    const signedTransaction = (await account.signTransaction(rawTransaction))
+    const result = await sendTransactionAndGetHash(signedTransaction.rawTransaction)
+
+    return response.json({
+        "tx_hash" : result,
+        "status" : "ok"
+    });
+}
 
 exports.sign_add_portions_to_marketplace = async (request, response) => {
 
