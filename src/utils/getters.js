@@ -55,5 +55,6 @@ module.exports = {
     getAirdropAbi,
     getErc20Abi,
     getCollateralContract,
-    getMarketplaceContractAbi
+    getMarketplaceContractAbi,
+    getMarketplaceContract
 };
