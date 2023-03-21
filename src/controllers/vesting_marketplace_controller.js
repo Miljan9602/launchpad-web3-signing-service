@@ -135,6 +135,17 @@ exports.decode_portion_listed = async (request, response) => {
     });
 }
 
+function sendTransactionAndGetHash(signedTransaction) {
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+
+    return new Promise((resolve, reject) => {
+        web3.eth.sendSignedTransaction(signedTransaction)
+            .once('transactionHash', (hash) => {
+                resolve(hash)
+            })
+    })
+}
+
 async function parseTransactionLogs(txHash) {
 
     // Get the receipt.
