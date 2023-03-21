@@ -11,6 +11,6 @@ router.post('/sign-buy-portions', vesting_controller.sign_buy_portions);
 
 router.post('/sign-remove-portions', vesting_controller.sign_remove_portions);
 
-router.post('/buy_portions', vesting_controller.buy_portions);
+router.post('/buy-portions', vesting_controller.buy_portions);
 
 module.exports = router
