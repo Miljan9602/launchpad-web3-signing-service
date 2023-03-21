@@ -35,8 +35,9 @@ exports.buy_portions = async (request, response) => {
 
     // Init contract.
     let contract = new Contract(marketplaceAbi, marketplaceAddress);
-    let data = contract.methods.buyPortions(payableAmount, saleContractAddress, ownerAddress, sigExpTimestamp, priceSum, itemId, portions, signature);
+    let data = contract.methods.buyPortions(saleContractAddress, ownerAddress, sigExpTimestamp, priceSum, itemId, portions, signature);
     let rawTransaction = {
+        "value" : payableAmount,
         "from":account.address,
         "to":marketplaceAddress,
         "gasPrice":web3.utils.toHex(gasPrice),
