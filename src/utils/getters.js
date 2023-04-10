@@ -5,7 +5,6 @@ function getContracts() {
     if (stage === 'staging' || stage === 'develop') {
         return require('../config/config_'+stage+'.json')
     }
-
     return require("../config/config_production.json")
 }
 
@@ -36,6 +35,10 @@ function getMarketplaceContract() {
     return getContracts()['MARKETPLACE']
 }
 
+function getNftMarketplaceContract() {
+    return getContracts()['NFT_MARKETPLACE']
+}
+
 function getMarketplaceContractAbi() {
     return getMarketplaceContract()['abi']
 }
@@ -56,5 +59,6 @@ module.exports = {
     getErc20Abi,
     getCollateralContract,
     getMarketplaceContractAbi,
-    getMarketplaceContract
+    getMarketplaceContract,
+    getNftMarketplaceContract
 };
