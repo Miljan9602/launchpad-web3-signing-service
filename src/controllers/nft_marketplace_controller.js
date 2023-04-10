@@ -10,7 +10,7 @@ Contract.setProvider(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 exports.asks = async (request, response) => {
 
     let address = request.body.address
-    let askId = request.body.ask_id
+    let itemId = request.body.item_id
 
     let nftMarketplaceContract = contractGetters.getNftMarketplaceContract()
 
@@ -21,7 +21,7 @@ exports.asks = async (request, response) => {
     // Init contract.
     let contract = new Contract(nftMarketplaceAbi, nftMarketplaceAddress);
 
-    const result = await contract.methods.asks(askId, address).call()
+    const result = await contract.methods.asks(itemId, address).call()
 
     return response.json({
         "result" : {
