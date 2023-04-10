@@ -23,7 +23,10 @@ exports.asks = async (request, response) => {
     const result = await contract.methods.asks(askId, address).call()
 
     return response.json({
-        "result" : result,
+        "result" : {
+            "value" : result["value"],
+            "active" : result["active"]
+        },
         "status" : "ok"
     });
 }
@@ -43,7 +46,16 @@ exports.auction_items = async (request, response) => {
     const result = await contract.methods.auctionItems(itemId).call()
 
     return response.json({
-        "result" : result,
+        "result" : {
+            "itemAddress" : result['itemAddress'],
+            "tokenId" : result['tokenId'],
+            "seller" : result['seller'],
+            "bidder" : result['bidder'],
+            "startingPrice" : result['startingPrice'],
+            "highestBid" : result['highestBid'],
+            "endTime" : result['endTime'],
+            "available" : result['available']
+        },
         "status" : "ok"
     });
 }
@@ -63,7 +75,14 @@ exports.items = async (request, response) => {
     const result = await contract.methods.items(itemId).call()
 
     return response.json({
-        "result" : result,
+        "result" : {
+            "itemAddress" : result['itemAddress'],
+            "tokenId" : result['tokenId'],
+            "seller" : result['seller'],
+            "buyer" : result['buyer'],
+            "price" : result['price'],
+            "available" : result['available']
+        },
         "status" : "ok"
     });
 }
