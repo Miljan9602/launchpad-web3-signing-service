@@ -39,8 +39,8 @@ function getNftMarketplaceContract() {
     return getContracts()['NFT_MARKETPLACE']
 }
 
-function getMarketplaceContractAbi() {
-    return getMarketplaceContract()['abi']
+function getNftMarketplaceAbi() {
+    return getNftMarketplaceContract()['abi']
 }
 
 function getErc20Abi() {
@@ -58,7 +58,7 @@ module.exports = {
     getAirdropAbi,
     getErc20Abi,
     getCollateralContract,
-    getMarketplaceContractAbi,
     getMarketplaceContract,
-    getNftMarketplaceContract
+    getNftMarketplaceContract,
+    getNftMarketplaceAbi
 };
