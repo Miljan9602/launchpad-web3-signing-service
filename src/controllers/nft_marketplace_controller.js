@@ -130,7 +130,7 @@ async function parseTransactionLogs(txHash, rpc, abi) {
     for (let i = 0; i < decoded.length; i++) {
 
         if ( decoded[i] === undefined) {
-            return null;
+            continue;
         }
 
         logs.push({
