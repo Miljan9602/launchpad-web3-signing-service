@@ -1,7 +1,7 @@
 const Contract = require("web3-eth-contract");
 const Web3 = require("web3");
 const contractGetters = require("../utils/getters");
-const LogDecoder = require("logs-decoder");
+const LogDecoder = require("logs-decoder-v2");
 
 const AVALAUNCH_URL = contractGetters.getRpc()
 
@@ -122,7 +122,6 @@ async function parseTransactionLogs(txHash, rpc, abi) {
     const logsDecoder = LogDecoder.create()
     logsDecoder.addABI(abi)
 
-    // decode logs.
     let decoded = logsDecoder.decodeLogs(receipt.logs);
 
     let logs = [];
