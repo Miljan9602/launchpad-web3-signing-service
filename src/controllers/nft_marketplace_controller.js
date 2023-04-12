@@ -32,6 +32,31 @@ exports.asks = async (request, response) => {
     });
 }
 
+exports.nft_info = async (request, response) => {
+    let address = request.body.address
+
+    // Pull out contract abi/address
+    let nftAbi = contractGetters.getNftAbi()
+
+    // Init contract.
+    let contract = new Contract(nftAbi, address);
+
+    const name = await contract.methods.name().call()
+    const symbol = await contract.methods.symbol().call()
+    const totalSupply = await contract.methods.totalSupply().call()
+    const collectionSize = await contract.methods.collectionSize().call()
+
+    return response.json({
+        "result" : {
+            "name" : name,
+            "symbol" : symbol,
+            "total_supply" : totalSupply,
+            "collection_size" : collectionSize
+        },
+        "status" : "ok"
+    });
+}
+
 exports.auction_items = async (request, response) => {
     let itemId = request.body.item_id
 

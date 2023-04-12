@@ -39,6 +39,10 @@ function getNftMarketplaceContract() {
     return getContracts()['NFT_MARKETPLACE']
 }
 
+function getNftAbi() {
+    return getContracts()['NFT']['abi']
+}
+
 function getNftMarketplaceAbi() {
     return getNftMarketplaceContract()['abi']
 }
@@ -60,5 +64,6 @@ module.exports = {
     getCollateralContract,
     getMarketplaceContract,
     getNftMarketplaceContract,
-    getNftMarketplaceAbi
+    getNftMarketplaceAbi,
+    getNftAbi
 };
