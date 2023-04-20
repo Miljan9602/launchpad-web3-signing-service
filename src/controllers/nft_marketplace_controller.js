@@ -50,7 +50,7 @@ exports.reveal = async (request, response) => {
     let rawTransaction = {
         "from":account.address,
         "gasPrice":web3.utils.toHex(gasPrice),
-        "gasLimit":web3.utils.toHex(290000),
+        "gasLimit":web3.utils.toHex(590000),
         "data": data.encodeABI()
     };
 
