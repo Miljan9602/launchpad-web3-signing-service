@@ -32,6 +32,39 @@ exports.asks = async (request, response) => {
     });
 }
 
+exports.reveal = async (request, response) => {
+
+    const pk = process.env.PRIVATE_KEY_1;
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+    const account = web3.eth.accounts.privateKeyToAccount(pk)
+    const gasPrice = request.body.gas_price
+    let address = request.body.address
+
+    // Pull out contract abi/address
+    let nftAbi = contractGetters.getNftAbi()
+
+    // Init contract.
+    let contract = new Contract(nftAbi, address);
+
+    let data = contract.methods.reveal();
+    let rawTransaction = {
+        "from":account.address,
+        "gasPrice":web3.utils.toHex(gasPrice),
+        "gasLimit":web3.utils.toHex(290000),
+        "data": data.encodeABI()
+    };
+
+    let result = await account.signTransaction(rawTransaction).then(signed => {
+        return web3.eth.sendSignedTransaction(signed.rawTransaction);
+    });
+
+    return response.json({
+        "tx_hash" : result.transactionHash,
+        "to" : result.to,
+        "status" : result.status
+    });
+}
+
 exports.nft_info = async (request, response) => {
     let address = request.body.address
 
@@ -116,6 +149,7 @@ exports.items = async (request, response) => {
 exports.decode_logs = async (request, response) => {
 
     let logs = await parseTransactionLogs(request.body.tx_hash, AVALAUNCH_URL, contractGetters.getNftMarketplaceAbi())
+
 
     if (logs === null) {
         return response.status(400).json({
