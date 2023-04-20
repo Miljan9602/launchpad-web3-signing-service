@@ -38,7 +38,7 @@ exports.nft_reveal = async (request, response) => {
     const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
     const account = web3.eth.accounts.privateKeyToAccount(pk)
     const gasPrice = request.body.gas_price
-    const address = request.body.address
+    let address = request.body.address
 
     // Pull out contract abi/address
     let nftAbi = contractGetters.getNftAbi()
@@ -49,6 +49,7 @@ exports.nft_reveal = async (request, response) => {
     let data = contract.methods.reveal();
     let rawTransaction = {
         "from":account.address,
+        "to" : address,
         "gasPrice":web3.utils.toHex(gasPrice),
         "gasLimit":web3.utils.toHex(590000),
         "data": data.encodeABI()
