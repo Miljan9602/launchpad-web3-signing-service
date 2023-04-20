@@ -8,6 +8,6 @@ router.post('/asks', nft_marketplace_routes.asks);
 router.post('/info', nft_marketplace_routes.nft_info);
 router.post('/items', nft_marketplace_routes.items);
 router.post('/auction-items', nft_marketplace_routes.auction_items);
-router.post('/reveal', nft_marketplace_routes.reveal);
+router.post('/reveal', nft_marketplace_routes.nft_reveal);
 
 module.exports = router
