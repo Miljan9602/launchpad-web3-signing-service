@@ -79,13 +79,20 @@ exports.nft_info = async (request, response) => {
     const symbol = await contract.methods.symbol().call()
     const totalSupply = await contract.methods.totalSupply().call()
     const collectionSize = await contract.methods.collectionSize().call()
+    const lastTokenRevealed = await contract.methods.lastTokenRevealed().call()
+    const batchSize = await contract.methods.revealBatchSize().call()
+    const availableBatch = await contract.methods.getAvailableBatch().call()
 
     return response.json({
         "result" : {
             "name" : name,
             "symbol" : symbol,
             "total_supply" : totalSupply,
-            "collection_size" : collectionSize
+            "collection_size" : collectionSize,
+            "lastTokenRevealed" : lastTokenRevealed,
+            "reveal_batch_size" : batchSize,
+            "available_batch" : availableBatch
+
         },
         "status" : "ok"
     });
