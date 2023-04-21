@@ -81,7 +81,6 @@ exports.nft_info = async (request, response) => {
     const collectionSize = await contract.methods.collectionSize().call()
     const lastTokenRevealed = await contract.methods.lastTokenRevealed().call()
     const batchSize = await contract.methods.revealBatchSize().call()
-    const availableBatch = await contract.methods.getAvailableBatch().call()
 
     return response.json({
         "result" : {
@@ -91,8 +90,6 @@ exports.nft_info = async (request, response) => {
             "collection_size" : collectionSize,
             "lastTokenRevealed" : lastTokenRevealed,
             "reveal_batch_size" : batchSize,
-            "available_batch" : availableBatch
-
         },
         "status" : "ok"
     });
