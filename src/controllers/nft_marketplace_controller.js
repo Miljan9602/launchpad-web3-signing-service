@@ -86,6 +86,7 @@ exports.token_info = async (request, response) => {
 
     return response.json({
         "result" : {
+            "is_revealed" : tokenUri !== null,
             "token_uri" : tokenUri,
             "owner_of" : ownerof
         },
