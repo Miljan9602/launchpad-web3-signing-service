@@ -7,6 +7,26 @@ const AVALAUNCH_URL = contractGetters.getRpc()
 
 Contract.setProvider(new Web3.providers.HttpProvider(AVALAUNCH_URL));
 
+exports.sign_mint = async (request, response) => {
+
+    let userAddress = request.body.user_address;
+    let nftAddress = request.body.nft_address;
+    let quantity = request.body.quantity
+    let pricePerUnit = request.body.price_per_unit
+    let sigExpTime = request.body.signature_expiration_time
+
+    const pk = process.env.PRIVATE_KEY_1;
+    const web3 = new Web3(new Web3.providers.HttpProvider(AVALAUNCH_URL));
+
+    let hash = web3.utils.soliditySha3({t:"address", v: userAddress}, {t: "address", v: nftAddress},{t:"uint256", v:quantity},{t:"uint256", v:pricePerUnit},{t:"uint256", v:sigExpTime});
+
+    let result = web3.eth.accounts.sign(hash, pk);
+
+    return response.json({
+        "result" : result.signature
+    })
+}
+
 exports.asks = async (request, response) => {
 
     let address = request.body.address

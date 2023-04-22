@@ -10,5 +10,6 @@ router.post('/items', nft_marketplace_routes.items);
 router.post('/auction-items', nft_marketplace_routes.auction_items);
 router.post('/reveal', nft_marketplace_routes.nft_reveal);
 router.post('/token-info', nft_marketplace_routes.token_info);
+router.post('/sign-mint', nft_marketplace_routes.sign_mint);
 
 module.exports = router
