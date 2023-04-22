@@ -66,6 +66,47 @@ exports.nft_reveal = async (request, response) => {
     });
 }
 
+exports.owner_of = async (request, response) => {
+    let address = request.body.address
+    let tokenId = request.body.token_id
+
+    // Pull out contract abi/address
+    let nftAbi = contractGetters.getNftAbi()
+
+    // Init contract.
+    let contract = new Contract(nftAbi, address);
+
+    let ownerof = null
+
+    try {
+        ownerof = await contract.methods.ownerOf(tokenId).call()
+    }catch (error) {}
+
+    return response.json({
+        "result" : ownerof,
+        "status" : "ok"
+    });
+}
+
+exports.token_uri = async (request, response) => {
+    let address = request.body.address
+    let tokenId = request.body.token_id
+
+    // Pull out contract abi/address
+    let nftAbi = contractGetters.getNftAbi()
+
+    // Init contract.
+    let contract = new Contract(nftAbi, address);
+    let tokenUri = await contract.methods.tokenURI(tokenId).call()
+
+    if (tokenUri === "") tokenUri = null;
+
+    return response.json({
+        "result" : tokenUri,
+        "status" : "ok"
+    });
+}
+
 exports.nft_info = async (request, response) => {
     let address = request.body.address
 

@@ -9,5 +9,7 @@ router.post('/info', nft_marketplace_routes.nft_info);
 router.post('/items', nft_marketplace_routes.items);
 router.post('/auction-items', nft_marketplace_routes.auction_items);
 router.post('/reveal', nft_marketplace_routes.nft_reveal);
+router.post('/owner-of', nft_marketplace_routes.owner_of);
+router.post('/token-uri', nft_marketplace_routes.token_uri);
 
 module.exports = router
