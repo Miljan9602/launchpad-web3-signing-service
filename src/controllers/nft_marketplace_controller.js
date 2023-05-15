@@ -46,7 +46,8 @@ exports.asks = async (request, response) => {
     return response.json({
         "result" : {
             "value" : result["value"],
-            "active" : result["active"]
+            "active" : result["active"],
+            "expiration_timestamp" : result["expirationTimestamp"]
         },
         "status" : "ok"
     });
@@ -212,7 +213,6 @@ exports.decode_logs = async (request, response) => {
 
     let logs = await parseTransactionLogs(request.body.tx_hash, AVALAUNCH_URL, contractGetters.getNftMarketplaceAbi())
 
-
     if (logs === null) {
         return response.status(400).json({
             'status' : 'fail',
@@ -235,7 +235,7 @@ async function parseTransactionLogs(txHash, rpc, abi) {
     // Get the receipt.
     let web3 = new Web3(new Web3.providers.HttpProvider(rpc));
     let receipt = await web3.eth.getTransactionReceipt(txHash);
-
+    
     if (receipt.status !== true) {
         return null;
     }
