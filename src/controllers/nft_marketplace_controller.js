@@ -115,6 +115,24 @@ exports.token_info = async (request, response) => {
     });
 }
 
+exports.token_owner = async (request, response) => {
+    let address = request.body.address
+    let tokenId = request.body.token_id
+
+    // Pull out contract abi/address
+    let nftAbi = contractGetters.getNftAbi()
+
+    // Init contract.
+    let contract = new Contract(nftAbi, address);
+
+    return response.json({
+        "result" : {
+            "owner_of" : await contract.methods.ownerOf(tokenId).call()
+        },
+        "status" : "ok"
+    });
+}
+
 
 
 exports.nft_info = async (request, response) => {
@@ -235,7 +253,7 @@ async function parseTransactionLogs(txHash, rpc, abi) {
     // Get the receipt.
     let web3 = new Web3(new Web3.providers.HttpProvider(rpc));
     let receipt = await web3.eth.getTransactionReceipt(txHash);
-    
+
     if (receipt.status !== true) {
         return null;
     }
