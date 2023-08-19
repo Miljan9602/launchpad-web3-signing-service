@@ -1,9 +1,4 @@
 const ethSig = require('eth-sig-util');
-const Web3 = require("web3");
-const contractGetters = require("../utils/getters")
-
-// Import contract and add provider.
-const RPC_URL = contractGetters.getRpc()
 
 exports.recover_typed_signature = (request, response) => {
     const address = request.body.address
