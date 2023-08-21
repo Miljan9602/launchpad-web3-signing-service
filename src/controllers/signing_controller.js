@@ -1,4 +1,4 @@
-const { Web3 } = require('web3');
+const { Web3} = require('web3');
 const contractGetters = require("../utils/getters")
 
 const web3 = new Web3(new Web3.providers.HttpProvider(contractGetters.getRpc()));
@@ -10,9 +10,9 @@ exports.sign_claim_application_token = (request, response) => {
     let fee = request.body.fee;
     let sigExpTime = request.body.signature_expiration_time
     let contractAddress = request.body.contract_address
-    let selector = "claimArbr"
+    let selector = web3.eth.abi.encodeFunctionSignature("stakeArbr(uint256,uint256,bytes[2])");
 
-    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "string", v: selector});
+    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "bytes4", v: selector});
 
     return response.json({
         "user" : user,
@@ -141,9 +141,9 @@ exports.sign_staking_application_token = (request, response) => {
     let fee = request.body.fee;
     let sigExpTime = request.body.signature_expiration_time
     let contractAddress = request.body.contract_address
-    let selector = "stakeArbr"
+    let selector = web3.eth.abi.encodeFunctionSignature("stakeArbr(uint256,uint256,bytes[2])");
 
-    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "string", v: selector});
+    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "bytes4", v: selector});
 
     return response.json({
         "user" : user,
