@@ -10,7 +10,7 @@ exports.sign_claim_application_token = (request, response) => {
     let fee = request.body.fee;
     let sigExpTime = request.body.signature_expiration_time
     let contractAddress = request.body.contract_address
-    let selector = web3.eth.abi.encodeFunctionSignature("stakeArbr(uint256,uint256,bytes[2])");
+    let selector = web3.eth.abi.encodeFunctionSignature("claimArbr(uint256,uint256,uint256,bytes[2])");
 
     let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "bytes4", v: selector});
 
@@ -32,9 +32,9 @@ exports.sign_claim_mint_token = (request, response) => {
     let fee = request.body.fee;
     let sigExpTime = request.body.signature_expiration_time
     let contractAddress = request.body.contract_address
-    let selector = "claimHarbr"
+    let selector = web3.eth.abi.encodeFunctionSignature("claimHarbr(uint256,uint256,uint256,bytes[2])");
 
-    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "string", v: selector});
+    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "bytes4", v: selector});
 
     return response.json({
         "user" : user,
@@ -54,9 +54,10 @@ exports.sign_conversion_application_to_mint = (request, response) => {
     let fee = request.body.fee;
     let sigExpTime = request.body.signature_expiration_time
     let contractAddress = request.body.contract_address
-    let selector = "hundredDayConversionAToH"
+    let selector = web3.eth.abi.encodeFunctionSignature("hundredDayConversionAToH(uint256,uint256,bytes[2])");
 
-    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "string", v: selector});
+
+    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "bytes4", v: selector});
 
     return response.json({
         "user" : user,
@@ -76,9 +77,9 @@ exports.sign_conversion_mint_to_application = (request, response) => {
     let fee = request.body.fee;
     let sigExpTime = request.body.signature_expiration_time
     let contractAddress = request.body.contract_address
-    let selector = "hundredDayConversionHToA"
+    let selector = web3.eth.abi.encodeFunctionSignature("hundredDayConversionHToA(uint256,uint256,bytes[2])");
 
-    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "string", v: selector});
+    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "bytes4", v: selector});
 
     return response.json({
         "user" : user,
@@ -97,9 +98,10 @@ exports.sign_instant_conversion_application_to_mint = (request, response) => {
     let fee = request.body.fee;
     let sigExpTime = request.body.signature_expiration_time
     let contractAddress = request.body.contract_address
-    let selector = "instantConversionAToH"
+    let selector = web3.eth.abi.encodeFunctionSignature("instantConversionAToH(uint256,uint256,bytes[2])");
 
-    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "string", v: selector});
+
+    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "bytes4", v: selector});
 
     return response.json({
         "user" : user,
@@ -119,9 +121,10 @@ exports.sign_instant_conversion_mint_to_application = (request, response) => {
     let fee = request.body.fee;
     let sigExpTime = request.body.signature_expiration_time
     let contractAddress = request.body.contract_address
-    let selector = "instantConversionHToA"
+    let selector = web3.eth.abi.encodeFunctionSignature("instantConversionHToA(uint256,uint256,bytes[2])");
 
-    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "string", v: selector});
+
+    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "bytes4", v: selector});
 
     return response.json({
         "user" : user,
@@ -163,9 +166,9 @@ exports.sign_withdraw_application_token = (request, response) => {
     let fee = request.body.fee;
     let sigExpTime = request.body.signature_expiration_time
     let contractAddress = request.body.contract_address
-    let selector = "withdrawArbr"
+    let selector = web3.eth.abi.encodeFunctionSignature("withdrawArbr(uint256,uint256,bytes[2])");
 
-    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "string", v: selector});
+    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "bytes4", v: selector});
 
     return response.json({
         "user" : user,
