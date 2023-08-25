@@ -12,6 +12,17 @@ function getRpc() {
     return getConfig()['RPC']
 }
 
+function getStakingAbi() {
+    return getConfig()['STAKING']['abi']
+}
+
+function getStakingAddress() {
+    return getConfig()['STAKING']['address']
+}
+
+
 module.exports = {
     getRpc,
+    getStakingAbi,
+    getStakingAddress
 };

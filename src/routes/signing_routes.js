@@ -11,5 +11,6 @@ router.post('/instant-conversion-application-to-mint', signing_controller.sign_i
 router.post('/instant-conversion-mint-to-application', signing_controller.sign_instant_conversion_mint_to_application);
 router.post('/staking-application-token', signing_controller.sign_staking_application_token);
 router.post('/withdraw-application-token', signing_controller.sign_withdraw_application_token);
+router.post('/is-signature-used', signing_controller.is_signature_used);
 
 module.exports = router
