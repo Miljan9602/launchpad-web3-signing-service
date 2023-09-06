@@ -201,3 +201,47 @@ exports.sign_withdraw_application_token = (request, response) => {
         "signature" : web3.eth.accounts.sign(hash, process.env.PRIVATE_KEY_1).signature
     });
 }
+
+exports.sign_cancel_mint_token = (request, response) => {
+
+    let user = request.body.user;
+    let amount = request.body.amount;
+    let fee = request.body.fee;
+    let sigExpTime = request.body.signature_expiration_time
+    let contractAddress = request.body.contract_address
+    let selector = web3.eth.abi.encodeFunctionSignature("cancelConversionHToA(uint256,uint256,uint256,bytes[2])");
+
+    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "bytes4", v: selector});
+
+    return response.json({
+        "user" : user,
+        "amount" : amount,
+        "fee" : fee,
+        "signature_expiration_time": sigExpTime,
+        "contract_address" : contractAddress,
+        "selector" : selector,
+        "signature" : web3.eth.accounts.sign(hash, process.env.PRIVATE_KEY_1).signature
+    });
+}
+
+exports.sign_cancel_application_token = (request, response) => {
+
+    let user = request.body.user;
+    let amount = request.body.amount;
+    let fee = request.body.fee;
+    let sigExpTime = request.body.signature_expiration_time
+    let contractAddress = request.body.contract_address
+    let selector = web3.eth.abi.encodeFunctionSignature("cancelConversionAToH(uint256,uint256,uint256,bytes[2])");
+
+    let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:fee},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress}, {t: "bytes4", v: selector});
+
+    return response.json({
+        "user" : user,
+        "amount" : amount,
+        "fee" : fee,
+        "signature_expiration_time": sigExpTime,
+        "contract_address" : contractAddress,
+        "selector" : selector,
+        "signature" : web3.eth.accounts.sign(hash, process.env.PRIVATE_KEY_1).signature
+    });
+}
