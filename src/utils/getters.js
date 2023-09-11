@@ -20,9 +20,19 @@ function getStakingAddress() {
     return getConfig()['STAKING']['address']
 }
 
+function getCollateralAbi() {
+    return getConfig()['COLLATERAL']['abi']
+}
+
+function getCollateralAddress() {
+    return getConfig()['COLLATERAL']['address']
+}
+
 
 module.exports = {
     getRpc,
     getStakingAbi,
-    getStakingAddress
+    getStakingAddress,
+    getCollateralAddress,
+    getCollateralAbi
 };
