@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const signing_controller = require('../controllers/signing_controller');
+const signing_controller = require('../controllers/staking_controller');
 
 router.post('/claim-application-token', signing_controller.sign_claim_application_token);
 router.post('/claim-mint-token', signing_controller.sign_claim_mint_token);
