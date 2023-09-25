@@ -1,10 +1,9 @@
 const express = require('express')
 const router = express.Router()
 
-const collateral_controller = require('../controllers/collateral_controller');
+const sale_controller = require('../controllers/sale_controller');
 
-router.post('/withdraw', collateral_controller.sign_withdraw);
-router.post('/deposit', collateral_controller.sign_deposit);
+router.post('/withdraw', sale_controller.sign_withdraw_tokens);
 
 
 module.exports = router
