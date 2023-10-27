@@ -20,11 +20,6 @@ exports.sign_withdraw_tokens = (request, response) => {
         "signature_expiration_time": sigExpTime,
         "contract_address" : contractAddress,
         "selector" : selector,
-        "signature" : web3.eth.accounts.sign(hash, process.env.PRIVATE_KEY_1).signature,
-        'two': [
-            web3.eth.accounts.sign(hash, process.env.PRIVATE_KEY_1).signature,
-            web3.eth.accounts.sign(hash, process.env.PRIVATE_KEY_2).signature
-        ],
-        'msg' : web3.eth.accounts.hashMessage(hash)
+        "signature" : web3.eth.accounts.sign(hash, process.env.PRIVATE_KEY_1).signature
     });
 }
