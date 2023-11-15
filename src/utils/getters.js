@@ -28,11 +28,21 @@ function getCollateralAddress() {
     return getConfig()['COLLATERAL']['address']
 }
 
+function getMarketplaceAddress() {
+    return getConfig()['COLLATERAL']['address']
+}
+
+function getMarketplaceAbi() {
+    return getConfig()['COLLATERAL']['address']
+}
+
 
 module.exports = {
     getRpc,
     getStakingAbi,
     getStakingAddress,
     getCollateralAddress,
-    getCollateralAbi
+    getCollateralAbi,
+    getMarketplaceAddress,
+    getMarketplaceAbi
 };
