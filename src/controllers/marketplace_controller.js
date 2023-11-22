@@ -10,8 +10,10 @@ exports.sign_add_offer = (request, response) => {
     let offerId = request.body.offer_id;
     let sigExpTime = request.body.signature_expiration_time
     let amount = request.body.amount
-    let selector = web3.eth.abi.encodeFunctionSignature("addOffer(address,uint256,uint256,address,uint256,uint256,bytes[2])");
+    let selector = web3.eth.abi.encodeFunctionSignature("addOffer(address,uint256,uint256,address,uint256,bytes[2])");
     let contractAddress = request.body.contract_address
+
+    console.log({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:offerId},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress},{t: "bytes4", v: selector})
 
     let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:offerId},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress},{t: "bytes4", v: selector});
 
