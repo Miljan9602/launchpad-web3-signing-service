@@ -13,13 +13,11 @@ exports.sign_add_offer = (request, response) => {
     let selector = web3.eth.abi.encodeFunctionSignature("addOffer(address,uint256,uint256,address,uint256,uint256,bytes[2])");
     let contractAddress = request.body.contract_address
 
-    console.log({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:offerId},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress},{t: "bytes4", v: selector})
-
     let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:offerId},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress},{t: "bytes4", v: selector});
 
     return response.json({
         "user" : user,
-        "offer_id" : request.body.offer_id,
+        "offer_id" : offerId,
         "signature_expiration_time": sigExpTime,
         "contract_address" : contractAddress,
         "selector" : selector,
@@ -63,6 +61,7 @@ exports.sign_buy_offer = (request, response) => {
         "signature_expiration_time": sigExpTime,
         "contract_address" : contractAddress,
         "selector" : selector,
-        "signature" : web3.eth.accounts.sign(hash, process.env.PRIVATE_KEY_1).signature
+        "signature" : web3.eth.accounts.sign(hash, process.env.PRIVATE_KEY_1).signature,
+        "signature2" : web3.eth.accounts.sign(hash, process.env.PRIVATE_KEY_2).signature
     });
 }
