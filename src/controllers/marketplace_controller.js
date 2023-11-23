@@ -61,7 +61,6 @@ exports.sign_buy_offer = (request, response) => {
         "signature_expiration_time": sigExpTime,
         "contract_address" : contractAddress,
         "selector" : selector,
-        "signature" : web3.eth.accounts.sign(hash, process.env.PRIVATE_KEY_1).signature,
-        "signature2" : web3.eth.accounts.sign(hash, process.env.PRIVATE_KEY_2).signature
+        "signature" : web3.eth.accounts.sign(hash, process.env.PRIVATE_KEY_1).signature
     });
 }
