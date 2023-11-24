@@ -10,7 +10,7 @@ exports.is_signature_used = async (request, response) => {
     let offerId = request.body.offer_id;
     let sigExpTime = request.body.signature_expiration_time
     let amount = request.body.amount
-    let selector = request.body.amount;
+    let selector = request.body.selector;
     let contractAddress = request.body.contract_address
 
     let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:offerId},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress},{t: "bytes4", v: selector});
@@ -63,6 +63,7 @@ exports.sign_remove_offer = (request, response) => {
         "signature_expiration_time": sigExpTime,
         "contract_address" : contractAddress,
         "selector" : selector,
+        "amount" : 0,
         "signature" : web3.eth.accounts.sign(hash, process.env.PRIVATE_KEY_1).signature
     });
 }
@@ -82,6 +83,7 @@ exports.sign_buy_offer = (request, response) => {
         "signature_expiration_time": sigExpTime,
         "contract_address" : contractAddress,
         "selector" : selector,
+        "amount" : 0,
         "signature" : web3.eth.accounts.sign(hash, process.env.PRIVATE_KEY_1).signature
     });
 }
