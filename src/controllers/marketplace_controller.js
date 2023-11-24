@@ -11,10 +11,11 @@ exports.is_signature_used = async (request, response) => {
     let sigExpTime = request.body.signature_expiration_time
     let amount = request.body.amount
     let selector = request.body.selector;
+    let contractAddress = contractGetters.getMarketplaceAddress()
 
     let hash = web3.utils.soliditySha3({t:"address", v: user}, {t:"uint256", v:amount},{t:"uint256", v:offerId},{t:"uint256", v:sigExpTime},{t:"address", v: contractAddress},{t: "bytes4", v: selector});
 
-    let contract = new Contract(contractGetters.getMarketplaceAbi(), contractGetters.getMarketplaceAddress());
+    let contract = new Contract(contractGetters.getMarketplaceAbi(), contractAddress);
     contract.setProvider(RPC_URL);
 
     let result = await contract.methods.isMessageUsed(web3.eth.accounts.hashMessage(hash)).call();
