@@ -29,11 +29,11 @@ function getCollateralAddress() {
 }
 
 function getMarketplaceAddress() {
-    return getConfig()['COLLATERAL']['address']
+    return getConfig()['MARKETPLACE']['address']
 }
 
 function getMarketplaceAbi() {
-    return getConfig()['COLLATERAL']['address']
+    return getConfig()['MARKETPLACE']['abi']
 }
 
 
